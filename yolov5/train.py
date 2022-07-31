@@ -436,7 +436,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', type=str, default=ROOT / 'models/bottle/paper/bottle_source_SE/weights/best.pt', help='initial weights path')
-    parser.add_argument('--cfg', type=str, default=ROOT / 'models/bottle/bottle_source_SE_CoT.yaml', help='model.yaml path')
+    parser.add_argument('--cfg', type=str, default=ROOT / 'models/bottle/paper/bottle_source_SE_CoT.yaml', help='model.yaml path')
     parser.add_argument('--name', default='bottle_source_SE_CoT', help='save to project/name')
     parser.add_argument('--data', type=str, default=ROOT / 'data/bottle.yaml', help='dataset.yaml path')
     parser.add_argument('--hyp', type=str, default=ROOT / 'data/hyps/hyp.scratch.yaml', help='hyperparameters path')
