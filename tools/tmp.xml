@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotation>
+<folder></folder>
+<filename>000079.jpg</filename>
+<source>
+<database></database>
+<annotation>PASCAL VOC2007</annotation>
+<image>flickr</image>
+<flickrid>NULL</flickrid>
+</source>
+<owner>
+<flickrid>NULL</flickrid>
+<name></name>
+</owner>
+<size>
+<width>512</width>
+<height>512</height>
+<depth>3</depth>
+</size>
+<segmented>0</segmented>
+<object>
+<name>Class1</name>
+<pose>Unspecified</pose>
+<truncated>0</truncated>
+<difficult>0</difficult>
+<bndbox>
+<xmin>162</xmin>
+<ymin>254</ymin>
+<xmax>320</xmax>
+<ymax>405</ymax>
+</bndbox>
+</object>
+</annotation>

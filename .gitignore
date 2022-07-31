@@ -1,0 +1,9 @@
+/.idea/
+/datasets
+*/__pycache__/
+/Relevant/BoTNet/BottleneckTransformers/data/
+/Relevant/BoTNet/BottleneckTransformers/checkpoints/
+*.pt
+*.pth
+*.zip
+*.tar.xz

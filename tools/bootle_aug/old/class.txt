@@ -1,0 +1,13 @@
+{
+	0: '背景',
+	1: '瓶盖破损',broken_bottle_cap
+	2: '瓶盖变形',bottle_cap_deformation
+	3: '瓶盖坏边',broken_edge
+	4: '瓶盖打旋',bottle_cap_spinning
+	5: '瓶盖断点',cap_breakpoint
+	6: '标贴歪斜',label_skew
+	7: '标贴起皱',label_wrinkle
+	8: '标贴气泡',label_bubble
+	9: '喷码正常',code_normal
+	10: '喷码异常'inkjet_exception
+}
