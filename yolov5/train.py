@@ -438,7 +438,7 @@ def parse_opt(known=False):
     parser.add_argument('--weights', type=str, default=ROOT / 'models/bottle/paper/bottle_source_SE/weights/best.pt', help='initial weights path')
     parser.add_argument('--cfg', type=str, default=ROOT / 'models/bottle/paper/bottle_source_SE_CoT.yaml', help='model.yaml path')
     parser.add_argument('--name', default='bottle_source_SE_CoT', help='save to project/name')
-    parser.add_argument('--data', type=str, default=ROOT / 'data/bottle.yaml', help='dataset.yaml path')
+    parser.add_argument('--data', type=str, default=ROOT / 'data/floor.yaml', help='dataset.yaml path')
     parser.add_argument('--hyp', type=str, default=ROOT / 'data/hyps/hyp.scratch.yaml', help='hyperparameters path')
     parser.add_argument('--epochs', type=int, default=300)
     parser.add_argument('--batch-size', type=int, default=34, help='total batch size for all GPUs')
