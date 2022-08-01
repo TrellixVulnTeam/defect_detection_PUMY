@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/home/zhang/defect_detection/yolov7/train.py", line 609, in <module>
+    train(hyp, opt, device, tb_writer)
+  File "/home/zhang/defect_detection/yolov7/train.py", line 87, in train
+    ckpt = torch.load(weights, map_location=device)  # load checkpoint
+  File "/home/zhang/anaconda3/envs/detection/lib/python3.9/site-packages/torch/serialization.py", line 594, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/home/zhang/anaconda3/envs/detection/lib/python3.9/site-packages/torch/serialization.py", line 230, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/zhang/anaconda3/envs/detection/lib/python3.9/site-packages/torch/serialization.py", line 211, in __init__
+    super(_open_file, self).__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: 'yolo7.pt'

@@ -1,0 +1,24 @@
+{
+    "os": "Linux-5.13.0-39-generic-x86_64-with-glibc2.31",
+    "python": "3.9.7",
+    "heartbeatAt": "2022-07-31T13:08:04.867800",
+    "startedAt": "2022-07-31T13:08:02.215016",
+    "docker": null,
+    "gpu": "NVIDIA RTX A4000",
+    "gpu_count": 1,
+    "cpu_count": 20,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/zhang/defect_detection/yolov7/train.py",
+    "codePath": "train.py",
+    "git": {
+        "remote": "https://github.com/WongKinYiu/yolov7.git",
+        "commit": "cc42a206ef4c4d0cc4998d496123daa6953e0b15"
+    },
+    "email": "495483882@qq.com",
+    "root": "/home/zhang/defect_detection/yolov7",
+    "host": "zhang-Precision-5820-Tower",
+    "username": "zhang",
+    "executable": "/home/zhang/anaconda3/envs/detection/bin/python"
+}
