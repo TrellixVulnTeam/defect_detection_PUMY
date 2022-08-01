@@ -1,12 +1,12 @@
 # YOLOv5 🚀 by Ultralytics, GPL-3.0 license
 #runs/train/floor_source_SE_CoT15/weights/best.pt
-#Model Summary: 248 layers, 9945713 parameters, 0 gradients, 20.900294 GFLOPs
+#Model Summary: 248 layers, 9945713 parameters, 0 gradients, 20.844134 GFLOPs
 #                 all        186        531      0.778      0.833      0.811       0.37
 #    white-impurities        186        436      0.739      0.761      0.804      0.338
 #          black-spot        186         40       0.73      0.875      0.827      0.298
 #         edge-damage        186         24       0.76      0.792      0.669      0.188
 #          bubble-gum        186         31      0.884      0.903      0.945      0.657
-#Speed: 2.0ms pre-process, 13.0ms inference, 24.2ms NMS per image at shape (34, 3, 768, 768)
+#Speed: 0.2ms pre-process, 8.7ms inference, 12.3ms NMS per image at shape (34, 3, 768, 768)
 # Parameters
 nc: 4  # number of classes
 depth_multiple: 0.33  # model depth multiple

@@ -7,9 +7,9 @@
 #          black-spot        186         40      0.644      0.875      0.825      0.329
 #         edge-damage        186         24      0.601      0.708      0.605      0.211
 #          bubble-gum        186         31      0.793      0.742      0.826      0.475
-#Speed: 0.3ms pre-process, 4.2ms inference, 3.1ms NMS per image at shape (34, 3, 768, 768)
+#Speed: 0.2ms pre-process, 3.9ms inference, 7.1ms NMS per image at shape (34, 3, 768, 768)
 # runs/train/floor_source_ResNet/weights/best.pt   0.801      0.327
-# Model Summary: 241 layers, 6416657 parameters, 0 gradients, 15.4 GFLOPs
+# Model Summary: 241 layers, 6416657 parameters, 0 gradients, 15.310438 GFLOPs
 # Parameters
 nc: 4  # number of classes
 depth_multiple: 0.33  # model depth multiple

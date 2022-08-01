@@ -11,10 +11,10 @@
 #                   7        335         50      0.524       0.32      0.298      0.118
 #                   8        335         48      0.921      0.968       0.97      0.785
 #                   9        335         24      0.955       0.88      0.941      0.763
-#Speed: 2.0ms pre-process, 12.5ms inference, 1.4ms NMS per image at shape (34, 3, 768, 768)
+#Speed: 0.2ms pre-process, 4.9ms inference, 4.0ms NMS per image at shape (34, 3, 768, 768)
 
 
-# MModel Summary: 252 layers, 10060199 parameters, 0 gradients, 21.424679 GFLOPs
+# Model Summary: 252 layers, 10060199 parameters, 0 gradients, 21.367603 GFLOPs
 # Parameters
 nc: 4  # number of classes
 depth_multiple: 0.33  # model depth multiple

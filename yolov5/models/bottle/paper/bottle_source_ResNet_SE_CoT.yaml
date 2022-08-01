@@ -1,5 +1,5 @@
 # YOLOv5 🚀 by Ultralytics, GPL-3.0 license
-# Model Summary: 286 layers, 9464407 parameters, 0 gradients, 20.967578 GFLOPs
+# Model Summary: 286 layers, 9464407 parameters, 0 gradients, 20.902707 GFLOPs
 # runs/train/bottle_source_ResNet_SE_CoT7/weights/best.pt
 #Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 10/10 [00:12<00:00,  1.24s/it]
 #                 all        335        601      0.808      0.768      0.797      0.503
@@ -13,7 +13,7 @@
 #                   7        335         50      0.709        0.5      0.476      0.195
 #                   8        335         48      0.929      0.958      0.984      0.768
 #                   9        335         24      0.956        0.9      0.925      0.789
-#Speed: 0.2ms pre-process, 5.6ms inference, 8.0ms NMS per image at shape (34, 3, 768, 768)
+# Speed: 0.2ms pre-process, 5.4ms inference, 4.7ms NMS per image at shape (34, 3, 768, 768)
 # Parameters
 nc: 10  # number of classes
 depth_multiple: 0.33  # model depth multiple

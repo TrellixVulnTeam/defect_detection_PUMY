@@ -1,5 +1,5 @@
 # YOLOv5 🚀 by Ultralytics, GPL-3.0 license
-# Model Summary: 247 layers, 6441303 parameters, 0 gradients, 15.422414 GFLOPs
+# Model Summary: 247 layers, 6441303 parameters, 0 gradients, 15.369011 GFLOPs
 # runs/train/bottle_source_ResNet_SE/weights/best.pt
 #Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 10/10 [00:12<00:00,  1.20s/it]
 #                 all        335        601      0.785      0.752      0.773      0.499
@@ -15,7 +15,19 @@
 #                   9        335         24      0.934      0.917      0.938      0.817
 #Speed: 0.2ms pre-process, 3.9ms inference, 1.5ms NMS per image at shape (34, 3, 768, 768)
 # runs/train/bottle_source_ResNet_SE3/weights/best.pt 0.782      0.496
-# runs/train/bottle_source_ResNet_SE4/weights/best.pt 0.785      0.501
+# runs/train/bottle_source_ResNet_SE4/weights/best.pt
+#                 all        335        601      0.817      0.741      0.785      0.501
+#                   0        335        182       0.73      0.665      0.708      0.311
+#                   1        335         71      0.835      0.746      0.832      0.461
+#                   2        335         66      0.794      0.644      0.752      0.261
+#                   3        335         45      0.988          1      0.995      0.875
+#                   4        335         54      0.778      0.712      0.779      0.296
+#                   5        335         18      0.771      0.944      0.915      0.831
+#                   6        335         43      0.826      0.441      0.594      0.257
+#                   7        335         50      0.578       0.38      0.366      0.137
+#                   8        335         48      0.948      0.958      0.983      0.796
+#                   9        335         24      0.926      0.917      0.922      0.785
+#Speed: 0.2ms pre-process, 6.0ms inference, 1.4ms NMS per image at shape (34, 3, 768, 768)
 # runs/train/bottle_source_ResNet_SE5/weights/best.pt 0.759      0.493
 # runs/train/bottle_source_ResNet_SE6/weights/best.pt 0.759       0.49
 

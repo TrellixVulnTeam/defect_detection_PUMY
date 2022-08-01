@@ -5,8 +5,8 @@
 #          black-spot        186         40      0.763       0.85      0.856      0.387
 #         edge-damage        186         24      0.586      0.667      0.589      0.208
 #          bubble-gum        186         31      0.894      0.814      0.878      0.564
-#Speed: 2.0ms pre-process, 11.8ms inference, 21.5ms NMS per image at shape (34, 3, 768, 768)
-# Model Summary: 209 layers, 6922609 parameters, 0 gradients, 15.355129 GFLOPs
+#Speed: 0.3ms pre-process, 3.6ms inference, 6.8ms NMS per image at shape (34, 3, 768, 768)
+# Model Summary: 209 layers, 6922609 parameters, 0 gradients, 15.310438 GFLOPs
 # Parameters
 nc: 5  # number of classes 0.773      0.343
 depth_multiple: 0.33  # model depth multiple

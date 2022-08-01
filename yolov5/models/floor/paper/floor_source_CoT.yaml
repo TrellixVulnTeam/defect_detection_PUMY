@@ -6,7 +6,14 @@
 #         edge-damage        186         24      0.653      0.706      0.616      0.212
 #          bubble-gum        186         31        0.9      0.871      0.886      0.534
 #Speed: 2.0ms pre-process, 14.2ms inference, 18.5ms NMS per image at shape (34, 3, 768, 768)
-# Model Summary: 252 layers, 10044017 parameters, 0 gradients, 21.372767 GFLOPs
+# runs/train/floor_source_CoT9/weights/best.pt
+#                 all        186        531      0.716      0.836      0.795      0.364
+#    white-impurities        186        436      0.658      0.831      0.823      0.333
+#          black-spot        186         40      0.681      0.875      0.808      0.357
+#         edge-damage        186         24       0.69      0.833      0.703      0.239
+#          bubble-gum        186         31      0.833      0.806      0.845      0.525
+#Speed: 0.3ms pre-process, 4.9ms inference, 2.4ms NMS per image at shape (34, 3, 768, 768)
+# Model Summary: 252 layers, 10044017 parameters, 0 gradients, 21.315994 GFLOPs
 # Parameters
 nc: 4  # number of classes
 depth_multiple: 0.33  # model depth multiple

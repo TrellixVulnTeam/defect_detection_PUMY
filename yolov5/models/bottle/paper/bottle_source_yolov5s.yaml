@@ -1,6 +1,6 @@
 # YOLOv5 🚀 by Ultralytics, GPL-3.0 license
-# Model Summary: 213 layers, 7037095 parameters, 0 gradients, 15.879514 GFLOPs
-# models/bottle/paper/bottle_yolov5s/weights/best.pt
+# Model Summary: 213 layers, 7037095 parameters, 0 gradients, 15.833907 GFLOPs
+# models/bottle/paper/bottle_source_yolov5s/weights/best.pt
 #Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 10/10 [00:11<00:00,  1.12s/it]
 #                 all        335        601      0.772      0.741      0.752      0.471
 #                   0        335        182      0.689      0.633      0.623       0.24
