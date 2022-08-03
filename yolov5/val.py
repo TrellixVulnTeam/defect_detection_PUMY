@@ -299,9 +299,13 @@ def run(data,
 
 def parse_opt():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data', type=str, default=ROOT / 'data/bottle.yaml', help='dataset.yaml path')
+    parser.add_argument('--data', type=str, default=ROOT / 'data/floor.yaml', help='dataset.yaml path')
     parser.add_argument('--weights', nargs='+', type=str,
+<<<<<<< HEAD
                         default=ROOT / 'runs/train/bottle_yolov5s/weights/best.pt', help='model.pt path(s)')
+=======
+                        default=ROOT / 'yolov5s.pt', help='model.pt path(s)')
+>>>>>>> 6ade1b1e23c1257e703a30075781a023c3144c77
     parser.add_argument('--batch-size', type=int, default=34, help='batch size')
     parser.add_argument('--imgsz', '--img', '--img-size', type=int, default=768, help='inference size (pixels)')
     parser.add_argument('--conf-thres', type=float, default=0.001, help='confidence threshold')
