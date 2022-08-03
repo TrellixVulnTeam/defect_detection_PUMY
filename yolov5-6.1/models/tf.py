@@ -30,7 +30,7 @@ from tensorflow import keras
 from models.common import (C3, SPP, SPPF, Bottleneck, BottleneckCSP, C3x, Concat, Conv, CrossConv, DWConv,
                            DWConvTranspose2d, Focus, autopad)
 from models.experimental import MixConv2d, attempt_load
-from models.yolo import Detect
+from models.yolo import Detect,IDetect
 from utils.activations import SiLU
 from utils.general import LOGGER, make_divisible, print_args
 
@@ -377,7 +377,7 @@ def parse_model(d, ch, model, imgsz):  # model_dict, input_channels(3)
             args = [ch[f]]
         elif m is Concat:
             c2 = sum(ch[-1 if x == -1 else x + 1] for x in f)
-        elif m is Detect:
+        elif m is [Detect, IDetect]:
             args.append([ch[x + 1] for x in f])
             if isinstance(args[1], int):  # number of anchors
                 args[1] = [list(range(args[1] * 2))] * len(f)

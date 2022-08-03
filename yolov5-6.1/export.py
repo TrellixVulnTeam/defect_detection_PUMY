@@ -65,7 +65,7 @@ if platform.system() != 'Windows':
     ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
 from models.experimental import attempt_load
-from models.yolo import Detect
+from models.yolo import Detect, IDetect
 from utils.dataloaders import LoadImages
 from utils.general import (LOGGER, check_dataset, check_img_size, check_requirements, check_version, colorstr,
                            file_size, print_args, url2file)
@@ -502,7 +502,7 @@ def run(
     # Update model
     model.train() if train else model.eval()  # training mode = no Detect() layer grid construction
     for k, m in model.named_modules():
-        if isinstance(m, Detect):
+        if isinstance(m, (Detect, IDetect)):
             m.inplace = inplace
             m.onnx_dynamic = dynamic
             m.export = True
