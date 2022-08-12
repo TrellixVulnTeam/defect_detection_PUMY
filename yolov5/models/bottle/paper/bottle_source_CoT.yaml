@@ -1,4 +1,5 @@
 # YOLOv5 🚀 by Ultralytics, GPL-3.0 license
+# Model Summary: 252 layers, 10060199 parameters, 0 gradients, 21.367603 GFLOPs
 # runs/train/bottle_source_CoT4/weights/best.pt
 #                 all        335        601       0.81      0.728      0.766      0.487
 #                   0        335        182      0.736      0.642       0.64       0.24
@@ -11,10 +12,24 @@
 #                   7        335         50      0.524       0.32      0.298      0.118
 #                   8        335         48      0.921      0.968       0.97      0.785
 #                   9        335         24      0.955       0.88      0.941      0.763
-#Speed: 0.2ms pre-process, 4.9ms inference, 4.0ms NMS per image at shape (34, 3, 768, 768)
+#Speed: 2.0ms pre-process, 12.5ms inference, 1.4ms NMS per image at shape (34, 3, 768, 768)
+#runs/train/bottle_source_CoT8/weights/best.pt
+#                 all        335        601      0.802      0.742      0.783      0.502
+#                   0        335        182      0.755       0.67      0.711      0.333
+#                   1        335         71      0.864      0.714      0.777      0.436
+#                   2        335         66      0.643      0.576      0.619      0.214
+#                   3        335         45      0.986          1      0.995      0.861
+#                   4        335         54      0.832      0.778      0.825       0.27
+#                   5        335         18      0.817      0.746      0.881      0.793
+#                   6        335         43      0.699      0.581      0.663      0.323
+#                   7        335         50      0.544       0.48      0.462      0.214
+#                   8        335         48      0.931      0.958      0.981      0.791
+#                   9        335         24      0.943      0.917      0.912      0.789
+#Speed: 2.0ms pre-process, 14.1ms inference, 1.4ms NMS per image at shape (34, 3, 768, 768)
 
 
-# Model Summary: 252 layers, 10060199 parameters, 0 gradients, 21.367603 GFLOPs
+
+
 # Parameters
 nc: 4  # number of classes
 depth_multiple: 0.33  # model depth multiple

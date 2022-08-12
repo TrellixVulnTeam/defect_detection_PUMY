@@ -1,4 +1,4 @@
-# YOLOv5 🚀 by Ultralytics, GPL-3.0 license
+z# YOLOv5 🚀 by Ultralytics, GPL-3.0 license
 # Model Summary: 241 layers, 6432839 parameters, 0 gradients, 15.362048 GFLOPs
 # runs/train/bottle_source_ResNet/weights/best.pt
 # Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|█████████████████████████████████████████████████████| 10/10 [00:10<00:00,  1.04s/it]
