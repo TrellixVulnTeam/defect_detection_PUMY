@@ -497,11 +497,11 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', type=str, default=ROOT / 'yolov5s.pt', help='initial weights path')
-    parser.add_argument('--cfg', type=str, default=ROOT / 'configs/our/yolo_convnext_block.yaml', help='model.yaml path')
+    parser.add_argument('--cfg', type=str, default=ROOT / 'configs/our/yolo_convnext_s_backbone.yaml', help='model.yaml path')
     parser.add_argument('--data', type=str, default=ROOT / 'data/floor.yaml', help='dataset.yaml path')
     parser.add_argument('--hyp', type=str, default=ROOT / 'data/hyps/hyp.scratch-high.yaml', help='hyperparameters path')
     parser.add_argument('--epochs', type=int, default=300)
-    parser.add_argument('--name', default='yolo_convnext_block', help='save to project/name')
+    parser.add_argument('--name', default='yolo_convnext_s_backbone', help='save to project/name')
     parser.add_argument('--loss', type=str, default='origin', help='')
     parser.add_argument('--auxotaloss', action='store_true', help='swin not use half to train/Val')
     parser.add_argument('--otaloss', action='store_true', help='swin not use half to train/Val')
