@@ -7,7 +7,7 @@ from torch.nn.parameter import Parameter
 # https://arxiv.org/pdf/2102.00240.pdf
 class ShuffleAttention(nn.Module):
 
-    def __init__(self, channel=512,reduction=16,G=8):
+    def __init__(self, c1, channel=512,reduction=16,G=8):
         super().__init__()
         self.G=G
         self.channel=channel
