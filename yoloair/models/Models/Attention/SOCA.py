@@ -108,7 +108,7 @@ def SqrtmLayer(var, iterN):
 
 class SOCA(nn.Module):
     # second-order Channel attention
-    def __init__(self, channel, reduction=8):
+    def __init__(self,c1, channel, reduction=8):
         super(SOCA, self).__init__()
         self.max_pool = nn.MaxPool2d(kernel_size=2)
 
