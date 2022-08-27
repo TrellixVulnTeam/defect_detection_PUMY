@@ -357,19 +357,21 @@ def parse_model(d, ch):  # model_dict, input_channels(3)
                 args.insert(2, n)  # number of repeats
                 n = 1
         # add module research
-        elif m in [CARAFE, SPPCSPC, RepConv, BoT3, CA, CBAM, Involution, Stem, ResCSPC, ResCSPB, \
+        elif m in [CARAFE, SPPCSPC, RepConv, BoT3, CA, CBAM, NAMAttention, GAMAttention, ACmix, Involution, Stem, ResCSPC, ResCSPB, \
                    ResXCSPB, ResXCSPC, BottleneckCSPB, BottleneckCSPC,
-                   ASPP, BasicRFB, SPPCSPC_group, HorBlock, CNeB, SOCA, CrissCrossAttention, NAMAttention, GAMAttention,
-                   ShuffleAttention]:
+                   ASPP, BasicRFB, SPPCSPC_group, HorBlock, CNeB,C3GC ,C3C2, nn.ConvTranspose2d]:
             c1, c2 = ch[f], args[0]
             if c2 != no:  # if not output
                 c2 = make_divisible(c2 * gw, 8)
 
             args = [c1, c2, *args[1:]]
             if m in [C3RFEM, SPPCSPC, BoT3, ResCSPC, ResCSPB, ResXCSPB, ResXCSPC, BottleneckCSPB, BottleneckCSPC, \
-                HorBlock, CNeB]:
+                HorBlock, CNeB, C3GC, C3C2]:
                 args.insert(2, n)  # number of repeats
                 n = 1
+            elif m is nn.ConvTranspose2d:
+                if len(args) >= 7:
+                    args[6] = make_divisible(args[6] * gw, 8)
         elif m in [CBH, ES_Bottleneck, DWConvblock, RepVGGBlock, LC_Block, Dense, conv_bn_relu_maxpool, \
                    Shuffle_Block, stem, mobilev3_bneck, conv_bn_hswish, MobileNetV3_InvertedResidual, DepthSepConv, \
                    ShuffleNetV2_Model, Conv_maxpool, CoT3, ConvNextBlock]:
@@ -393,6 +395,11 @@ def parse_model(d, ch):  # model_dict, input_channels(3)
                 n = 1
         elif m in [ReOrg, DWT]:
             c2 = ch[f] * 4
+        elif m in [S2Attention, CrissCrossAttention, SOCA, ShuffleAttention, SEAttention, SimAM, SKAttention]:
+            c1, c2 = ch[f], args[0]
+            if c2 != no:  # if not output
+                c2 = make_divisible(c2 * gw, 8)
+            args = [c1, *args[1:]]
         elif m is nn.BatchNorm2d:
             args = [ch[f]]
         elif m is Concat:

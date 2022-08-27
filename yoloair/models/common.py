@@ -49,6 +49,7 @@ from models.Models.Attention.S2Attention import S2Attention
 from models.Models.Attention.SEAttention import SEAttention
 from models.Models.Attention.SKAttention import SKAttention
 from models.Models.Attention.SOCA import SOCA
+from models.Models.muitlbackbone import C3GC
 
 
 
@@ -150,6 +151,18 @@ class BottleneckCSP(nn.Module):
         y2 = self.cv2(x)
         return self.cv4(self.act(self.bn(torch.cat((y1, y2), dim=1))))
 
+class CrossConv(nn.Module):
+    # Cross Convolution Downsample
+    def __init__(self, c1, c2, k=3, s=1, g=1, e=1.0, shortcut=False):
+        # ch_in, ch_out, kernel, stride, groups, expansion, shortcut
+        super().__init__()
+        c_ = int(c2 * e)  # hidden channels
+        self.cv1 = Conv(c1, c_, (1, k), (1, s))
+        self.cv2 = Conv(c_, c2, (k, 1), (s, 1), g=g)
+        self.add = shortcut and c1 == c2
+
+    def forward(self, x):
+        return x + self.cv2(self.cv1(x)) if self.add else self.cv2(self.cv1(x))
 
 class C3(nn.Module):
     # CSP Bottleneck with 3 convolutions
@@ -160,11 +173,31 @@ class C3(nn.Module):
         self.cv2 = Conv(c1, c_, 1, 1)
         self.cv3 = Conv(2 * c_, c2, 1)  # act=FReLU(c2)
         self.m = nn.Sequential(*(Bottleneck(c_, c_, shortcut, g, e=1.0) for _ in range(n)))
-        # self.m = nn.Sequential(*[CrossConv(c_, c_, 3, 1, g, 1.0, shortcut) for _ in range(n)])
 
     def forward(self, x):
         return self.cv3(torch.cat((self.m(self.cv1(x)), self.cv2(x)), dim=1))
 
+class C3C2(nn.Module):
+    # CSP Bottleneck with 3 convolutions
+    def __init__(self, c1, c2, n=1, shortcut=True, g=1, e=0.5):  # ch_in, ch_out, number, shortcut, groups, expansion
+        super().__init__()
+        c_ = int(c2 * e)  # hidden channels
+        self.conv = nn.Conv2d(c1, c_, 1, 1, autopad(1, None), groups=g, bias=False)
+        self.bn = nn.BatchNorm2d(c_)
+        self.act = nn.SiLU()
+        self.cv1 = Conv(2 * c_, c2, 1, act=nn.Mish())
+        self.m = nn.Sequential(*(Bottleneck(c_, c_, shortcut, g, e=1.0) for _ in range(n)))
+
+    def forward(self, x):
+        y = self.conv(x)
+        return self.cv1(torch.cat((self.m(self.act(self.bn(y))), y), dim=1))
+
+class C3x(C3):
+    # C3 module with cross-convolutions
+    def __init__(self, c1, c2, n=1, shortcut=True, g=1, e=0.5):
+        super().__init__(c1, c2, n, shortcut, g, e)
+        c_ = int(c2 * e)
+        self.m = nn.Sequential(*(CrossConv(c_, c_, 3, 1, g, 1.0, shortcut) for _ in range(n)))
 
 class C3TR(C3):
     # C3 module with TransformerBlock()
@@ -1249,3 +1282,11 @@ class CNeB(nn.Module):
         self.m = nn.Sequential(*(ConvNextBlock(c_) for _ in range(n)))
     def forward(self, x):
         return self.cv3(torch.cat((self.m(self.cv1(x)), self.cv2(x)), dim=1))
+
+class SP(nn.Module):
+    def __init__(self, k=3, s=1):
+        super(SP, self).__init__()
+        self.m = nn.MaxPool2d(kernel_size=k, stride=s, padding=k // 2)
+
+    def forward(self, x):
+        return self.m(x)
