@@ -29,7 +29,7 @@ from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import copy_attr, time_sync
 from models.Models.FaceV2 import MultiSEAM, C3RFEM, SEAM
 from models.Models.research import CARAFE, MP, SPPCSPC, RepConv, BoT3, \
-    PatchEmbed, SwinTransformer_Layer, LayerNorm, CA, CBAM, Concat_bifpn, Involution, \
+    PatchEmbed, SwinTransformer_Layer, CA, CBAM, Concat_bifpn, Involution, \
         Stem, ResCSPC, ResCSPB, ResXCSPC, ResXCSPB, BottleneckCSPB, BottleneckCSPC
 from models.Models.Litemodel import CBH, ES_Bottleneck, DWConvblock, ADD, RepVGGBlock, LC_Block, \
     Dense, conv_bn_relu_maxpool, Shuffle_Block, stem, MBConvBlock, mobilev3_bneck
@@ -37,9 +37,9 @@ from models.Models.muitlbackbone import conv_bn_hswish, DropPath, MobileNetV3_In
     ShuffleNetV2_Model, Conv_maxpool, ConvNeXt, RepLKNet_Stem, RepLKNet_stage1, RepLKNet_stage2, \
         RepLKNet_stage3, RepLKNet_stage4, CoT3, RegNet1, RegNet2, RegNet3, Efficient1, Efficient2, Efficient3, \
             MobileNet1,MobileNet2,MobileNet3, C3STR, ConvNextBlock
-from models.Models.yolov4 import SPPCSP, BottleneckCSP2
+from models.Models.yolov4 import SPPCSP, BottleneckCSP2, Mish
 from models.Models.yolov4 import RepVGGBlockv6, SimSPPF, SimConv, RepBlock
-from models.Models.yolor import ReOrg, DWT, DownC, BottleneckCSPF
+from models.Models.yolor import ReOrg, DWT, DownC, BottleneckCSPF, ImplicitA, ImplicitM
 from models.Models.Attention.ShuffleAttention import ShuffleAttention
 from models.Models.Attention.CrissCrossAttention import CrissCrossAttention
 from models.Models.Attention.SimAM import SimAM
@@ -50,8 +50,7 @@ from models.Models.Attention.SEAttention import SEAttention
 from models.Models.Attention.SKAttention import SKAttention
 from models.Models.Attention.SOCA import SOCA
 from models.Models.muitlbackbone import C3GC
-
-
+from models.Models.slimneck import GSConv, VoVGSCSP
 
 
 
@@ -776,10 +775,10 @@ def init_rate_0(tensor):
 
 
 class ACmix(nn.Module):
-    def __init__(self, in_planes, out_planes, kernel_att=7, head=4, kernel_conv=3, stride=1, dilation=1):
+    def __init__(self, in_planes, kernel_att=7, head=4, kernel_conv=3, stride=1, dilation=1):
         super(ACmix, self).__init__()
         self.in_planes = in_planes
-        self.out_planes = out_planes
+        self.out_planes = in_planes
         self.head = head
         self.kernel_att = kernel_att
         self.kernel_conv = kernel_conv
@@ -789,9 +788,9 @@ class ACmix(nn.Module):
         self.rate2 = torch.nn.Parameter(torch.Tensor(1))
         self.head_dim = self.out_planes // self.head
 
-        self.conv1 = nn.Conv2d(in_planes, out_planes, kernel_size=1)
-        self.conv2 = nn.Conv2d(in_planes, out_planes, kernel_size=1)
-        self.conv3 = nn.Conv2d(in_planes, out_planes, kernel_size=1)
+        self.conv1 = nn.Conv2d(in_planes, self.out_planes, kernel_size=1)
+        self.conv2 = nn.Conv2d(in_planes, self.out_planes, kernel_size=1)
+        self.conv3 = nn.Conv2d(in_planes, self.out_planes, kernel_size=1)
         self.conv_p = nn.Conv2d(2, self.head_dim, kernel_size=1)
 
         self.padding_att = (self.dilation * (self.kernel_att - 1) + 1) // 2
@@ -800,7 +799,7 @@ class ACmix(nn.Module):
         self.softmax = torch.nn.Softmax(dim=1)
 
         self.fc = nn.Conv2d(3*self.head, self.kernel_conv * self.kernel_conv, kernel_size=1, bias=False)
-        self.dep_conv = nn.Conv2d(self.kernel_conv * self.kernel_conv * self.head_dim, out_planes, kernel_size=self.kernel_conv, bias=True, groups=self.head_dim, padding=1, stride=stride)
+        self.dep_conv = nn.Conv2d(self.kernel_conv * self.kernel_conv * self.head_dim, self.out_planes, kernel_size=self.kernel_conv, bias=True, groups=self.head_dim, padding=1, stride=stride)
 
         self.reset_parameters()
     
@@ -1039,8 +1038,28 @@ class SPPCSPC(nn.Module):
         y2 = self.cv2(x)
         return self.cv7(torch.cat((y1, y2), dim=1))
 
+class SPPFCSPC(nn.Module):
+    # CSP https://github.com/WongKinYiu/CrossStagePartialNetworks
+    def __init__(self, c1, c2, n=1, shortcut=False, g=1, e=0.5, k=5):
+        super(SPPFCSPC, self).__init__()
+        c_ = int(2 * c2 * e)  # hidden channels
+        self.cv1 = Conv(c1, c_, 1, 1)
+        self.cv2 = Conv(c1, c_, 1, 1)
+        self.cv3 = Conv(c_, c_, 3, 1)
+        self.cv4 = Conv(c_, c_, 1, 1)
+        self.m = nn.MaxPool2d(kernel_size=k, stride=1, padding=k // 2)
+        self.cv5 = Conv(4 * c_, c_, 1, 1)
+        self.cv6 = Conv(c_, c_, 3, 1)
+        self.cv7 = Conv(2 * c_, c2, 1, 1)
 
-#分组SPPCSPC 分组后参数量和计算量与原本差距不大，不知道效果怎么样
+    def forward(self, x):
+        x1 = self.cv4(self.cv3(self.cv1(x)))
+        x2 = self.m(x1)
+        x3 = self.m(x2)
+        y1 = self.cv6(self.cv5(torch.cat((x1,x2,x3, self.m(x3)),1)))
+        y2 = self.cv2(x)
+        return self.cv7(torch.cat((y1, y2), dim=1))
+
 class SPPCSPC_group(nn.Module):
     def __init__(self, c1, c2, n=1, shortcut=False, g=1, e=0.5, k=(5, 9, 13)):
         super(SPPCSPC_group, self).__init__()
@@ -1290,3 +1309,19 @@ class SP(nn.Module):
 
     def forward(self, x):
         return self.m(x)
+
+class MPC(nn.Module):
+    def __init__(self, c1, k=2):
+        super().__init__()
+        c2 = c1 // 2
+        self.mp = nn.MaxPool2d((k, k), k)
+        self.cv1 = Conv(c1, c2, k=1)
+        self.cv2 = nn.Sequential(
+            Conv(c1, c2, k=1),
+            Conv(c2, c2, k=3, p=1, s=2)
+        )
+    def forward(self, x):
+        x1 = self.cv1(self.mp(x))
+        x2 = self.cv2(x)
+        out = torch.cat([x1, x2], dim=1)
+        return out

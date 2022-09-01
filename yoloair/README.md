@@ -1,19 +1,36 @@
-## YOLOAir: Make the improvement of the YOLO model faster, more convenient
+## YOLO Air: Make the improvement of the YOLO model faster, more convenient
 
-简体中文 | [English](./README_EN.md)
+<div align="center">
+<p>YOLOAir 算法库🚀 
+是一个基于 PyTorch 的一系列 YOLO 检测算法组合工具箱。</p>
+<p>统一模型代码框架、统一应用、统一改进、易于模块组合、构建更强大的网络模型。</p>
+  <p>
+    <a align="center" href="https://github.com/iscyy/yoloair" target="_blank">
+      <img width="850" src="docs/image/logo00.png"></a>
+    <br><br>
+  </p>
 
-YOLOAir算法库 是一个基于 PyTorch 的一系列 YOLO 检测算法组合工具箱。用来**组合不同模块构建不同网络**。  
+  简体中文 | [English](./README_EN.md)
 
-<div align='center'>
-    <img src='docs/image/logo1.png' width='500px'>
+  ![](https://img.shields.io/badge/News-2022-red)  ![](https://img.shields.io/badge/Update-YOLOAir-orange) ![](https://visitor-badge.glitch.me/badge?page_id=iscyy.yoloair)  
+
+  #### **支持**
+
+![](https://img.shields.io/badge/Support-YOLOv5-red) ![](https://img.shields.io/badge/Support-YOLOv7-brightgreen) ![](https://img.shields.io/badge/Support-YOLOX-yellow) ![](https://img.shields.io/badge/Support-YOLOv4-green) ![](https://img.shields.io/badge/Support-Scaled_YOLOv4-ff96b4)
+![](https://img.shields.io/badge/Support-YOLOv3-yellowgreen) ![](https://img.shields.io/badge/Support-YOLOR-lightgrey) ![](https://img.shields.io/badge/Support-Transformer-9cf) ![](https://img.shields.io/badge/Support-Attention-green)
+
+[特性🚀](#主要特性) • [使用🍉](#使用) • [文档📒](https://github.com/iscyy/yoloair) • [报告问题🌟](https://github.com/iscyy/yoloair/issues/new) • [更新💪](#更新-)
+
 </div>
 
-内置YOLOv5、YOLOv7、YOLOX、YOLOR、Transformer、Scaled_YOLOv4、YOLOv3、YOLOv4、YOLO-Facev2、TPH-YOLOv5、YOLOv5Lite、PicoDet等模型网络结构(持续更新中🚀)...
+**模型多样化**：基于不同网络模块构建不同检测网络模型。
 
 **模块组件化**：帮助用户自定义快速组合Backbone、Neck、Head，使得网络模型多样化，助力科研改进检测算法、模型改进，网络排列组合🏆。构建强大的网络模型。
 
 **统一模型代码框架、统一应用方式、统一调参、统一改进、易于模块组合、构建更强大的网络模型**。
-  
+
+
+内置YOLOv5、YOLOv7、YOLOX、YOLOR、Transformer、Scaled_YOLOv4、YOLOv3、YOLOv4、YOLO-Facev2、TPH-YOLOv5、YOLOv5Lite、SPD-YOLO、PicoDet等模型网络结构(持续更新中🚀)...
 
 ```
 
@@ -25,20 +42,11 @@ YOLOAir算法库 是一个基于 PyTorch 的一系列 YOLO 检测算法组合�
    ╚═╝    ╚═════╝ ╚══════╝ ╚═════╝     ╚═╝  ╚═╝    ╚═╝    ╚═╝  ╚═╝
 ```
 
-
 基于 YOLOv5 代码框架，并同步适配 **稳定的YOLOv5_v6.1更新**, 同步v6.1部署生态。使用这个项目之前, 您可以先了解YOLOv5库。  
 
-[特性🚀](#Mainfeatures) • [使用🍉](#Usage) • [文档📒](https://github.com/iscyy/yoloair) • [报告问题🌟](https://github.com/iscyy/yoloair/issues/new)
+项目地址🌟: https://github.com/iscyy/yoloair
 
-![](https://img.shields.io/badge/News-2022-red)  ![](https://img.shields.io/badge/Update-YOLOAir-orange) ![](https://visitor-badge.glitch.me/badge?page_id=iscyy.yoloair)  
-
-#### 支持
-![](https://img.shields.io/badge/Support-YOLOv5-red) ![](https://img.shields.io/badge/Support-YOLOv7-brightgreen) ![](https://img.shields.io/badge/Support-YOLOX-yellow) ![](https://img.shields.io/badge/Support-YOLOv4-green) ![](https://img.shields.io/badge/Support-Scaled_YOLOv4-ff96b4)
-![](https://img.shields.io/badge/Support-YOLOv3-yellowgreen) ![](https://img.shields.io/badge/Support-YOLOR-lightgrey) ![](https://img.shields.io/badge/Support-Transformer-9cf) ![](https://img.shields.io/badge/Support-Attention-green)
-
-项目地址: https://github.com/iscyy/yoloair
-
-部分改进说明演示: [芒果汁没有芒果](https://blog.csdn.net/qq_38668236?type=blog)
+部分改进说明教程🌟: [https://github.com/iscyy/yoloair/wiki/Improved-tutorial-presentation](https://github.com/iscyy/yoloair/wiki/Improved-tutorial-presentation)
 
 ______________________________________________________________________
 
@@ -47,22 +55,21 @@ ______________________________________________________________________
 🚀支持更多的YOLO系列算法模型改进(持续更新...)
 
 YOLOAir 算法库汇总了多种主流YOLO系列检测模型，一套代码集成多种模型: 
-- 内置集成 YOLOv5 模型网络结构、YOLOv7 模型网络结构、 YOLOR 模型网络结构、YOLOX 模型网络结构、Scaled_YOLOv4 模型网络结构、YOLOv4 模型网络结构、YOLOv3 模型网络结构、YOLO-FaceV2模型网络结构、TPH-YOLOv5模型网络结构、YOLOv5-Lite模型网络结构、PicoDet模型网络结构等持续更新中...
+- 内置集成 YOLOv5 模型网络结构、YOLOv7 模型网络结构、 YOLOR 模型网络结构、YOLOX 模型网络结构、Scaled_YOLOv4 模型网络结构、YOLOv4 模型网络结构、YOLOv3 模型网络结构、YOLO-FaceV2模型网络结构、TPH-YOLOv5模型网络结构、SPD-YOLO模型网络结构、YOLOv5-Lite模型网络结构、PicoDet模型网络结构等持续更新中...
 
 |||
 :-------------------------:|:-------------------------:
-<img src='docs/image/test.jpg' width='500px'>  |  <img src='docs/image/zebra.jpg' width='500px'>
+<img src='docs/image/test.jpg' width='500px'   alt='ingishvcn'>  |  <img src='docs/image/zebra.jpg' width='500px'   alt='ingishvcn'>
 
 - 以上多种检测算法使用统一模型代码框架，**集成在 YOLOAir 库中，统一任务形式、统一应用方式**。🌟便于科研者用于论文算法模型改进，模型对比，实现网络组合多样化。🌟工程算法部署落地更便捷，包含轻量化模型和精度更高的模型，根据场景合理选择，在精度和速度俩个方面取得平衡。同时该库支持解耦不同的结构和模块组件，让模块组件化，通过组合不同的模块组件，用户可以根据不同数据集或不同业务场景自行定制化构建不同检测模型。
 
-🔥🔥🔥 重磅！！！作为注意力机制的开源项目补充，强烈推荐一个6300+🌟Star的注意力机制算法代码库👉[External-Attention-pytorch](https://github.com/xmu-xiaoma666/External-Attention-pytorch)，里面汇总整理很全面，包含各种Attention、Self-Attention等代码，代码简洁易读，一行代码实现Attention机制。欢迎大家来玩呀！
+🔥🔥🔥 重磅！！！作为开源项目补充，推荐一个注意力机制算法代码库[External-Attention](https://github.com/xmu-xiaoma666/External-Attention-pytorch)，里面汇总整理很全面，包含各种Attention等代码，代码简洁易读，一行代码实现Attention机制。
 
-🚀支持加载YOLOv3、YOLOv4、YOLOv5、YOLOv7、YOLOR等网络的官方预训练权重进行迁移学习
+🚀支持加载YOLOv3、YOLOv4、YOLOv5、YOLOv7、YOLOR、Scaled_YOLO等网络的官方预训练权重进行迁移学习
 
 🚀支持更多Backbone
 
--  CSPDarkNet系列  
--  RepBlock系列  
+-  CSPDarkNet系列   
 -  HorNet系列  
 -  ResNet系列  
 -  RegNet 系列  
@@ -72,9 +79,19 @@ YOLOAir 算法库汇总了多种主流YOLO系列检测模型，一套代码集�
 -  EfficientNet系列  
 -  ConvNext系列  
 -  RepLKNet系列  
+-  重参数化系列  
+-  RepVGG系列  
+-  ACNet系列
+-  RepConv系列  
+-  Mobileone系列  
 -  自注意力Transformer系列  
--  CNN和Transformer结合系列  
-持续更新中🎈
+-  MobileViT系列
+-  BoTNet-Transfomrer  
+-  CoTNet-Transfomrer  
+-  Swin-Transfomrer  
+-  以及其他trans系列
+持续更新中🎈🚀🚀🚀
+注: (YOLOAir(Beta版本内测)🔥 已经完成更新 20+ 种Transformer系列主干网络、多种MLP网络 以及 绝大部分重参数化结构模型网络)
 
 🚀支持更多Neck
 - FPN  
@@ -83,11 +100,12 @@ YOLOAir 算法库汇总了多种主流YOLO系列检测模型，一套代码集�
  持续更新中🎈
 
 🚀支持更多检测头Head  
--  YOLOv4、YOLOv5 Head检测头、
--  YOLOR 隐式学习Head检测头、
--  YOLOX的解耦合检测头Decoupled Head、DetectX Head
--  自适应空间特征融合 检测头ASFF Head、
--  YOLOv7检测头IAuxDetect Head, IDetect Head等；
+-  YOLOv4、YOLOv5 Head检测头;
+-  YOLOR 隐式学习Head检测头;
+-  YOLOX的解耦合检测头Decoupled Head、DetectX Head;
+-  自适应空间特征融合 检测头ASFF Head;
+-  更高效简洁的 Head 解耦头;
+-  YOLOv7检测头IAuxDetect Head, IDetect Head等;
 -  其他不同检测头
 
 🚀支持更多即插即用的注意力机制Attention
@@ -109,6 +127,7 @@ YOLOAir 算法库汇总了多种主流YOLO系列检测模型，一套代码集�
 - SOCAttention  
 - SimAM Attention 
 持续更新中🎈  
+注: (YOLOAir(Beta版本内测)🔥 已经完成更新 30+ 种Attention注意力机制)
 
 🚀更多空间金字塔池化结构  
 - SPP
@@ -116,9 +135,12 @@ YOLOAir 算法库汇总了多种主流YOLO系列检测模型，一套代码集�
 - ASPP
 - RFB
 - SPPCSPC  
+- SPPFCSPC  
+- SimSPPF
 持续更新中🎈    
 
 🚀支持更多Loss   
+- ComputeLoss  
 - ComputeLoss(v5)  
 - ComputeLoss(X)  
 - ComputeLossAuxOTA(v7)  
@@ -126,9 +148,9 @@ YOLOAir 算法库汇总了多种主流YOLO系列检测模型，一套代码集�
 - ComputeNWDLoss  
 - 其他Loss
 
-🚀支持Anchor-base和Anchor-Free  
+🚀支持 Anchor-base 和 Anchor-Free  
 
-🚀支持多种正负样本分配  
+🚀支持多种标签分配策略  
 
 🚀支持加权框融合(WBF)  
 
@@ -157,39 +179,46 @@ Conv, GhostConv, Bottleneck, GhostBottleneck, SPP, SPPF, DWConv, MixConv2d, Focu
 持续更新中🎈    
 
 🚀支持更多数据增强  
-- Mosaic、Copy paste、Random affine(Rotation, Scale, Translation and Shear)、MixUp、Augment HSV(Hue, Saturation, Value、Random horizontal flip
+- Mosaic、Copy paste、Random affine(Rotation, Scale, Translation and Shear)、MixUp、Augment HSV(Hue, Saturation, Value、Random horizontal flip  
 
-网络模型结构图: [模型🔗](https://github.com/iscyy/yoloair/blob/main/docs/document/model_.md) 
+🚀 YOLO系列网络模型热力图可视化(GardCAM、GardCAM++等)
+支持YOLOv3、、YOLOv3-SPP、YOLOv4、YOLOv5、YOLOR、YOLOv7Scaled_YOLOv4、TPH-YOLO、SPD-YOLO以及自定义网络模型等模型 (YOLOAir(Beta版本内测)🔥已支持)
+
+🚀主流网络模型结构图汇总: [模型🔗](https://github.com/iscyy/yoloair/blob/main/docs/document/model_.md) 
 
 以上组件模块使用统一模型代码框架、统一任务形式、统一应用方式，**模块组件化**🚀 可以帮助用户自定义快速组合Backbone、Neck、Head，使得网络模型多样化，助力科研改进检测算法，构建更强大的网络模型。
 
 ### 内置网络模型配置支持✨
 
-🚀包括基于 YOLOv5、YOLOv7、YOLOX、YOLOR、YOLOv3、YOLOv4、Scaled_YOLOv4、Transformer、YOLO-FaceV2、PicoDet、YOLOv5-Lite、TPH-YOLOv5 等**其他多种改进网络结构等算法模型**的模型配置文件
+🚀包括基于 YOLOv5、YOLOv7、YOLOX、YOLOR、YOLOv3、YOLOv4、Scaled_YOLOv4、Transformer、YOLO-FaceV2、PicoDet、YOLOv5-Lite、TPH-YOLOv5、SPD-YOLO等**其他多种改进网络结构等算法模型**的模型配置文件
 ______________________________________________________________________
 
 ### 更新 🌟
 
-支持 SPD-Conv  
-支持 HorNet 网络  
-支持 ConvNext 模块  
-支持 CNeBlock  
-支持 C3HBLock  
-支持 C3GCBLock  
-支持 C3C2BLock
+🔥添加YOLOv3、YOLOv4、YOLOv5、YOLOv7、Scaled-YOLOv4网络的不同预训练权重
 持续更新中🎈 
-
 ______________________________________________________________________
 
-### 技术交流 <img title="" src="https://user-images.githubusercontent.com/48054808/157800467-2a9946ad-30d1-49a9-b9db-ba33413d9c90.png" alt="" width="20">
+### 预训练权重🚀
 
-|FightingCV公众号|YOLOAir目标检测交流群( 答案:  yoloair )|
-:-------------------------:|:-------------------------:
-<img src='https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b6f5057da9a8410fa22dcc7566548193~tplv-k3u1fbpfcp-watermark.image?' width='200px'>  |  <img src='https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1882e8cf3f804918a043d70de1b70e31~tplv-k3u1fbpfcp-watermark.image' width='200px'> 
+- YOLOv5
+https://github.com/ultralytics/yolov5/releases/tag/v6.1
 
-- FightingCV每天分享前沿论文动态(公众号回复加群, 添加小助手, 加入微信交流群)  
+- YOLOv4
+https://github.com/iscyy/yoloair/releases/download/v1.0
 
-- YOLOAir目标检测交流群
+- YOLOv3
+https://github.com/iscyy/yoloair/releases/download/v1.0
+
+- YOLOR
+https://github.com/iscyy/yoloair/releases/download/v1.0
+
+- Scaled_YOLO
+https://github.com/iscyy/yoloair/releases/download/v1.0
+
+- YOLOv7
+https://github.com/iscyy/yoloair/releases/download/v1.0
+
 ______________________________________________________________________
 
 ## 使用🍉
@@ -231,6 +260,17 @@ $ python detect.py --source 0  # 网络摄像头
 ```bash
 $ python wbf.py
 ```
+______________________________________________________________________
+
+### 技术交流 <img title="" src="https://user-images.githubusercontent.com/48054808/157800467-2a9946ad-30d1-49a9-b9db-ba33413d9c90.png" alt="" width="20">
+
+|FightingCV公众号|YOLOAir目标检测交流群( 答案:  yoloair )|
+:-------------------------:|:-------------------------:
+<img src='https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b6f5057da9a8410fa22dcc7566548193~tplv-k3u1fbpfcp-watermark.image?' width='200px'>  |  <img src='https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1882e8cf3f804918a043d70de1b70e31~tplv-k3u1fbpfcp-watermark.image' width='200px'> 
+
+- FightingCV每天分享前沿论文动态(公众号回复加群, 添加小助手, 加入微信交流群)  
+
+- YOLOAir目标检测交流群
 ______________________________________________________________________
 
 ### Performance
@@ -303,30 +343,9 @@ ______________________________________________________________________
 
 ### YOLO网络模型具体改进方式教程及原理参考
 
-- 11.[改进YOLOv5系列：11.ConvNeXt结合YOLO | CVPR2022 多种搭配，即插即用 | Backbone主干CNN模型](https://blog.csdn.net/qq_38668236/article/details/126454548)
+[https://github.com/iscyy/yoloair/wiki/Improved-tutorial-presentation🌟🌟🌟🌟🌟](https://github.com/iscyy/yoloair/wiki/Improved-tutorial-presentation)
 
-- 10.[改进YOLOv5系列：10.最新ECCV2022 | HorNet即插即用、Backbone主干、递归门控卷积的高效高阶空间交互](https://blog.csdn.net/qq_38668236/article/details/126410711)
-
-- 9.[改进YOLOv5系列：9.BoTNet Transformer结构的修改](https://blog.csdn.net/qq_38668236/article/details/126333061)
-
-- 8.[改进YOLOv5系列：8.增加ACmix结构的修改,自注意力和卷积集成](https://blog.csdn.net/qq_38668236/article/details/126302599)
-
-- 7.[改进YOLOv5系列：7.修改DIoU-NMS,SIoU-NMS,EIoU-NMS,CIoU-NMS,GIoU-NMS](https://blog.csdn.net/qq_38668236/article/details/126243834)
-
-- 6.[改进YOLOv5系列：6.修改Soft-NMS,Soft-CIoUNMS,Soft-SIoUNMS](https://blog.csdn.net/qq_38668236/article/details/126245080)
-
-- 5.[改进YOLOv5系列：5.CotNet Transformer结构的修改](https://blog.csdn.net/qq_38668236/article/details/126226726)
-
-- 4.[改进YOLOv5系列：4.YOLOv5_最新MobileOne结构换Backbone修改](https://blog.csdn.net/qq_38668236/article/details/126157859)
-
-- 3.[改进YOLOv5系列：3.Swin Transformer结构的修改](https://blog.csdn.net/qq_38668236/article/details/126122888?spm=1001.2014.3001.5502)
-
-- 2.[改进YOLOv5系列：2.PicoDet结构的修改](https://blog.csdn.net/qq_38668236/article/details/126087343?spm=1001.2014.3001.5502)
-
-- 1.[改进YOLOv5系列：1.多种注意力机制结合YOLO应用](https://blog.csdn.net/qq_38668236/article/details/126086716)
-
-
-更多模块详细解释教程持续更新中...
+更多模块改进说明教程持续更新中...
 
 ______________________________________________________________________
 
@@ -347,7 +366,8 @@ ______________________________________________________________________
 - [带有冻结层的迁移学习](https://github.com/ultralytics/yolov5/issues/1314) ⭐ 新
 - [架构概要](https://github.com/ultralytics/yolov5/issues/6998) ⭐ 新
 
-</details>
+______________________________________________________________________
+
 
 ### 未来增强✨
 后续会持续建设和完善 YOLOAir 生态  

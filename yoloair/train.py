@@ -52,7 +52,8 @@ from utils.general import (LOGGER, check_dataset, check_file, check_git_status, 
                            print_args, print_mutation, strip_optimizer)
 from utils.loggers import Loggers
 from utils.loggers.wandb.wandb_utils import check_wandb_resume
-from utils.loss import ComputeLoss, ComputeNWDLoss, ComputeLossOTA, ComputeLossAuxOTA, ComputeLossBinOTA
+from utils.loss import ComputeLoss, ComputeNWDLoss, ComputeLossOTA_v7, ComputeLossAuxOTA, ComputeLossBinOTA
+from utils.loss_ps import ComputeLoss_v4
 from utils.metrics import fitness
 from utils.plots import plot_evolve, plot_labels
 from utils.torch_utils import EarlyStopping, ModelEMA, de_parallel, is_parallel, select_device, torch_distributed_zero_first
@@ -284,11 +285,13 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     if opt.auxotaloss: # https://github.com/iscyy/yoloair
         compute_loss_ota = ComputeLossAuxOTA(model)  # init loss class
         compute_loss = ComputeLoss(model) 
-    elif opt.otaloss:
-        compute_loss_ota = ComputeLossOTA(model)
+    elif opt.otaloss == 'yolov7':
+        compute_loss_ota = ComputeLossOTA_v7(model)
         compute_loss = ComputeLoss(model)
     if loss_category is None:
         compute_loss = ComputeLoss(model)  # init loss class
+    elif opt.loss == 'v4':
+        compute_loss = ComputeLoss_v4(model)
     else:
         compute_loss = loss_category(model)# loss class
     if opt.loss == 'nwd':
@@ -419,6 +422,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                                            save_dir=save_dir,
                                            plots=False,
                                            callbacks=callbacks,
+                                           otaloss=opt.otaloss,
                                            compute_loss=compute_loss)
 
             # Update best mAP
@@ -483,6 +487,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                                             verbose=True,
                                             plots=True,
                                             callbacks=callbacks,
+                                            otaloss=opt.otaloss,
                                             compute_loss=compute_loss)  # val best model with plots
                     if is_coco:
                         callbacks.run('on_fit_epoch_end', list(mloss) + list(results) + lr, epoch, best_fitness, fi)
@@ -497,14 +502,14 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', type=str, default=ROOT / 'yolov5s.pt', help='initial weights path')
-    parser.add_argument('--cfg', type=str, default=ROOT / 'configs/our/yolov5s_deconv.yaml', help='model.yaml path')
-    parser.add_argument('--name', default='yolov5s_deconv', help='save to project/name')
-    parser.add_argument('--data', type=str, default=ROOT / 'data/floor.yaml', help='dataset.yaml path')
+    parser.add_argument('--cfg', type=str, default=ROOT / 'configs/attention/yolov5s_S2Attention.yaml', help='model.yaml path')
+    parser.add_argument('--data', type=str, default=ROOT / 'data/test.yaml', help='dataset.yaml path')
     parser.add_argument('--hyp', type=str, default=ROOT / 'data/hyps/hyp.scratch-high.yaml', help='hyperparameters path')
     parser.add_argument('--epochs', type=int, default=300)
+    parser.add_argument('--name', default='yolov5s_CrissCrossAttention', help='save to project/name')
     parser.add_argument('--loss', type=str, default='origin', help='')
-    parser.add_argument('--auxotaloss', action='store_true', help='swin not use half to train/Val')
-    parser.add_argument('--otaloss', action='store_true', help='swin not use half to train/Val')
+    parser.add_argument('--auxotaloss', action='store_true', help='')
+    parser.add_argument('--otaloss', type=str, default='origin', help='use yolov7 or yolox')
     parser.add_argument('--batch-size', type=int, default=-1, help='total batch size for all GPUs, -1 for autobatch')
     parser.add_argument('--imgsz', '--img', '--img-size', type=int, default=768, help='train, val image size (pixels)')
     parser.add_argument('--rect', action='store_true', help='rectangular training')
@@ -516,7 +521,7 @@ def parse_opt(known=False):
     parser.add_argument('--bucket', type=str, default='', help='gsutil bucket')
     parser.add_argument('--cache', type=str, nargs='?', const='ram', help='--cache images in "ram" (default) or "disk"')
     parser.add_argument('--image-weights', action='store_true', help='use weighted image selection for training')
-    parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
+    parser.add_argument('--device', default='0,1', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
     parser.add_argument('--multi-scale', action='store_true', help='vary img-size +/- 50%%')
     parser.add_argument('--single-cls', action='store_true', help='train multi-class data as single-class')
     parser.add_argument('--optimizer', type=str, choices=['SGD', 'Adam', 'AdamW'], default='SGD', help='optimizer')

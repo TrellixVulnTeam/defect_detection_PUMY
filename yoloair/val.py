@@ -121,6 +121,7 @@ def run(data,
         callbacks=Callbacks(),
         compute_loss=None,
         soft=False,
+        otaloss='origin',
         ):
     # Initialize/load model and set device
     training = model is not None
@@ -191,20 +192,22 @@ def run(data,
         dt[0] += t2 - t1
 
         # Inference
-        outputs = model(im) if training else model(im, augment=augment, val=True)  # inference, loss outputs
-        dt[1] += time_sync() - t2
-
-        if len(outputs) >= 2:
-            out, train_out = outputs[:2]
-            # Compute loss
+        if not otaloss =='yolox':
+            out, train_out = model(im) if training else model(im, augment=augment, val=True)  # inference, loss outputs
+            dt[1] += time_sync() - t2
             if compute_loss:
-                loss += compute_loss([x.float() for x in train_out], targets)[1]  # box, obj, cls
+                if otaloss =='yolov7':
+                    loss += compute_loss([x.float() for x in train_out], targets)[1][:3]
+                else:
+                    loss += compute_loss([x.float() for x in train_out], targets)[1]  # box, obj, cls
         else:
-            out = outputs[0]
-
-        # Loss
-        # if compute_loss:
-        #     loss += compute_loss([x.float() for x in train_out], targets)[1]  # box, obj, cls
+            outputs = model(im) if training else model(im, augment=augment, val=True)  # inference, loss outputs
+            dt[1] += time_sync() - t2
+            if len(outputs) >= 2:
+                out, train_out = outputs[:2]
+                loss += compute_loss([x.float() for x in train_out], targets)[1]  # box, obj, cls
+            else:
+                out = outputs[0]
 
         # NMS
         targets[:, 2:] *= torch.Tensor([width, height, width, height]).to(device)  # to pixels
@@ -336,7 +339,7 @@ def parse_opt():
     parser.add_argument('--imgsz', '--img', '--img-size', type=int, default=640, help='inference size (pixels)')
     parser.add_argument('--conf-thres', type=float, default=0.001, help='confidence threshold')
     parser.add_argument('--iou-thres', type=float, default=0.6, help='NMS IoU threshold')
-    parser.add_argument('--task', default='test', help='train, val, test, speed or study')
+    parser.add_argument('--task', default='val', help='train, val, test, speed or study')
     parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
     parser.add_argument('--workers', type=int, default=8, help='max dataloader workers (per RANK in DDP mode)')
     parser.add_argument('--single-cls', action='store_true', help='treat as single-class dataset')
