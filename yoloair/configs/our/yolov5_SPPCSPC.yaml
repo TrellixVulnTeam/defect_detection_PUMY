@@ -25,6 +25,7 @@ backbone:
    [-1, 1, SPPCSPC, [1024]],  # 9
   ]
 
+
 # YOLOv5 v6.0 head
 head:
   [[-1, 1, Conv, [512, 1, 1]],
