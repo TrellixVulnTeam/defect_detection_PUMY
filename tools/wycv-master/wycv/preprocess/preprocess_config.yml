@@ -1,0 +1,29 @@
+work_dir: "/home/zhang/datasets/floor_cut/source/test"
+output_dir: "/home/zhang/datasets/floor_cut/2"
+output_size:
+    # width: 768
+    # height: 768
+    width: 960
+    height: 960
+    width_bias: 0.1
+    height_bias: 0.1
+workflow:
+    crop:
+          method: cluster_crop
+          #mega_instance_policy: resize
+          resample: 1
+          mega_instance_policy: center
+          # mega_instance_policy: cut
+    filter:
+        key: shape_label
+#        label_filter: ['white-impurities','black-spot','edge-damage','bubble-gum']
+        label_filter: ['edge-damage']
+#        label_filter: ['broken_bottle_cap', 'code_normal', 'cap_breakpoint',
+#                       'bottle_cap_deformation', 'bottle_cap_spinning', 'broken_edge',
+#                       'inkjet_exception']
+
+#    filter:
+#        key: describe
+
+#    filter:
+#        key: plevel

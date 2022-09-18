@@ -1,0 +1,37 @@
+work_dir: "/home/zhang/datasets/floor_cut/480/images/train"  # 包含图片和 labelme 格式标注的 json 文件的文件夹路径
+output_path: "/home/zhang/datasets/floor_cut/480/images/train"  # 结果输出路径
+#work_dir: "/home/zhang/segtest"  # 包含图片和 labelme 格式标注的 json 文件的文件夹路径
+#output_path: "/home/zhang/mmdet_dataset"  # 结果输出路径
+convert_params:
+    target_format: 'yolo'  # 转出格式，目前支持 'coco' 与 'yolo'
+    remain_bg: False  # 仅转出格式为 'coco' 时有效，控制是否在标注文件的 'categories' 中增加 'background' 类，缺省为 True
+    isRLE: False  # 仅转出格式为 'coco' 时有效，控制标注格式是否采用 'RLE' 格式，缺省为 False
+    gen_mask: False  # 仅转出格式为 'coco' 时有效，控制是否生成实例对应 label mask (灰阶图)，缺省为True
+    color_mask: False  # 仅转出格式为 'coco' 时有效，控制是否生成实例对应彩色 mask (便于观察)，缺省为True
+    line_width: 5  # 仅转出格式为 'coco' 时有效，控制绘制 mask 时的线条宽度，缺省为 5
+
+split_params:
+    method: 'random_split'  # 训练集验证集划分方法，目前支持 'random_split' 与 'filter_split'
+    val_ratio: 0.2  # 划分时验证集所占比例，缺省为 0
+    random_seed: 40  # 仅划分方法为 'random_split' 时有效，随机种子，同一数据集多次运行该脚本时使用相同随机种子与相同划分比例可使划分结果一致
+    filter_label: [1, 2, 3, 4]  # 仅划分方法为 'filter_split' 时有效，过滤标签，用于划分时优先确保所设标签服从同一分布
+    level: 3  # 仅划分方法为 'filter_split' 时有效，用于设定从前几个 level 的数据中取验证集，缺省为 3 (该值须大于等于1且小于等于3)
+
+label_dict:  # 完整的标签字典，适用于数据集标签不齐全的情况
+    'white-impurities': 0
+    'black-spot': 1
+    'edge-damage': 2
+    'bubble-gum': 3
+#
+#label_dict:  # 完整的标签字典，适用于数据集标签不齐全的情况
+#    'broken_bottle_cap': 0
+#    'code_normal': 1
+#    'cap_breakpoint': 2
+#    'bottle_cap_deformation': 3
+#    'bottle_cap_spinning': 4
+#    'broken_edge': 5
+#    'inkjet_exception': 6
+
+
+
+

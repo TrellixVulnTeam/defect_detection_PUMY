@@ -1,0 +1,26 @@
+product_name: 'D件'
+optical_surface: '大面'
+model_ver: 'htc_20210419'
+validation_set_ver: 'ceshi_20210419'
+ground_truth_path: '/home/adt/Downloads/labelme'
+model_csv_path: '/home/adt/Downloads/A_test'
+output_path: '/home/adt/Downloads/A_test_report.xlsx'
+score_list: [0.01]
+ratio_array: [0.1, 0.09]
+
+# 两个路径下的==光学面文件夹名字==必须相同~~~
+# ground_truth_path:
+#    |--- 1号面
+#    |--- 2号面
+#      。
+#      。
+#    |--- 16号面
+#        |--- jsons
+#        |--- images
+# model_csv_path:
+#    |--- 1号面
+#    |--- 2号面
+#      。
+#      。
+#    |--- 16号面
+#        |--- csv

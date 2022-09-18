@@ -10,10 +10,12 @@ def parse_args():
     """
         参数配置
     """
+    path = '/home/zhang/datasets/bottle_cut/image/test'
     parser = argparse.ArgumentParser(description='xml2json')
-    parser.add_argument('--raw_label_dir', help='the path of raw label', default='')
-    parser.add_argument('--pic_dir', help='the path of picture', default='')
-    parser.add_argument('--save_dir', help='the path of new label', default='')
+    parser.add_argument('--raw_label_dir', default=path,
+                        help='the path of raw label')
+    parser.add_argument('--pic_dir', default='', help='the path of picture')
+    parser.add_argument('--save_dir', default=path, help='the path of new label')
     args = parser.parse_args()
     return args
 
@@ -53,8 +55,9 @@ def main():
     for i, label_abs in tqdm(enumerate(labels), total=len(labels)):
         _, label = os.path.split(label_abs)
         label_name = label.rstrip('.xml')
-        # img_path = os.path.join(args.pic_dir, label_name + '.jpg')
+        # img_path = os.path.join(args.pic_dir, label_name + '.bmp')
         img_path = label_name + '.jpg'
+        # print(label_name)
         points, width, height = read_xml_gtbox_and_label(label_abs)
         json_str = {}
         json_str['version'] = '4.5.6'
