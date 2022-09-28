@@ -3,29 +3,32 @@ import numpy as np
 import random
 
 
-def random_split(total_img_id_list, ratio, random_seed):
+def random_split(total_img_id_list, val_ratio, test_ratio, random_seed):
     n_total = len(total_img_id_list)
-    offset = math.ceil(n_total * ratio)
-    if n_total == 0 or offset < 1:
-        return total_img_id_list, []
-    elif offset >= n_total:
-        return [], total_img_id_list
+    val_offset = math.ceil(n_total * val_ratio)
+    test_offset = math.ceil(n_total * test_ratio)
+    if n_total == 0 or val_offset < 1 or test_offset < 1:
+        return total_img_id_list, [], []
+    elif val_offset >= n_total or test_offset >= n_total:
+        return [], [], total_img_id_list
     try:
         random.Random(random_seed).shuffle(total_img_id_list)
     except:
         random.shuffle(total_img_id_list)
-    val_sublist = total_img_id_list[:offset]
-    train_sublist = total_img_id_list[offset:]
-    return train_sublist, val_sublist
+    val_sublist = total_img_id_list[:val_offset]
+    test_sublist = total_img_id_list[val_offset:val_offset+test_offset]
+    train_sublist = total_img_id_list[val_offset+test_offset:]
+    return train_sublist, val_sublist, test_sublist
 
 
-def filter_split(total_img_id_list, ratio, data_instance, filter_label, level):
+def filter_split(total_img_id_list, val_ratio, test_ratio, data_instance, filter_label, level):
     n_total = len(total_img_id_list)
-    val_sum = math.ceil(len(total_img_id_list) * ratio)
-    if n_total == 0 or val_sum < 1:
-        return total_img_id_list, []
-    elif val_sum >= n_total:
-        return [], total_img_id_list
+    val_sum = math.ceil(len(total_img_id_list) * val_ratio)
+    test_sum = math.ceil(len(total_img_id_list) * test_ratio)
+    if n_total == 0 or val_sum < 1 or test_sum < 1:
+        return total_img_id_list, [], []
+    elif val_sum >= n_total or val_sum >= n_total:
+        return [], [], total_img_id_list
 
     # statistic cate_id by each img
     img_label_stat_dict = data_instance.get_img_label_stat_dict()
@@ -46,19 +49,24 @@ def filter_split(total_img_id_list, ratio, data_instance, filter_label, level):
     # divide each level with ratio
     img_num_by_level = [len(level_item) for level_item in img_split_by_level]
     split_base_num = np.sum(img_num_by_level[:level])
-    train_img_by_level, val_img_by_level = [], []
-    if split_base_num / val_sum < ratio:
+    train_img_by_level, val_img_by_level, test_img_by_level= [], [], []
+    if split_base_num / val_sum < val_ratio or split_base_num / test_sum < test_ratio:
         raise Exception('The total num of images under level-{} and higher is less than the ratio * total num, '
                         'please give a smaller ratio or bigger level.'.format(level))
     val_remain = val_sum
+    test_remain = test_sum
     for idx in range(level):
         if idx == 0 or idx <= level - 2:
             val_img_num = int(min(val_sum * img_num_by_level[idx] / split_base_num, img_num_by_level[idx]))
+            test_img_num = int(min(test_sum * img_num_by_level[idx] / split_base_num, img_num_by_level[idx]))
         else:
             val_img_num = val_remain
+            test_img_num = test_remain
         random.shuffle(img_split_by_level[idx])
         if img_split_by_level[idx]:
             val_img_by_level.extend(img_split_by_level[idx][:val_img_num])
-            train_img_by_level.extend(img_split_by_level[idx][val_img_num:])
+            test_img_by_level.extend(img_split_by_level[idx][val_img_num:val_img_num + test_img_num])
+            train_img_by_level.extend(img_split_by_level[idx][val_img_num + test_img_num:])
         val_remain -= val_img_num
+        test_remain -= test_img_num
     return train_img_by_level, val_img_by_level

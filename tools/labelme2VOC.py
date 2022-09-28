@@ -19,15 +19,16 @@ import PIL.Image
 import labelme
 
 def main():
-    parser = argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
-    )
-    parser.add_argument('input_dir', default='/home/zhang/datasets/floor_cut/640/Annotations/train', help='input annotated directory')
-    parser.add_argument('output_dir', default='/home/zhang/datasets/floor_cut640_aug/XML/train', help='output dataset directory')
-    parser.add_argument('--labels', default='/home/zhang/datasets/floor_cut640_aug/labels.txt', help='labels file', required=True)
+    # parser = argparse.ArgumentParser(
+    #     formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    # )
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input_dir', type=str, default='/home/zhang/datasets/floor_cut/black_spot/source', help='input annotated directory')
+    parser.add_argument('--output_dir', type=str, default='/home/zhang/datasets/floor_cut/black_spot/source', help='output dataset directory')
+    parser.add_argument('--labels', type=str, default='/home/zhang/datasets/floor_cut640_aug/labels.txt', help='labels file', required=True)
     args = parser.parse_args()
 
-    if osp.exists(args.output_dir):
+    if not osp.exists(args.output_dir):
         print('Output directory already exists:', args.output_dir)
         sys.exit(1)
     os.makedirs(args.output_dir)

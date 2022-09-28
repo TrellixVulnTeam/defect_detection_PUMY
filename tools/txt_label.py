@@ -1,4 +1,4 @@
-root = '/home/zhang/datasets/cizhuan_seg/'
+root = '/home/zhang/datasets/floor_cut/black_spot/aug_black_spot/'
 txt_label = ['train.txt', 'test.txt', 'val.txt', ]
 for txt_ in txt_label:
     f_ = open(root + 'ImageSets/' + txt_, 'r')

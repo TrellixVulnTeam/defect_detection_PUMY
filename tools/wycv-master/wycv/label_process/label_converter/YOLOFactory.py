@@ -16,27 +16,34 @@ class YOLOFactory:
         self.process_num = process_num
         self.train_list = []
         self.val_list = []
+        self.test_list = []
         for item in ['images', 'labels']:
-            for subset in ['train', 'val']:
+            for subset in ['train', 'val', 'test']:
                 os.makedirs(os.path.join(self.output_path, item, subset))
 
-    def set_train_val(self, train_set, val_set):
+    def set_train_val(self, train_set, val_set, test_set):
         self.train_list = train_set
         self.val_list = val_set
+        self.test_list = test_set
 
     def save_result(self):
         # TODO: if all result divided to train_set/val_set, no need to judge witch set each item belonged to save time.
         train_img_path = os.path.join(self.output_path, 'images', 'train')
         val_img_path = os.path.join(self.output_path, 'images', 'val')
+        test_img_path = os.path.join(self.output_path, 'images', 'test')
         train_label_path = os.path.join(self.output_path, 'labels', 'train')
         val_label_path = os.path.join(self.output_path, 'labels', 'val')
+        test_label_path = os.path.join(self.output_path, 'labels', 'test')
         result_writer_pool = multiprocessing.Pool(processes=self.process_num)
-        result_writer_pbar = tqdm(total=len(self.train_list) + len(self.val_list), desc='Dividing train val set ...')
+        result_writer_pbar = tqdm(total=len(self.train_list) + len(self.val_list) + len(self.test_list), desc='Dividing train val set ...')
         for img_name in self.train_list:
             result_writer_pool.apply_async(self.result_writer, args=(img_name, train_img_path, train_label_path,),
                                            callback=lambda _: result_writer_pbar.update())
         for img_name in self.val_list:
             result_writer_pool.apply_async(self.result_writer, args=(img_name, val_img_path, val_label_path,),
+                                           callback=lambda _: result_writer_pbar.update())
+        for img_name in self.test_list:
+            result_writer_pool.apply_async(self.result_writer, args=(img_name, test_img_path, test_label_path,),
                                            callback=lambda _: result_writer_pbar.update())
         result_writer_pool.close()
         result_writer_pool.join()

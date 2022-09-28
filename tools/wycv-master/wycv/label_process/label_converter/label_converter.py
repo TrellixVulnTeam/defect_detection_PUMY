@@ -40,6 +40,7 @@ class LabelConvert:
         self.divide_method = cfg['split_params']['method'] if cfg.get('split_params') else None
         self.split_params = cfg['split_params'] if self.divide_method else None
         self.val_ratio = cfg['split_params']['val_ratio'] if cfg.get('split_params') else 0
+        self.test_ratio = cfg['split_params']['test_ratio'] if cfg.get('split_params') else 0
 
     def update_label_dict(self, label_item):
         label_name = pypinyin.slug(label_item, separator='')
@@ -72,13 +73,14 @@ class LabelConvert:
                     shape_list.extend(json_data['shapes'])
                     img_idx += 1
 
-        label_sorted_list = sorted(list(self.label_dict.keys())) if self.label_sort_flag else list(self.label_dict.keys())
+        label_sorted_list = sorted(list(self.label_dict.keys())) if self.label_sort_flag else list(
+            self.label_dict.keys())
 
         if self.remain_bg_flag:
             label_sorted_list.insert(0, 'background')
             self.label_dict = {label_name: idx for idx, label_name in enumerate(label_sorted_list)}
         else:
-            self.label_dict = {label_name: idx+1 for idx, label_name in enumerate(label_sorted_list)}
+            self.label_dict = {label_name: idx + 1 for idx, label_name in enumerate(label_sorted_list)}
         coco_instance = COCOFactory(list(self.img_id_dict.values()), self.work_dir, self.output_path,
                                     self.convert_params.get('gen_mask', True),
                                     self.convert_params.get('color_mask', True), self.label_sort_flag, self.process_num)
@@ -125,7 +127,8 @@ class LabelConvert:
                     points = numpy.array(shape['points'])
                     if shape['shape_type'] == 'circle':
                         center_point_x, center_point_y = points[0][0] / width, points[0][1] / height
-                        box_width, box_height = (numpy.linalg.norm(points[0] - points[1])) * 2 / width, (numpy.linalg.norm(points[0] - points[1])) * 2 / height
+                        box_width, box_height = (numpy.linalg.norm(points[0] - points[1])) * 2 / width, (
+                            numpy.linalg.norm(points[0] - points[1])) * 2 / height
                     else:
                         points_x, points_y = points.T
                         min_x, min_y = min(points_x), min(points_y)
@@ -163,7 +166,8 @@ class LabelConvert:
             img_shape = (self.img_id_dict[img_idx]['height'], self.img_id_dict[img_idx]['width'])
             cate_id = self.label_dict[shape_item['label'].split('_')[0]]
             mask = labelme.utils.shape.shape_to_mask(img_shape, shape_item['points'], shape_item['shape_type'],
-                                                     line_width=int(shape_item['width'] if shape_item.get('width') else self.convert_params.get('line_with', 5)))
+                                                     line_width=int(shape_item['width'] if shape_item.get(
+                                                         'width') else self.convert_params.get('line_with', 5)))
             try:
                 self.img_mask_dict[img_idx].append({'mask': mask, 'category_id': cate_id})
             except:
@@ -180,7 +184,8 @@ class LabelConvert:
                 segm1 = pycocotools.mask.encode(mask)  # 非rle格式
                 annotation['area'] = float(pycocotools.mask.area(segm1))  # 计算mask编码的面积，必须放置在mask转字符串前面，否则计算为0
                 contours = LabelConvert.get_contours_binary(mask)
-                annotation['segmentation'] = [numpy.squeeze(contours[0]).flatten().tolist()] if len(contours) != 0 else shape_item['points']
+                annotation['segmentation'] = [numpy.squeeze(contours[0]).flatten().tolist()] if len(contours) != 0 else \
+                shape_item['points']
                 annotation['iscrowd'] = 0
             if 'plevel' in shape_item:
                 annotation['plevel'] = shape_item['plevel']
@@ -199,17 +204,20 @@ class LabelConvert:
     def train_val_divide(self, data_instance):
         total_img_list = data_instance.get_img_id_list()
         if self.divide_method == 'random_split':
-            train_list, val_list = random_split(total_img_list, self.val_ratio, self.split_params.get('random_seed'))
+            train_list, val_list, test_list = random_split(total_img_list, self.val_ratio, self.test_ratio,
+                                                           self.split_params.get('random_seed'))
         elif self.divide_method == 'filter_split':
-            train_list, val_list = filter_split(total_img_list, self.val_ratio, data_instance,
-                                                self.split_params.get('filter_label', list(self.label_dict.values())),
-                                                self.split_params.get('level', 3))
+            train_list, val_list, test_list = filter_split(total_img_list, self.val_ratio, self.test_ratio,
+                                                           data_instance,
+                                                           self.split_params.get('filter_label',
+                                                                                 list(self.label_dict.values())),
+                                                           self.split_params.get('level', 3))
         elif not self.divide_method:
             print('WARNING: No split method assigned, all data would be put to training set.')
-            train_list, val_list = total_img_list, []
+            train_list, val_list, test_list = total_img_list, [], []
         else:
             raise Exception('ERROR: {} could not be recognize as a valid split method.'.format(self.divide_method))
-        data_instance.set_train_val(train_list, val_list)
+        data_instance.set_train_val(train_list, val_list, test_list)
 
     @staticmethod
     def mask2box(mask):
@@ -225,7 +233,7 @@ class LabelConvert:
         # 解析右下角行列号
         right_bottom_r = numpy.max(rows)
         right_bottom_c = numpy.max(clos)
-        return [left_top_c, left_top_r, right_bottom_c-left_top_c, right_bottom_r-left_top_r]  # [x1, y1, w, h]
+        return [left_top_c, left_top_r, right_bottom_c - left_top_c, right_bottom_r - left_top_r]  # [x1, y1, w, h]
 
     @staticmethod
     def get_contours_binary(img):
@@ -238,9 +246,11 @@ class LabelConvert:
 
 
 def get_parser():
-    parser = argparse.ArgumentParser(description='The tool used to convert the label of standard labelme format to coco or yolo_text format.')
+    parser = argparse.ArgumentParser(
+        description='The tool used to convert the label of standard labelme format to coco or yolo_text format.')
     parser.add_argument('-c', '--config', required=True, type=str, default=None, help='The path of the config file.')
-    parser.add_argument('-p', '--process_num', type=int, default=8, help='The num of workers for multiprocess. (default: 8)')
+    parser.add_argument('-p', '--process_num', type=int, default=8,
+                        help='The num of workers for multiprocess. (default: 8)')
     opt = parser.parse_args()
     try:
         with open(opt.config, 'rb') as input_file:
