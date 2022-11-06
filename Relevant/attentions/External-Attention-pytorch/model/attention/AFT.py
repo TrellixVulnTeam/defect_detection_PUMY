@@ -4,13 +4,6 @@ from torch import nn
 from torch.nn import init
 
 
-# 这是苹果团队2021年6月16日在arXiv上发布的工作，主要工作是简化Self-Attention。
-#
-# Transformer近几年被用于各种任务中，但是由于Self-Attention的与输入数据大小呈平方关系的时间和空间复杂度，它不能被用于太大的数据中。近几年，基于简化SA的复杂度，很多工作也被提出：稀疏注意力、局部哈希、低质分解...
-#
-# 本文提出了一个Attention Free Transformer（AFT），AFT也是由QKV三部分组成，不同的是QK不是做点积。而是将KV直接融合了，从而来保证对应位置的交互，然后Q与融合后的特征进行了对应位置相乘，来减少计算量。
-#
-# 总体上原理跟Self-Attention相似，不同的是Self-Attention用的是点积，而这里用的是对应位置相乘，所以大大减少了计算量。
 
 class AFT_FULL(nn.Module):
 

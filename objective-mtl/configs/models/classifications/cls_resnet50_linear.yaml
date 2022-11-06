@@ -1,0 +1,27 @@
+MODEL:
+  TYPE: "cls"
+  NAME: "ImageClassifier"
+  PRETRAINED_MODEL_PATH: ""
+  BACKBONE:
+    type: "ResNet"
+    depth: 50
+    num_stages: 4
+    out_indices: [3]
+    frozen_stages: 1
+    norm_cfg: {
+      type: 'BN', 
+      requires_grad: True}
+    norm_eval: True
+  NECK:
+    type: "GlobalAveragePooling"
+  CLS_HEAD:
+    type: "LinearClsHead"
+    num_classes: 10
+    in_channels: 2048
+    dropout_ratio: 0.2
+  LOSS:
+    type: 'CrossEntropyLoss'
+    loss_weight: 1.0
+  EXTEND:
+    with_rdrop: True
+    topk: [1, 5]

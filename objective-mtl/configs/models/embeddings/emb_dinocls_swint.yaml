@@ -1,0 +1,42 @@
+MODEL:
+  TYPE: "emb"
+  NAME: "DINOCLSEmbedder"
+  PRETRAINED_MODEL_PATH: "meta/pretrained/swin_tiny_patch4_window7_224.pth"
+  BACKBONE:
+    type: "SwinTransformer"
+    embed_dim: 96
+    depths: [2, 2, 6, 2]
+    num_heads: [3, 6, 12, 24]
+    out_indices: [3]
+  NECK:
+    type: "GlobalAveragePooling"
+  EMB_HEAD:
+    type: "DINOHead"
+    in_dim: 768
+    out_dim: 8192
+    use_bn: False
+    norm_last_layer: True
+  EXTEND_HEAD:
+    type: "DINOHead"
+    in_dim: 768
+    out_dim: 8192
+  CLS_HEAD:
+    type: "LinearClsHead"
+    num_classes: 1000
+    in_channels: 768
+  LOSS:
+    type: 'DINOLoss'
+    out_dim: 8192
+    ncrops: 10
+    warmup_teacher_temp: 0.04
+    teacher_temp: 0.04
+    warmup_teacher_temp_epochs: 0
+    nepochs: 100
+    student_temp: 0.1
+    center_momentum: 0.9
+    loss_weight: 0.1
+  CLS_LOSS:
+    type: 'CrossEntropyLoss'
+    loss_weight: 1.0
+  EXTEND:
+    topk: [1, 5]

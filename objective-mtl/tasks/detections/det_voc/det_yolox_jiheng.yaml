@@ -1,0 +1,43 @@
+MODEL:
+  BASE: "models/detections/det_yolox_s_ji.yaml"
+  PRETRAINED_MODEL_PATH: ""
+  BBOX_HEAD:
+    num_classes: 20
+DATA:
+  BASE: "datasets/detections/det_voc.yaml"
+  TRAIN_TRANSFORMS:
+    LoadAnnotations: {with_bbox: True}
+    JointResize: {
+      img_scale: [[640, 640]],
+      keep_ratio: True}
+    Collect: {keys: ['img', 'gt_bboxes', 'gt_labels']}
+  TEST_TRANSFORMS:
+    MultiScaleFlipAug: {
+      img_scale: [640, 640],
+    }
+  TRAIN_DATA:
+    DATA_INFO: [['tfrecords/train*.tfrecord']]
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 2
+    WORKERS_PER_DEVICE: 2
+  VAL_DATA:
+    DATA_INFO: [['tfrecords/val*.tfrecord']]
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 1
+    WORKERS_PER_DEVICE: 1
+  TEST_DATA:
+    DATA_INFO: [['tfrecords/val*.tfrecord']]
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 1
+    WORKERS_PER_DEVICE: 1
+SCHEDULE:
+  BASE: "schedulers/schedule_1x.yaml"
+  OPTIMIZER:
+    type: "SGD"
+    lr: 0.01
+    momentum: 0.9
+    weight_decay: 0.0001
+RUNTIME:
+  BASE: "runtimes/runtime_base.yaml"
+  STATIC_GRAPH: True
+  FIND_UNUSED_PARAMETERS: True

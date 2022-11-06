@@ -1,0 +1,19 @@
+MODEL:
+  TYPE: "emb"
+  NAME: "KNNEmbedder"
+  PRETRAINED_MODEL_PATH: "meta/pretrained/vit_base_emb_hvpmtl_tencentml_ep10.pth"
+  BACKBONE:
+    type: "VisionTransformer"
+    patch_size: 16
+    embed_dim: 768
+    depth: 12
+    num_heads: 12
+    mlp_ratio: 4
+    qkv_bias: True
+    norm_layer: "partial_norm"
+    num_classes: 0
+    use_abs_pos_emb: False
+    use_mean_pooling: False
+    return_map: True
+  NECK:
+    type: "GlobalAveragePooling"

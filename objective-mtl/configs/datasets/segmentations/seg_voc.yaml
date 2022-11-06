@@ -1,0 +1,78 @@
+DATA:
+  NAME: "SegVOCDataset"
+  ROOT_PATH: "data/objdet-datasets/VOC/VOCdevkit"
+  TRAIN_TRANSFORMS:
+    LoadAnnotations: {
+      with_bbox: False,
+      with_label: False,
+      with_seg: True}
+    JointResize: {
+      img_scale: [2048, 1024],
+      ratio_range: [0.5, 2.0]}
+    SegRandomCrop: {
+      crop_size: [512, 512],
+      cat_max_ratio: 0.75}
+    JointRandomFlip: {flip_ratio: 0.5}
+    PhotoMetricDistortion: {}
+    Normalize: {
+      mean: [123.675, 116.28, 103.53], 
+      std: [58.395, 57.12, 57.375], 
+      to_rgb: False}
+    Pad: {
+        size: [512, 512], 
+        pad_val: 0, 
+        seg_pad_val: 255}
+    DefaultFormatBundle: {}
+    Collect: {keys: ['img', 'gt_semantic_seg']}
+  TEST_TRANSFORMS:
+    MultiScaleFlipAug: {
+      img_scale: [2048, 1024],
+      flip: False,
+      transforms: {
+        JointResize: {keep_ratio: True},
+        JointRandomFlip: {},
+        Normalize: {
+          mean: [123.675, 116.28, 103.53],
+          std: [58.395, 57.12, 57.375]},
+        ImageToTensor: {keys: ['img']},
+        Collect: {keys: ['img']}
+        }
+      }
+  TRAIN_DATA:
+    TYPE: "Normal" # "Concat" "Repeat" "Balanced"
+    FLAG: 1
+    DATA_INFO: [["VOC2012/ImageSets/Segmentation/train.txt"]]
+    DATA_PREFIX: ["VOC2012/JPEGImages"]
+    SEG_PREFIX: ["VOC2012/SegmentationClass"]
+    CLASS_NAMES: "SegVOCDataset"
+    IS_TFRECORD: False
+    IGNORE_INDEX: 0
+    REDUCE_ZERO_LABEL: False
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4
+  VAL_DATA:
+    TYPE: "Normal"
+    FLAG: 1
+    DATA_INFO: [["VOC2012/ImageSets/Segmentation/val.txt"]]
+    DATA_PREFIX: ["VOC2012/JPEGImages"]
+    SEG_PREFIX: ["VOC2012/SegmentationClass"]
+    CLASS_NAMES: "SegVOCDataset"
+    IS_TFRECORD: False
+    TEST_MODE: False
+    IGNORE_INDEX: 0
+    REDUCE_ZERO_LABEL: False
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4
+  TEST_DATA:
+    TYPE: "Normal"
+    FLAG: 1
+    DATA_INFO: [["VOC2012/ImageSets/Segmentation/val.txt"]]
+    DATA_PREFIX: ["VOC2012/JPEGImages"]
+    SEG_PREFIX: ["VOC2012/SegmentationClass"]
+    CLASS_NAMES: "SegVOCDataset"
+    IS_TFRECORD: False
+    TEST_MODE: True
+    IGNORE_INDEX: 0
+    REDUCE_ZERO_LABEL: False
+    SAMPLES_PER_DEVICE: 1
+    WORKERS_PER_DEVICE: 1

@@ -1,0 +1,63 @@
+MODEL:
+  BASE: "models/embeddings/emb_dino_swint.yaml"
+  BACKBONE:
+    type: "SwinTransformer"
+  EMB_HEAD:
+    type: "DINOHead"
+    in_dim: 768
+    out_dim: 8192
+    use_bn: False
+    norm_last_layer: True
+  EXTEND_HEAD:
+    type: "DINOHead"
+    in_dim: 768
+    out_dim: 8192
+  LOSS:
+    type: 'DINOLoss'
+    out_dim: 8192
+    ncrops: 4
+    warmup_teacher_temp: 0.04
+    teacher_temp: 0.04
+    warmup_teacher_temp_epochs: 0
+    nepochs: 100
+    student_temp: 0.1
+    center_momentum: 0.9
+    loss_weight: 1.0
+DATA:
+  BASE: "datasets/embeddings/emb_imagenet_dino.yaml"
+  ROOT_PATH: "data/objcls-datasets/ImageNet/imagenet1k"
+  TRAIN_DATA:
+    TYPE: "Concat"
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  VAL_DATA:
+    DATA_INFO: [[]]
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  TEST_DATA:
+    DATA_INFO: [[]]
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  TRAIN_TRANSFORMS:
+    MultiApplyDINO:
+      local_crops_number: 2
+SCHEDULE:
+  BASE: "schedulers/schedule_adamw.yaml"
+  OPTIMIZER:
+    type: "AdamW"
+    lr: 0.0001
+    betas: [0.9, 0.999]
+    weight_decay: 0.05
+    PARAMWISE_CFG:
+      custom_keys: [{}]
+  OPTIMIZER_CONFIG:
+    fp16: True
+  LR_POLICY:
+    policy: "CosineAnnealing"
+    min_lr_ratio: 0.001
+    warmup: "linear"
+    warmup_iters: 1000
+    warmup_ratio: 0.001
+RUNTIME:
+  BASE: "runtimes/runtime_base.yaml"
+  WORKFLOW: [['train', 1]]

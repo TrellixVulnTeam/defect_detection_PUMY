@@ -1,0 +1,22 @@
+MODEL:
+  TYPE: "cls"
+  NAME: "ImageQ2LClassifier"
+  PRETRAINED_MODEL_PATH: "meta/pretrained/swin_tiny_moco_ep50_washed.pth"
+  BACKBONE:
+    type: "SwinTransformer"
+    embed_dim: 96
+    depths: [2, 2, 6, 2]
+    num_heads: [3, 6, 12, 24]
+    out_indices: [3]
+  EXTEND_BACKBONE:
+    type: "PositionEmbedding"
+    img_size: 384
+    downsample_ratio: 32
+    hidden_dim: 1536
+  CLS_HEAD:
+    type: "Q2LTransformerClsHead"
+    num_classes: 63
+    in_channels: 768
+  LOSS:
+    type: 'AsymmetricLoss'
+    gamma_pos: 0

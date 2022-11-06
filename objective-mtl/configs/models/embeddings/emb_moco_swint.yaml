@@ -1,0 +1,17 @@
+MODEL:
+  TYPE: "emb"
+  NAME: "MocoEmbedder"
+  PRETRAINED_MODEL_PATH: "meta/pretrained/swin_tiny_patch4_window7_224.pth"
+  BACKBONE:
+    type: "SwinTransformer"
+    embed_dim: 96
+    depths: [2, 2, 6, 2]
+    num_heads: [3, 6, 12, 24]
+    out_indices: [3]
+    with_fc: True
+    out_dim: 128
+  EXTEND:
+    K: 65536
+    m: 0.999
+    T: 0.07
+    topk: [1, 5]

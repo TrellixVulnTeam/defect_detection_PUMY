@@ -1,0 +1,42 @@
+MODEL:
+  BASE: "models/embeddings/emb_knn_vitb.yaml"
+  PRETRAINED_MODEL_PATH: "meta/pretrained/vit_base_emb_hvpmtl_tencentml_ep10.pth"  
+DATA:
+  BASE: "datasets/classifications/cls_imagenet.yaml"
+  ROOT_PATH: "data/objcls-datasets/ImageNet/imagenet1k/"
+  TRAIN_DATA:
+    TYPE: "Concat"
+    DATA_INFO: [['tfrecords/train*.tfrecord']]
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  VAL_DATA:
+    DATA_INFO: [['tfrecords/val*.tfrecord']]
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  TEST_DATA:
+    DATA_INFO: [['tfrecords/val*.tfrecord']]
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+SCHEDULE:
+  BASE: "schedulers/schedule_adamw.yaml"
+  OPTIMIZER:
+    type: "AdamW"
+    lr: 0.0001
+    betas: [0.9, 0.99]
+    weight_decay: 0.05
+    PARAMWISE_CFG:
+      custom_keys: [{}]
+  OPTIMIZER_CONFIG:
+    grad_clip: ""
+    fp16: True
+  LR_POLICY:
+    policy: "CosineRestart"
+    periods: [20, 40]
+    restart_weights: [0.9, 0.8]
+    min_lr_ratio: 0.001
+    warmup: "linear"
+    warmup_iters: 200
+    warmup_ratio: 0.008
+RUNTIME:
+  BASE: "runtimes/runtime_base.yaml"
+  WORKFLOW: [['train', 1]]

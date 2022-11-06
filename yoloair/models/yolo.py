@@ -4,7 +4,6 @@ YOLO-specific modules
 
 Usage:
     $ python path/to/models/yolo.py --cfg yolov5s.yaml
-    # OFUUSAE
 """
 
 import argparse
@@ -285,7 +284,29 @@ class Model(nn.Module):
                 m.fuse()
                 m.forward = m.fuseforward
             if type(m) is RepVGGBlock:
-                m.switch_to_deploy()
+                if hasattr(m, 'rbr_1x1'):
+                    # print(m)
+                    kernel, bias = m.get_equivalent_kernel_bias()
+                    rbr_reparam = nn.Conv2d(in_channels=m.rbr_dense.conv.in_channels,
+                                            out_channels=m.rbr_dense.conv.out_channels,
+                                            kernel_size=m.rbr_dense.conv.kernel_size,
+                                            stride=m.rbr_dense.conv.stride,
+                                            padding=m.rbr_dense.conv.padding, dilation=m.rbr_dense.conv.dilation,
+                                            groups=m.rbr_dense.conv.groups, bias=True)
+                    rbr_reparam.weight.data = kernel
+                    rbr_reparam.bias.data = bias
+                    for para in self.parameters():
+                        para.detach_()
+                    m.rbr_dense = rbr_reparam
+                    # m.__delattr__('rbr_dense')
+                    m.__delattr__('rbr_1x1')
+                    if hasattr(self, 'rbr_identity'):
+                        m.__delattr__('rbr_identity')
+                    if hasattr(self, 'id_tensor'):
+                        m.__delattr__('id_tensor')
+                    m.deploy = True
+                    delattr(m, 'se')
+                    m.forward = m.fusevggforward  # update forward
             if type(m) is CBH and hasattr(m, 'bn'):
                 m.conv = fuse_conv_and_bn(m.conv, m.bn)  # update conv
                 delattr(m, 'bn')  # remove batchnorm
@@ -326,7 +347,7 @@ def parse_model(d, ch):  # model_dict, input_channels(3)
 
         n = n_ = max(round(n * gd), 1) if n > 1 else n  # depth gain
         if m in [Conv, GhostConv, Bottleneck, GhostBottleneck, SPP, SPPF, DWConv, MixConv2d, Focus, CrossConv,
-                 BottleneckCSP, C3, C3TR, C3SPP, C3Ghost, C3HB, C3RFEM, MultiSEAM, SEAM, C3STR, MobileOneBlock, Densenet121, Densenet169, Densenet201]:
+                 BottleneckCSP, C3, C3TR, C3SPP, C3Ghost, C3HB, C3RFEM, MultiSEAM, SEAM, C3STR, MobileOneBlock]:
             c1, c2 = ch[f], args[0]
             if c2 != no:  # if not output
                 c2 = make_divisible(c2 * gw, 8)
@@ -338,7 +359,7 @@ def parse_model(d, ch):  # model_dict, input_channels(3)
         # add module research
         elif m in [CARAFE, SPPCSPC, SPPFCSPC, RepConv, BoT3, CA, CBAM, NAMAttention, GAMAttention, Involution, Stem, ResCSPC, ResCSPB, \
                    ResXCSPB, ResXCSPC, BottleneckCSPB, BottleneckCSPC,
-                   ASPP, BasicRFB, SPPCSPC_group, HorBlock, CNeB,C3GC ,C3C2, nn.ConvTranspose2d,EffectiveSELayer]:
+                   ASPP, BasicRFB, SPPCSPC_group, HorBlock, CNeB,C3GC ,C3C2, nn.ConvTranspose2d]:
             c1, c2 = ch[f], args[0]
             if c2 != no:  # if not output
                 c2 = make_divisible(c2 * gw, 8)
@@ -437,10 +458,6 @@ def parse_model(d, ch):  # model_dict, input_channels(3)
             c2 = args[0]
         elif m is Expand:  # no
             c2 = ch[f] // args[0] ** 2
-        elif m in [CSPResNet_CBS,CSPResNet,ConvBNLayer,ResSPP,CoordConv]:
-            c2 = args[1]
-        elif m in [ResNet50vd,ResNet50vd_dcn,ResNet101vd,PPConvBlock,Res2net50]:
-            c2 = args[0]
         else:
             c2 = ch[f]
 

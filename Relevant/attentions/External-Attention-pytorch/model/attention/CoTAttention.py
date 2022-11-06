@@ -51,8 +51,8 @@ class CoTAttention(nn.Module):
 
 
 if __name__ == '__main__':
-    input=torch.randn(50,128,7,7)
-    cot = CoTAttention(dim=128,kernel_size=3)
+    input=torch.randn(50,512,7,7)
+    cot = CoTAttention(dim=512,kernel_size=3)
     output=cot(input)
     print(output.shape)
 

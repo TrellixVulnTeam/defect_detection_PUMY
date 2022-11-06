@@ -1,0 +1,140 @@
+DATA:
+  NAME: "ImageNetDataset"
+  ROOT_PATH: "data/objcls-datasets/ImageNet/imagenet1k"
+  TRAIN_TRANSFORMS:
+    ImgRandomResizedCrop: {
+      size: 224,
+      scale: [0.08, 1.0],
+      ratio: [0.75, 1.333],
+      interpolation: 'bicubic',
+      backend: 'pillow'
+      }
+    ImgRandomFlip: {
+      flip_prob: 0.5,
+      direction: 'horizontal'}
+    RandAugment: 
+      policies: 
+      - {type: 'AutoContrast'}
+      - {type: 'EqualizeTransform'}
+      - {type: 'AutoInvert'}
+      - {type: 'AutoRotate',
+         magnitude_key: 'angle',
+         magnitude_range: [0, 30]}
+      - {type: 'Posterize',
+         magnitude_key: 'bits', 
+         magnitude_range: [4, 0]}
+      - {type: 'Solarize',
+         magnitude_key: 'thr',
+         magnitude_range: [256, 0]}
+      - {type: 'SolarizeAdd', 
+         magnitude_key: 'magnitude',
+         magnitude_range: [0, 110]}
+      - {type: 'ColorTransform',
+         magnitude_key: 'magnitude',
+         magnitude_range: [0, 0.9]}
+      - {type: 'ContrastTransform',
+         magnitude_key: 'magnitude',
+         magnitude_range: [0, 0.9]}
+      - {type: 'BrightnessTransform',
+         magnitude_key: 'magnitude',
+         magnitude_range: [0, 0.9]}
+      - {type: 'SharpnessTransform',
+         magnitude_key: 'magnitude',
+         magnitude_range: [0, 0.9]}
+      - {type: 'AutoShear',
+         magnitude_key: 'magnitude',
+         magnitude_range: [0, 0.3],
+         direction: 'horizontal'}
+      - {type: 'AutoShear',
+         magnitude_key: 'magnitude',
+         magnitude_range: [0, 0.3],
+         direction: 'vertical'}
+      - {type: 'AutoTranslate', 
+         magnitude_key: 'magnitude', 
+         magnitude_range: [0, 0.45], 
+         direction: 'horizontal'}
+      - {type: 'AutoTranslate',
+         magnitude_key: 'magnitude',
+         magnitude_range: [0, 0.45],
+         direction: 'vertical'}
+      num_policies: 2
+      total_level: 10
+      magnitude_level: 9
+      magnitude_std: 0.5
+      hparams: [{
+        pad_val: [124, 116, 104], 
+        interpolation: 'bicubic'
+      }]
+    RandomErasing:
+      erase_prob: 0.25
+      mode: 'rand'
+      min_area_ratio: 0.02
+      max_area_ratio: 0.333
+      fill_color: [123.675, 116.28, 103.53]
+      fill_std: [58.395, 57.12, 57.375]
+    Normalize: {
+      mean: [123.675, 116.28, 103.53], 
+      std: [58.395, 57.12, 57.375], 
+      to_rgb: False
+      }
+    DefaultFormatBundle: {}
+    ClsCollect: {
+      keys: ['img', 'gt_label']
+      }
+  TEST_TRANSFORMS:
+    ImgResize: {
+      size: [256, -1]
+      }
+    ImgCenterCrop: {
+      size: [224, 224]
+      }
+    Normalize: {
+      mean: [123.675, 116.28, 103.53], 
+      std: [58.395, 57.12, 57.375], 
+      to_rgb: False
+      }
+    ImageToTensor: {
+      keys: ['img']
+      }
+    ClsCollect: {
+      keys: ['img']
+      }
+  TRAIN_DATA:
+    TYPE: "Concat"
+    FLAG: 1
+    DATA_INFO: [['tfrecords/train_*.tfrecord']]
+    DATA_PREFIX: ["images"]
+    CLASS_NAMES: 'meta/imagenet-ids.txt'
+    IS_TFRECORD: True
+    VAL_MODE: False
+    TEST_MODE: False
+    SAMPLE_RATE: 1.0
+    DATA_SEED: 42
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  VAL_DATA:
+    TYPE: "Normal"
+    FLAG: 1
+    DATA_INFO: [['tfrecords/val_*.tfrecord']]
+    DATA_PREFIX: ["images"]
+    CLASS_NAMES: 'meta/imagenet-ids.txt'
+    IS_TFRECORD: True
+    VAL_MODE: True
+    TEST_MODE: False
+    SAMPLE_RATE: 1.0
+    DATA_SEED: 42
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  TEST_DATA:
+    TYPE: "Normal"
+    FLAG: 1
+    DATA_INFO: [['tfrecords/val.tfrecord']]
+    DATA_PREFIX: ["images"]
+    CLASS_NAMES: 'meta/imagenet-ids.txt'
+    IS_TFRECORD: True
+    VAL_MODE: False
+    TEST_MODE: True
+    SAMPLE_RATE: 1.0
+    DATA_SEED: 42
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8

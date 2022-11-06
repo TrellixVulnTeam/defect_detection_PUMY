@@ -32,7 +32,7 @@ def convert_annotation(work_dir, image_id):
     labal文件中的格式：class x y w h　　同时，一张图片对应的类别有多个，所以对应的ｂｕｎｄｉｎｇ的信息也有多个
     '''
     # 对应的通过year 找到相应的文件夹，并且打开相应image_id的xml文件，其对应bund文件
-    in_file = open(os.path.join(work_dir, 'annotations/%s.xml' % image_id), encoding='utf-8')
+    in_file = open(os.path.join(work_dir, 'Annotations/%s.xml' % image_id), encoding='utf-8')
     # 准备在对应的image_id 中写入对应的label，分别为
     # <object-class> <x> <y> <width> <height>
     out_file = open(os.path.join(work_dir, 'labels/%s.txt' % image_id), 'w', encoding='utf-8')
@@ -84,19 +84,11 @@ if __name__ == '__main__':
     #            'bottle_cap_spinning', 'cap_breakpoint', 'label_skew', 'label_wrinkle', 'label_bubble', 'code_normal',
     #            'inkjet_exception']
     classes = ['white-impurities', 'black-spot', 'edge-damage', 'bubble-gum']
-    work_dir = '/home/zhang/datasets/floor_cut/black_spot/aug_black_spot'
+    work_dir = '/home/zhang/datasets/floor_cut_blance/480'
     if not os.path.exists(os.path.join(work_dir, 'ImageSets')):
         os.makedirs(os.path.join(work_dir, 'ImageSets'))
-    makeText(os.path.join(work_dir, 'annotations'),
-             os.path.join(work_dir, 'ImageSets'))
-    # save_f = open(root + txt_, 'w+')
-    # line = f_.readlines()
-    # for line_ in line:
-    #     line_ = line_.replace('\n', '')
-    #     save_f.write("/home/zhang/datasets/cizhuan_seg/images/" + line_ + '.jpg\n')
-    # f_.close()
-    # save_f.close()
-    # print(f_)
+    # makeText(os.path.join(work_dir, 'Annotations'),
+    #          os.path.join(work_dir, 'ImageSets'))
     for image_set in sets:
         '''
         对所有的文件数据集进行遍历

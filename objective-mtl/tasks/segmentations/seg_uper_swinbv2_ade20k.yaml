@@ -1,0 +1,52 @@
+MODEL:
+  BASE: "models/segmentations/seg_uper_swinbv2.yaml"
+  BACKBONE:
+    embed_dim: 128
+    depths: [2, 2, 18, 2]
+    num_heads: [4, 8, 16, 32]
+  DECODE_HEAD:
+    in_channels: [128, 256, 512, 1024]
+    num_classes: 150
+  AUXILIARY_HEAD:
+    in_channels: 512
+    num_classes: 150
+DATA:
+  BASE: "datasets/segmentations/seg_ade20k.yaml"
+  TRAIN_DATA:
+    TYPE: "Concat"
+    SAMPLES_PER_DEVICE: 2
+    WORKERS_PER_DEVICE: 2
+  VAL_DATA:
+    TYPE: "Normal"
+    SAMPLES_PER_DEVICE: 1
+    WORKERS_PER_DEVICE: 1
+  TEST_DATA:
+    TYPE: "Normal"
+    SAMPLES_PER_DEVICE: 1
+    WORKERS_PER_DEVICE: 1
+SCHEDULE:
+  BASE: "schedulers/schedule_adamw.yaml"
+  OPTIMIZER:
+    type: "AdamW"
+    lr: 0.00006
+    betas: [0.9, 0.999]
+    weight_decay: 0.01
+    PARAMWISE_CFG:
+      custom_keys: [{
+        'absolute_pos_embed': {decay_mult: 0.},
+        'relative_position_bias_table': {decay_mult: 0.},
+        'norm': {decay_mult: 0.}
+      }]
+  OPTIMIZER_CONFIG:
+    grad_clip: ""
+    fp16: False
+  LR_POLICY:
+    policy: "CosineAnnealing"
+    by_epoch: False
+    min_lr_ratio: 0.0001
+    warmup: "linear"
+    warmup_iters: 10
+    warmup_ratio: 0.000001
+    warmup_by_epoch: True
+RUNTIME:
+  BASE: "runtimes/runtime_base.yaml"

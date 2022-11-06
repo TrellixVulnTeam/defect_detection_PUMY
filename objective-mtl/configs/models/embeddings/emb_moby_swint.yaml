@@ -1,0 +1,27 @@
+MODEL:
+  TYPE: "emb"
+  NAME: "MobyEmbedder"
+  PRETRAINED_MODEL_PATH: "meta/pretrained/swin_tiny_patch4_window7_224.pth"
+  BACKBONE:
+    type: "SwinTransformer"
+    embed_dim: 96
+    depths: [2, 2, 6, 2]
+    num_heads: [3, 6, 12, 24]
+    out_indices: [3]
+  NECK:
+    type: "GlobalAveragePooling"
+  EMB_HEAD:
+    type: "MoBYHead"
+    in_dim: 768
+    inner_dim: 4096
+    out_dim: 256
+    num_layers: 2
+  EXTEND_HEAD:
+    type: "MoBYHead"
+    in_dim: 256
+    inner_dim: 4096
+    out_dim: 256
+    num_layers: 2
+  LOSS:
+    type: 'CrossEntropyLoss'
+    loss_weight: 1.0

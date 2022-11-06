@@ -27,8 +27,31 @@ from utils.general import (LOGGER, check_requirements, check_suffix, check_versi
                            make_divisible, non_max_suppression, scale_coords, xywh2xyxy, xyxy2xywh)
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import copy_attr, time_sync
+from models.Models.FaceV2 import MultiSEAM, C3RFEM, SEAM
+from models.Models.research import CARAFE, MP, SPPCSPC, RepConv, BoT3, \
+    PatchEmbed, SwinTransformer_Layer, CA, CBAM, Concat_bifpn, Involution, \
+    Stem, ResCSPC, ResCSPB, ResXCSPC, ResXCSPB, BottleneckCSPB, BottleneckCSPC
+from models.Models.Litemodel import CBH, ES_Bottleneck, DWConvblock, ADD, RepVGGBlock, LC_Block, \
+    Dense, conv_bn_relu_maxpool, Shuffle_Block, stem, MBConvBlock, mobilev3_bneck
+from models.Models.muitlbackbone import conv_bn_hswish, DropPath, MobileNetV3_InvertedResidual, DepthSepConv, \
+    ShuffleNetV2_Model, Conv_maxpool, ConvNeXt, RepLKNet_Stem, RepLKNet_stage1, RepLKNet_stage2, \
+    RepLKNet_stage3, RepLKNet_stage4, CoT3, RegNet1, RegNet2, RegNet3, Efficient1, Efficient2, Efficient3, \
+    MobileNet1, MobileNet2, MobileNet3, C3STR, ConvNextBlock
+from models.Models.yolov4 import SPPCSP, BottleneckCSP2, Mish
+from models.Models.yolov4 import RepVGGBlockv6, SimSPPF, SimConv, RepBlock
+from models.Models.yolor import ReOrg, DWT, DownC, BottleneckCSPF, ImplicitA, ImplicitM
+from models.Models.Attention.ShuffleAttention import ShuffleAttention
+from models.Models.Attention.CrissCrossAttention import CrissCrossAttention
+from models.Models.Attention.SimAM import SimAM
+from models.Models.Attention.GAMAttention import GAMAttention
+from models.Models.Attention.NAMAttention import NAMAttention
+from models.Models.Attention.S2Attention import S2Attention
+from models.Models.Attention.SEAttention import SEAttention
+from models.Models.Attention.SKAttention import SKAttention
+from models.Models.Attention.SOCA import SOCA
+from models.Models.muitlbackbone import C3GC
+from models.Models.slimneck import GSConv, VoVGSCSP
 
-from models.module import *
 
 def autopad(k, p=None):  # kernel, padding
     # Pad to 'same'
@@ -57,7 +80,9 @@ class DWConv(Conv):
     def __init__(self, c1, c2, k=1, s=1, act=True):  # ch_in, ch_out, kernel, stride, padding, groups
         super().__init__(c1, c2, k, s, g=math.gcd(c1, c2), act=act)
 
+
 from models.Models.mobileone import MobileOneBlock
+
 
 class TransformerLayer(nn.Module):
     # Transformer layer https://arxiv.org/abs/2010.11929 (LayerNorm layers removed for better performance)
@@ -126,6 +151,7 @@ class BottleneckCSP(nn.Module):
         y2 = self.cv2(x)
         return self.cv4(self.act(self.bn(torch.cat((y1, y2), dim=1))))
 
+
 class CrossConv(nn.Module):
     # Cross Convolution Downsample
     def __init__(self, c1, c2, k=3, s=1, g=1, e=1.0, shortcut=False):
@@ -139,6 +165,7 @@ class CrossConv(nn.Module):
     def forward(self, x):
         return x + self.cv2(self.cv1(x)) if self.add else self.cv2(self.cv1(x))
 
+
 class C3(nn.Module):
     # CSP Bottleneck with 3 convolutions
     def __init__(self, c1, c2, n=1, shortcut=True, g=1, e=0.5):  # ch_in, ch_out, number, shortcut, groups, expansion
@@ -151,6 +178,7 @@ class C3(nn.Module):
 
     def forward(self, x):
         return self.cv3(torch.cat((self.m(self.cv1(x)), self.cv2(x)), dim=1))
+
 
 class C3C2(nn.Module):
     # CSP Bottleneck with 3 convolutions
@@ -167,12 +195,14 @@ class C3C2(nn.Module):
         y = self.conv(x)
         return self.cv1(torch.cat((self.m(self.act(self.bn(y))), y), dim=1))
 
+
 class C3x(C3):
     # C3 module with cross-convolutions
     def __init__(self, c1, c2, n=1, shortcut=True, g=1, e=0.5):
         super().__init__(c1, c2, n, shortcut, g, e)
         c_ = int(c2 * e)
         self.m = nn.Sequential(*(CrossConv(c_, c_, 3, 1, g, 1.0, shortcut) for _ in range(n)))
+
 
 class C3TR(C3):
     # C3 module with TransformerBlock()
@@ -426,7 +456,7 @@ class DetectMultiBackend(nn.Module):
                 interpreter.allocate_tensors()  # allocate
                 input_details = interpreter.get_input_details()  # inputs
                 output_details = interpreter.get_output_details()  # outputs
-            elif tfjs: # https://github.com/iscyy/yoloair
+            elif tfjs:  # https://github.com/iscyy/yoloair
                 raise Exception('ERROR: YOLOv5 TF.js inference is not supported')
         self.__dict__.update(locals())  # assign all variables to self
 
@@ -530,7 +560,7 @@ class AutoShape(nn.Module):
 
     def _apply(self, fn):
         # Apply to(), cpu(), cuda(), half() to model tensors that are not parameters or registered buffers
-        self = super()._apply(fn)# https://github.com/iscyy/yoloair
+        self = super()._apply(fn)  # https://github.com/iscyy/yoloair
         if self.pt:
             m = self.model.model.model[-1] if self.dmb else self.model.model[-1]  # Detect()
             m.stride = fn(m.stride)
@@ -597,6 +627,7 @@ class AutoShape(nn.Module):
             t.append(time_sync())
             return Detections(imgs, y, files, t, self.names, x.shape)
 
+
 # update
 class MobileOne(nn.Module):
     # MobileOne
@@ -608,6 +639,7 @@ class MobileOne(nn.Module):
     def forward(self, x):
         x = self.m(x)
         return x
+
 
 class Detections:
     # YOLOv5 detections class for inference results
@@ -632,7 +664,7 @@ class Detections:
         crops = []
         for i, (im, pred) in enumerate(zip(self.imgs, self.pred)):
             s = f'image {i + 1}/{len(self.pred)}: {im.shape[0]}x{im.shape[1]} '  # string
-            if pred.shape[0]:# https://github.com/iscyy/yoloair
+            if pred.shape[0]:  # https://github.com/iscyy/yoloair
                 for c in pred[:, -1].unique():
                     n = (pred[:, -1] == c).sum()  # detections per class
                     s += f"{n} {self.names[int(c)]}{'s' * (n > 1)}, "  # add to string
@@ -722,9 +754,11 @@ class Classify(nn.Module):
         z = torch.cat([self.aap(y) for y in (x if isinstance(x, list) else [x])], 1)  # cat if list
         return self.flat(self.conv(z))  # flatten to x(b,c2)
 
+
 # acmix
 import torch.nn.functional as F
 import time
+
 
 def position(H, W, is_cuda=True):
     if is_cuda:
@@ -741,9 +775,11 @@ def stride(x, stride):
     b, c, h, w = x.shape
     return x[:, :, ::stride, ::stride]
 
+
 def init_rate_half(tensor):
     if tensor is not None:
         tensor.data.fill_(0.5)
+
 
 def init_rate_0(tensor):
     if tensor is not None:
@@ -774,17 +810,19 @@ class ACmix(nn.Module):
         self.unfold = nn.Unfold(kernel_size=self.kernel_att, padding=0, stride=self.stride)
         self.softmax = torch.nn.Softmax(dim=1)
 
-        self.fc = nn.Conv2d(3*self.head, self.kernel_conv * self.kernel_conv, kernel_size=1, bias=False)
-        self.dep_conv = nn.Conv2d(self.kernel_conv * self.kernel_conv * self.head_dim, self.out_planes, kernel_size=self.kernel_conv, bias=True, groups=self.head_dim, padding=1, stride=stride)
+        self.fc = nn.Conv2d(3 * self.head, self.kernel_conv * self.kernel_conv, kernel_size=1, bias=False)
+        self.dep_conv = nn.Conv2d(self.kernel_conv * self.kernel_conv * self.head_dim, self.out_planes,
+                                  kernel_size=self.kernel_conv, bias=True, groups=self.head_dim, padding=1,
+                                  stride=stride)
 
         self.reset_parameters()
-    
+
     def reset_parameters(self):
         init_rate_half(self.rate1)
         init_rate_half(self.rate2)
         kernel = torch.zeros(self.kernel_conv * self.kernel_conv, self.kernel_conv, self.kernel_conv)
         for i in range(self.kernel_conv * self.kernel_conv):
-            kernel[i, i//self.kernel_conv, i%self.kernel_conv] = 1.
+            kernel[i, i // self.kernel_conv, i % self.kernel_conv] = 1.
         kernel = kernel.squeeze(0).repeat(self.out_planes, 1, 1, 1)
         self.dep_conv.weight = nn.Parameter(data=kernel, requires_grad=True)
         self.dep_conv.bias = init_rate_0(self.dep_conv.bias)
@@ -793,16 +831,15 @@ class ACmix(nn.Module):
         q, k, v = self.conv1(x), self.conv2(x), self.conv3(x)
         scaling = float(self.head_dim) ** -0.5
         b, c, h, w = q.shape
-        h_out, w_out = h//self.stride, w//self.stride
-
+        h_out, w_out = h // self.stride, w // self.stride
 
         # ### att
         # ## positional encoding https://github.com/iscyy/yoloair
         pe = self.conv_p(position(h, w, x.is_cuda))
 
-        q_att = q.view(b*self.head, self.head_dim, h, w) * scaling
-        k_att = k.view(b*self.head, self.head_dim, h, w)
-        v_att = v.view(b*self.head, self.head_dim, h, w)
+        q_att = q.view(b * self.head, self.head_dim, h, w) * scaling
+        k_att = k.view(b * self.head, self.head_dim, h, w)
+        v_att = v.view(b * self.head, self.head_dim, h, w)
 
         if self.stride > 1:
             q_att = stride(q_att, self.stride)
@@ -810,29 +847,37 @@ class ACmix(nn.Module):
         else:
             q_pe = pe
 
-        unfold_k = self.unfold(self.pad_att(k_att)).view(b*self.head, self.head_dim, self.kernel_att*self.kernel_att, h_out, w_out) # b*head, head_dim, k_att^2, h_out, w_out
-        unfold_rpe = self.unfold(self.pad_att(pe)).view(1, self.head_dim, self.kernel_att*self.kernel_att, h_out, w_out) # 1, head_dim, k_att^2, h_out, w_out
-        
-        att = (q_att.unsqueeze(2)*(unfold_k + q_pe.unsqueeze(2) - unfold_rpe)).sum(1) # (b*head, head_dim, 1, h_out, w_out) * (b*head, head_dim, k_att^2, h_out, w_out) -> (b*head, k_att^2, h_out, w_out)
+        unfold_k = self.unfold(self.pad_att(k_att)).view(b * self.head, self.head_dim,
+                                                         self.kernel_att * self.kernel_att, h_out,
+                                                         w_out)  # b*head, head_dim, k_att^2, h_out, w_out
+        unfold_rpe = self.unfold(self.pad_att(pe)).view(1, self.head_dim, self.kernel_att * self.kernel_att, h_out,
+                                                        w_out)  # 1, head_dim, k_att^2, h_out, w_out
+
+        att = (q_att.unsqueeze(2) * (unfold_k + q_pe.unsqueeze(2) - unfold_rpe)).sum(
+            1)  # (b*head, head_dim, 1, h_out, w_out) * (b*head, head_dim, k_att^2, h_out, w_out) -> (b*head, k_att^2, h_out, w_out)
         att = self.softmax(att)
 
-        out_att = self.unfold(self.pad_att(v_att)).view(b*self.head, self.head_dim, self.kernel_att*self.kernel_att, h_out, w_out)
+        out_att = self.unfold(self.pad_att(v_att)).view(b * self.head, self.head_dim, self.kernel_att * self.kernel_att,
+                                                        h_out, w_out)
         out_att = (att.unsqueeze(1) * out_att).sum(2).view(b, self.out_planes, h_out, w_out)
 
         ## conv
-        f_all = self.fc(torch.cat([q.view(b, self.head, self.head_dim, h*w), k.view(b, self.head, self.head_dim, h*w), v.view(b, self.head, self.head_dim, h*w)], 1))
+        f_all = self.fc(torch.cat(
+            [q.view(b, self.head, self.head_dim, h * w), k.view(b, self.head, self.head_dim, h * w),
+             v.view(b, self.head, self.head_dim, h * w)], 1))
         f_conv = f_all.permute(0, 2, 1, 3).reshape(x.shape[0], -1, x.shape[-2], x.shape[-1])
-        
+
         out_conv = self.dep_conv(f_conv)
 
         return self.rate1 * out_att + self.rate2 * out_conv
+
 
 class ScaledDotProductAttention(nn.Module):
     '''
     Scaled dot-product attention
     '''
 
-    def __init__(self, d_model, d_k, d_v, h,dropout=.1):
+    def __init__(self, d_model, d_k, d_v, h, dropout=.1):
         '''
         :param d_model: Output dimensionality of the model
         :param d_k: Dimensionality of queries and keys
@@ -844,7 +889,7 @@ class ScaledDotProductAttention(nn.Module):
         self.fc_k = nn.Linear(d_model, h * d_k)
         self.fc_v = nn.Linear(d_model, h * d_v)
         self.fc_o = nn.Linear(h * d_v, d_model)
-        self.dropout=nn.Dropout(dropout)
+        self.dropout = nn.Dropout(dropout)
 
         self.d_model = d_model
         self.d_k = d_k
@@ -852,7 +897,6 @@ class ScaledDotProductAttention(nn.Module):
         self.h = h
 
         self.init_weights()
-
 
     def init_weights(self):
         for m in self.modules():
@@ -892,7 +936,7 @@ class ScaledDotProductAttention(nn.Module):
         if attention_mask is not None:
             att = att.masked_fill(attention_mask, -np.inf)
         att = torch.softmax(att, -1)
-        att=self.dropout(att)
+        att = self.dropout(att)
 
         out = torch.matmul(att, v).permute(0, 2, 1, 3).contiguous().view(b_s, nq, self.h * self.d_v)  # (b_s, nq, h*d_v)
         out = self.fc_o(out)  # (b_s, nq, d_model)
@@ -904,7 +948,7 @@ class ASPP(nn.Module):
     def __init__(self, in_channel=512, out_channel=256):
         super(ASPP, self).__init__()
         self.mean = nn.AdaptiveAvgPool2d((1, 1))  # (1,1)means ouput_dim
-        self.conv = nn.Conv2d(in_channel,out_channel, 1, 1)
+        self.conv = nn.Conv2d(in_channel, out_channel, 1, 1)
         self.atrous_block1 = nn.Conv2d(in_channel, out_channel, 1, 1)
         self.atrous_block6 = nn.Conv2d(in_channel, out_channel, 3, 1, padding=6, dilation=6)
         self.atrous_block12 = nn.Conv2d(in_channel, out_channel, 3, 1, padding=12, dilation=12)
@@ -930,15 +974,18 @@ class ASPP(nn.Module):
 
 class BasicConv(nn.Module):
 
-    def __init__(self, in_planes, out_planes, kernel_size, stride=1, padding=0, dilation=1, groups=1, relu=True, bn=True):
+    def __init__(self, in_planes, out_planes, kernel_size, stride=1, padding=0, dilation=1, groups=1, relu=True,
+                 bn=True):
         super(BasicConv, self).__init__()
         self.out_channels = out_planes
         if bn:
-            self.conv = nn.Conv2d(in_planes, out_planes, kernel_size=kernel_size, stride=stride, padding=padding, dilation=dilation, groups=groups, bias=False)
+            self.conv = nn.Conv2d(in_planes, out_planes, kernel_size=kernel_size, stride=stride, padding=padding,
+                                  dilation=dilation, groups=groups, bias=False)
             self.bn = nn.BatchNorm2d(out_planes, eps=1e-5, momentum=0.01, affine=True)
             self.relu = nn.ReLU(inplace=True) if relu else None
         else:
-            self.conv = nn.Conv2d(in_planes, out_planes, kernel_size=kernel_size, stride=stride, padding=padding, dilation=dilation, groups=groups, bias=True)
+            self.conv = nn.Conv2d(in_planes, out_planes, kernel_size=kernel_size, stride=stride, padding=padding,
+                                  dilation=dilation, groups=groups, bias=True)
             self.bn = None
             self.relu = nn.ReLU(inplace=True) if relu else None
 
@@ -962,18 +1009,22 @@ class BasicRFB(nn.Module):
         self.branch0 = nn.Sequential(
             BasicConv(in_planes, inter_planes, kernel_size=1, stride=1, groups=groups, relu=False),
             BasicConv(inter_planes, 2 * inter_planes, kernel_size=(3, 3), stride=stride, padding=(1, 1), groups=groups),
-            BasicConv(2 * inter_planes, 2 * inter_planes, kernel_size=3, stride=1, padding=vision + 1, dilation=vision + 1, relu=False, groups=groups)
+            BasicConv(2 * inter_planes, 2 * inter_planes, kernel_size=3, stride=1, padding=vision + 1,
+                      dilation=vision + 1, relu=False, groups=groups)
         )
         self.branch1 = nn.Sequential(
             BasicConv(in_planes, inter_planes, kernel_size=1, stride=1, groups=groups, relu=False),
             BasicConv(inter_planes, 2 * inter_planes, kernel_size=(3, 3), stride=stride, padding=(1, 1), groups=groups),
-            BasicConv(2 * inter_planes, 2 * inter_planes, kernel_size=3, stride=1, padding=vision + 2, dilation=vision + 2, relu=False, groups=groups)
+            BasicConv(2 * inter_planes, 2 * inter_planes, kernel_size=3, stride=1, padding=vision + 2,
+                      dilation=vision + 2, relu=False, groups=groups)
         )
         self.branch2 = nn.Sequential(
             BasicConv(in_planes, inter_planes, kernel_size=1, stride=1, groups=groups, relu=False),
             BasicConv(inter_planes, (inter_planes // 2) * 3, kernel_size=3, stride=1, padding=1, groups=groups),
-            BasicConv((inter_planes // 2) * 3, 2 * inter_planes, kernel_size=3, stride=stride, padding=1, groups=groups),
-            BasicConv(2 * inter_planes, 2 * inter_planes, kernel_size=3, stride=1, padding=vision + 4, dilation=vision + 4, relu=False, groups=groups)
+            BasicConv((inter_planes // 2) * 3, 2 * inter_planes, kernel_size=3, stride=stride, padding=1,
+                      groups=groups),
+            BasicConv(2 * inter_planes, 2 * inter_planes, kernel_size=3, stride=1, padding=vision + 4,
+                      dilation=vision + 4, relu=False, groups=groups)
         )
 
         self.ConvLinear = BasicConv(6 * inter_planes, out_planes, kernel_size=1, stride=1, relu=False)
@@ -1014,6 +1065,7 @@ class SPPCSPC(nn.Module):
         y2 = self.cv2(x)
         return self.cv7(torch.cat((y1, y2), dim=1))
 
+
 class SPPFCSPC(nn.Module):
     # CSP https://github.com/WongKinYiu/CrossStagePartialNetworks
     def __init__(self, c1, c2, n=1, shortcut=False, g=1, e=0.5, k=5):
@@ -1032,9 +1084,10 @@ class SPPFCSPC(nn.Module):
         x1 = self.cv4(self.cv3(self.cv1(x)))
         x2 = self.m(x1)
         x3 = self.m(x2)
-        y1 = self.cv6(self.cv5(torch.cat((x1,x2,x3, self.m(x3)),1)))
+        y1 = self.cv6(self.cv5(torch.cat((x1, x2, x3, self.m(x3)), 1)))
         y2 = self.cv2(x)
         return self.cv7(torch.cat((y1, y2), dim=1))
+
 
 class SPPCSPC_group(nn.Module):
     def __init__(self, c1, c2, n=1, shortcut=False, g=1, e=0.5, k=(5, 9, 13)):
@@ -1055,6 +1108,7 @@ class SPPCSPC_group(nn.Module):
         y2 = self.cv2(x)
         return self.cv7(torch.cat((y1, y2), dim=1))
 
+
 class C3HB(nn.Module):
     # CSP HorBlock with 3 convolutions by iscyy/yoloair
     def __init__(self, c1, c2, n=1, shortcut=True, g=1, e=0.5):  # ch_in, ch_out, number, shortcut, groups, expansion
@@ -1064,8 +1118,10 @@ class C3HB(nn.Module):
         self.cv2 = Conv(c1, c_, 1, 1)
         self.cv3 = Conv(2 * c_, c2, 1)
         self.m = nn.Sequential(*(HorBlock(c_) for _ in range(n)))
+
     def forward(self, x):
         return self.cv3(torch.cat((self.m(self.cv1(x)), self.cv2(x)), dim=1))
+
 
 class space_to_depth(nn.Module):
     # Changing the dimension of the Tensor
@@ -1074,7 +1130,8 @@ class space_to_depth(nn.Module):
         self.d = dimension
 
     def forward(self, x):
-         return torch.cat([x[..., ::2, ::2], x[..., 1::2, ::2], x[..., ::2, 1::2], x[..., 1::2, 1::2]], 1)
+        return torch.cat([x[..., ::2, ::2], x[..., 1::2, ::2], x[..., ::2, 1::2], x[..., 1::2, 1::2]], 1)
+
 
 class HorLayerNorm(nn.Module):
     r""" LayerNorm that supports two data formats: channels_last (default) or channels_first. 
@@ -1082,6 +1139,7 @@ class HorLayerNorm(nn.Module):
     shape (batch_size, height, width, channels) while channels_first corresponds to inputs 
     with shape (batch_size, channels, height, width).# https://ar5iv.labs.arxiv.org/html/2207.14284
     """
+
     def __init__(self, normalized_shape, eps=1e-6, data_format="channels_last"):
         super().__init__()
         self.weight = nn.Parameter(torch.ones(normalized_shape))
@@ -1089,9 +1147,9 @@ class HorLayerNorm(nn.Module):
         self.eps = eps
         self.data_format = data_format
         if self.data_format not in ["channels_last", "channels_first"]:
-            raise NotImplementedError # by iscyy/air
-        self.normalized_shape = (normalized_shape, )
-    
+            raise NotImplementedError  # by iscyy/air
+        self.normalized_shape = (normalized_shape,)
+
     def forward(self, x):
         if self.data_format == "channels_last":
             return F.layer_norm(x, self.normalized_shape, self.weight, self.bias, self.eps)
@@ -1101,6 +1159,7 @@ class HorLayerNorm(nn.Module):
             x = (x - u) / torch.sqrt(s + self.eps)
             x = self.weight[:, None, None] * x + self.bias[:, None, None]
             return x
+
 
 class GlobalLocalFilter(nn.Module):
     def __init__(self, dim, h=14, w=8):
@@ -1122,7 +1181,8 @@ class GlobalLocalFilter(nn.Module):
 
         weight = self.complex_weight
         if not weight.shape[1:3] == x2.shape[2:4]:
-            weight = F.interpolate(weight.permute(3,0,1,2), size=x2.shape[2:4], mode='bilinear', align_corners=True).permute(1,2,3,0)
+            weight = F.interpolate(weight.permute(3, 0, 1, 2), size=x2.shape[2:4], mode='bilinear',
+                                   align_corners=True).permute(1, 2, 3, 0)
 
         weight = torch.view_as_complex(weight.contiguous())
 
@@ -1133,23 +1193,24 @@ class GlobalLocalFilter(nn.Module):
         x = self.post_norm(x)
         return x
 
+
 class gnconv(nn.Module):
     def __init__(self, dim, order=5, gflayer=None, h=14, w=8, s=1.0):
         super().__init__()
         self.order = order
         self.dims = [dim // 2 ** i for i in range(order)]
         self.dims.reverse()
-        self.proj_in = nn.Conv2d(dim, 2*dim, 1)
+        self.proj_in = nn.Conv2d(dim, 2 * dim, 1)
 
         if gflayer is None:
             self.dwconv = get_dwconv(sum(self.dims), 7, True)
         else:
             self.dwconv = gflayer(sum(self.dims), h=h, w=w)
-        
+
         self.proj_out = nn.Conv2d(dim, dim, 1)
 
         self.pws = nn.ModuleList(
-            [nn.Conv2d(self.dims[i], self.dims[i+1], 1) for i in range(order-1)]
+            [nn.Conv2d(self.dims[i], self.dims[i + 1], 1) for i in range(order - 1)]
         )
         self.scale = s
 
@@ -1160,19 +1221,21 @@ class gnconv(nn.Module):
         dw_abc = self.dwconv(abc) * self.scale
         dw_list = torch.split(dw_abc, self.dims, dim=1)
         x = pwa * dw_list[0]
-        for i in range(self.order -1):
-            x = self.pws[i](x) * dw_list[i+1]
+        for i in range(self.order - 1):
+            x = self.pws[i](x) * dw_list[i + 1]
         x = self.proj_out(x)
 
         return x
 
+
 def get_dwconv(dim, kernel, bias):
-    return nn.Conv2d(dim, dim, kernel_size=kernel, padding=(kernel-1)//2 ,bias=bias, groups=dim)
+    return nn.Conv2d(dim, dim, kernel_size=kernel, padding=(kernel - 1) // 2, bias=bias, groups=dim)
 
 
 class HorBlock(nn.Module):
     r""" HorNet block
     """
+
     def __init__(self, dim, drop_path=0., layer_scale_init_value=1e-6, gnconv=gnconv):
         super().__init__()
 
@@ -1183,15 +1246,15 @@ class HorBlock(nn.Module):
         self.act = nn.GELU()
         self.pwconv2 = nn.Linear(4 * dim, dim)
 
-        self.gamma1 = nn.Parameter(layer_scale_init_value * torch.ones(dim), 
-                                    requires_grad=True) if layer_scale_init_value > 0 else None
+        self.gamma1 = nn.Parameter(layer_scale_init_value * torch.ones(dim),
+                                   requires_grad=True) if layer_scale_init_value > 0 else None
 
-        self.gamma2 = nn.Parameter(layer_scale_init_value * torch.ones((dim)), 
-                                    requires_grad=True) if layer_scale_init_value > 0 else None
+        self.gamma2 = nn.Parameter(layer_scale_init_value * torch.ones((dim)),
+                                   requires_grad=True) if layer_scale_init_value > 0 else None
         self.drop_path = DropPath(drop_path) if drop_path > 0. else nn.Identity()
 
     def forward(self, x):
-        B, C, H, W  = x.shape # [512]
+        B, C, H, W = x.shape  # [512]
         if self.gamma1 is not None:
             gamma1 = self.gamma1.view(C, 1, 1)
         else:
@@ -1199,32 +1262,33 @@ class HorBlock(nn.Module):
         x = x + self.drop_path(gamma1 * self.gnconv(self.norm1(x)))
 
         input = x
-        x = x.permute(0, 2, 3, 1) # (N, C, H, W) -> (N, H, W, C)
+        x = x.permute(0, 2, 3, 1)  # (N, C, H, W) -> (N, H, W, C)
         x = self.norm2(x)
         x = self.pwconv1(x)
         x = self.act(x)
         x = self.pwconv2(x)
         if self.gamma2 is not None:
             x = self.gamma2 * x
-        x = x.permute(0, 3, 1, 2) # (N, H, W, C) -> (N, C, H, W)
+        x = x.permute(0, 3, 1, 2)  # (N, H, W, C) -> (N, C, H, W)
 
         x = input + self.drop_path(x)
         return x
 
+
 class HorNet(nn.Module):
 
-    def __init__(self, index, in_chans, depths, dim_base, drop_path_rate=0.,layer_scale_init_value=1e-6, 
-        gnconv=[
-            partial(gnconv, order=2, s=1.0/3.0),
-            partial(gnconv, order=3, s=1.0/3.0),
-            partial(gnconv, order=4, s=1.0/3.0),
-            partial(gnconv, order=5, s=1.0/3.0), # GlobalLocalFilter
-        ],
-    ):
+    def __init__(self, index, in_chans, depths, dim_base, drop_path_rate=0., layer_scale_init_value=1e-6,
+                 gnconv=[
+                     partial(gnconv, order=2, s=1.0 / 3.0),
+                     partial(gnconv, order=3, s=1.0 / 3.0),
+                     partial(gnconv, order=4, s=1.0 / 3.0),
+                     partial(gnconv, order=5, s=1.0 / 3.0),  # GlobalLocalFilter
+                 ],
+                 ):
         super().__init__()
         dims = [dim_base, dim_base * 2, dim_base * 4, dim_base * 8]
         self.index = index
-        self.downsample_layers = nn.ModuleList() # stem and 3 intermediate downsampling conv layers by iscyy/air
+        self.downsample_layers = nn.ModuleList()  # stem and 3 intermediate downsampling conv layers by iscyy/air
         stem = nn.Sequential(
             nn.Conv2d(in_chans, dims[0], kernel_size=4, stride=4),
             HorLayerNorm(dims[0], eps=1e-6, data_format="channels_first")
@@ -1232,13 +1296,13 @@ class HorNet(nn.Module):
         self.downsample_layers.append(stem)
         for i in range(3):
             downsample_layer = nn.Sequential(
-                    HorLayerNorm(dims[i], eps=1e-6, data_format="channels_first"),
-                    nn.Conv2d(dims[i], dims[i+1], kernel_size=2, stride=2),
+                HorLayerNorm(dims[i], eps=1e-6, data_format="channels_first"),
+                nn.Conv2d(dims[i], dims[i + 1], kernel_size=2, stride=2),
             )
             self.downsample_layers.append(downsample_layer)
 
-        self.stages = nn.ModuleList() # 4 feature resolution stages, each consisting of multiple residual blocks by iscyy/air
-        dp_rates=[x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))] 
+        self.stages = nn.ModuleList()  # 4 feature resolution stages, each consisting of multiple residual blocks by iscyy/air
+        dp_rates = [x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))]
 
         if not isinstance(gnconv, list):
             gnconv = [gnconv, gnconv, gnconv, gnconv]
@@ -1249,22 +1313,24 @@ class HorNet(nn.Module):
         cur = 0
         for i in range(4):
             stage = nn.Sequential(
-                *[HorBlock(dim=dims[i], drop_path=dp_rates[cur + j], 
-                layer_scale_init_value=layer_scale_init_value, gnconv=gnconv[i]) for j in range(depths[i])]
+                *[HorBlock(dim=dims[i], drop_path=dp_rates[cur + j],
+                           layer_scale_init_value=layer_scale_init_value, gnconv=gnconv[i]) for j in range(depths[i])]
             )
             self.stages.append(stage)
-            cur += depths[i] # by iscyy/air
+            cur += depths[i]  # by iscyy/air
 
         self.apply(self._init_weights)
 
     def _init_weights(self, m):
-            if isinstance(m, (nn.Conv2d, nn.Linear)):
-                    nn.init.trunc_normal_(m.weight, std=.02)
-                    nn.init.constant_(m.bias, 0)
+        if isinstance(m, (nn.Conv2d, nn.Linear)):
+            nn.init.trunc_normal_(m.weight, std=.02)
+            nn.init.constant_(m.bias, 0)
+
     def forward(self, x):
         x = self.downsample_layers[self.index](x)
         x = self.stages[self.index](x)
         return x
+
 
 class CNeB(nn.Module):
     # CSP ConvNextBlock with 3 convolutions by iscyy/yoloair
@@ -1275,8 +1341,10 @@ class CNeB(nn.Module):
         self.cv2 = Conv(c1, c_, 1, 1)
         self.cv3 = Conv(2 * c_, c2, 1)
         self.m = nn.Sequential(*(ConvNextBlock(c_) for _ in range(n)))
+
     def forward(self, x):
         return self.cv3(torch.cat((self.m(self.cv1(x)), self.cv2(x)), dim=1))
+
 
 class SP(nn.Module):
     def __init__(self, k=3, s=1):
@@ -1285,6 +1353,7 @@ class SP(nn.Module):
 
     def forward(self, x):
         return self.m(x)
+
 
 class MPC(nn.Module):
     def __init__(self, c1, k=2):
@@ -1296,6 +1365,7 @@ class MPC(nn.Module):
             Conv(c1, c2, k=1),
             Conv(c2, c2, k=3, p=1, s=2)
         )
+
     def forward(self, x):
         x1 = self.cv1(self.mp(x))
         x2 = self.cv2(x)

@@ -1,0 +1,77 @@
+MODEL:
+  BASE: "models/detections/det_atss_swinbv2_dyneck.yaml"
+  PRETRAINED_MODEL_PATH: "../pretrained/swinv2_tiny_scratch_imagenet1k_window7_224_bs4096_ep300.pth"
+  BACKBONE:
+    type: "SwinTransformerV2"
+    embed_dim: 96
+    depths: [2, 2, 6, 2]
+    num_heads: [3, 6, 12, 24]
+    window_size: 7
+    drop_path_rate: 0.2
+    use_checkpoint: True
+    out_indices: [0, 1, 2, 3]
+  NECK:
+  - {type: 'FPN',
+     in_channels: [96, 192, 384, 768],
+     out_channels: 256,
+     start_level: 1,
+     add_extra_convs: 'on_output',
+     num_outs: 5}
+  - {type: 'DyNeck', 
+     in_channels: 256,
+     out_channels: 256,
+     num_blocks: 6}
+DATA:
+  BASE: "datasets/detections/det_lupinus_yolo.yaml"
+  TRAIN_TRANSFORMS:
+    LoadAnnotations: {with_bbox: True}
+    JointResize: {
+      img_scale: [[768, 768]],
+      keep_ratio: True}
+    Collect: {keys: ['img', 'gt_bboxes', 'gt_labels']}
+  TEST_TRANSFORMS:
+    MultiScaleFlipAug: {
+      img_scale: [768, 768],
+    }
+  TRAIN_DATA:
+    DATA_INFO: [['tfrecords/{xxxxxx}/train*.tfrecord']]
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4
+  VAL_DATA:
+    DATA_INFO: [['tfrecords/{xxxxxx}/val*.tfrecord']]
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 1
+    WORKERS_PER_DEVICE: 1
+  TEST_DATA:
+    DATA_INFO: [['tfrecords/{xxxxxx}/val*.tfrecord']]
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 1
+    WORKERS_PER_DEVICE: 1
+SCHEDULE:
+  BASE: "schedulers/schedule_adamw.yaml"
+  OPTIMIZER:
+    type: "AdamW"
+    lr: 0.0002
+    weight_decay: 0.0005
+  OPTIMIZER_CONFIG:
+    fp16: True
+  LR_POLICY:
+    policy: "CosineAnnealing"
+    min_lr_ratio: 0.001
+    warmup: "linear"
+    warmup_iters: 1000
+    warmup_ratio: 0.008
+  RUNNER:
+    type: "EpochBasedRunner"
+    max_epochs: 200
+RUNTIME:
+  BASE: "runtimes/runtime_eval.yaml"
+  CHECKPOINT_CONFIG:
+    interval: 5
+    by_epoch: True
+    max_keep_ckpts: 10
+  WORKFLOW: [['train', 1]]
+  EVALUATION: [{metric: 'map', interval: 5}]
+  STATIC_GRAPH: True
+  FIND_UNUSED_PARAMETERS: True

@@ -4,11 +4,7 @@ from torch import nn
 from torch.nn import init
 from collections import OrderedDict
 
-#    这是CVPR2020的一篇文章。
-# ZECA是一个非常轻量级的即插即用模块，可以提高各种深度CNN架构的性能
-# 如上图所示，SE实现通道注意力是使用两个全连接层，而ECA是需要一个的卷积。作者这么做的原因一方面是认为计算所有通道两两之间的注意力是没有必要的，另一方面是用两个全连接层确实引入了太多的参数和计算量。
-#
-# 因此作者进行了AvgPool之后，只是使用了一个感受野为k的一维卷积（相当于只计算与相邻k个通道的注意力），这样做就大大的减少的参数和计算量。(i.e.相当于SE是一个global的注意力，而ECA是一个local的注意力)。 作者：小番茄666丶 https://www.bilibili.com/read/cv11665879?spm_id_from=333.999.0.0 出处：bilibili
+
 
 class ECAAttention(nn.Module):
 

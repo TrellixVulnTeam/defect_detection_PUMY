@@ -1,0 +1,64 @@
+DATA:
+  NAME: "MultiObjectDataset"
+  ROOT_PATH: "data/objdet-datasets/MultiObjDet"
+  TRAIN_TRANSFORMS:
+    LoadAnnotations: {with_bbox: True}
+    JointResize: {
+      img_scale: [[1333, 800]],
+      keep_ratio: True}
+    JointRandomFlip: {flip_ratio: 0.5}
+    Normalize: {
+      mean: [123.675, 116.28, 103.53],
+      std: [58.395, 57.12, 57.375],
+      to_rgb: False}
+    Pad: {size_divisor: 32}
+    DefaultFormatBundle: {}
+    Collect: {keys: ['img', 'gt_bboxes', 'gt_labels']}
+  TEST_TRANSFORMS:
+    MultiScaleFlipAug: {
+      img_scale: [1333, 800],
+      flip: False,
+      transforms: {
+        JointResize: {keep_ratio: True},
+        JointRandomFlip: {},
+        Normalize: {
+          mean: [123.675, 116.28, 103.53],
+          std: [58.395, 57.12, 57.375],
+          to_rgb: False},
+        Pad: {size_divisor: 32},
+        ImageToTensor: {keys: ['img']},
+        Collect: {keys: ['img']}
+      }
+    }
+  TRAIN_DATA:
+    TYPE: "Normal"
+    FLAG: 1
+    DATA_INFO: [['tfrecords/train_*.tfrecord']]
+    DATA_PREFIX: ["images/"]
+    ANNO_PREFIX: ["annotations/"]
+    CLASS_NAMES: "meta/multiobj-list.txt"
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4
+  VAL_DATA:
+    TYPE: "Normal"
+    FLAG: 1
+    DATA_INFO: [['tfrecords/val.tfrecord']]
+    DATA_PREFIX: ["images/"]
+    ANNO_PREFIX: ["annotations/"]
+    CLASS_NAMES: "meta/multiobj-list.txt"
+    IS_TFRECORD: True
+    TEST_MODE: False
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4
+  TEST_DATA:
+    TYPE: "Normal"
+    FLAG: 1
+    DATA_INFO: [['tfrecords/val.tfrecord']]
+    DATA_PREFIX: ["images/"]
+    ANNO_PREFIX: ["annotations/"]
+    CLASS_NAMES: "meta/multiobj-list.txt"
+    IS_TFRECORD: True
+    TEST_MODE: True
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4

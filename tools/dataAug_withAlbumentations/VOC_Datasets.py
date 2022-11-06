@@ -4,6 +4,7 @@ import shutil
 
 import cv2
 import albumentations as A
+# import albumentations.imgaug.transforms as iaa
 import xml.etree.ElementTree as ET
 import numpy as np
 from PIL import Image
@@ -47,85 +48,95 @@ class VOCAug(object):
         # 数据增强选项
         black_block = random.randint(10, 30)
         self.aug = A.Compose([
-            # 随机亮度对比度
-            # A.RandomBrightnessContrast(brightness_limit=0.3, contrast_limit=0.3, p=1),
-            # 对比度受限自适应直方图均衡
-            # A.CLAHE(clip_limit=2.0, tile_grid_size=(4, 4), p=0.5),
-            # 均衡图像直方图
-            # A.Equalize(p=0.5),
-            # 图像均值平滑滤波
+            # # 对比度受限自适应直方图均衡
+            A.CLAHE(clip_limit=2.0, tile_grid_size=(4, 4), p=0.5),
+            # # 均衡图像直方图
+            # A.Equalize(by_channels=False, p=0.5),
+            # # 图像均值平滑滤波
             # A.Blur(blur_limit = 7,always_apply = False,p = 0.5),
-            # 将图像行和列互换
+            # # 将图像行和列互换
             # A.Transpose(always_apply=False, p=0.5),
-            # 随机伽马变换
-            # A.RandomGamma(gamma_limit=(80, 120), eps=1e-07, always_apply=False, p=0.5),
-            # 对图像进行光学畸变
-            # A.OpticalDistortion(distort_limit=0.05, shift_limit=0.05, interpolation=1, border_mode=4, value=None,
-            #                     mask_value=None, always_apply=False, p=0.5),
-            # 对图像进行网格失真
-            # A.GridDistortion(num_steps=5, distort_limit=0.3, interpolation=1, border_mode=4, value=None,
-            #                  mask_value=None,
-            #                  always_apply=False, p=0.5),
-            # 随机对图像进行弹性变换
-            # A.ElasticTransform(alpha=1, sigma=50, alpha_affine=50,
-            #                    interpolation=1, border_mode=4, value=None,
-            #                    mask_value=None, always_apply=False,
-            #                    approximate=False, p=0.5),
-            # 随机色调、饱和度、值变化
-            # A.HueSaturationValue(hue_shift_limit=20, sat_shift_limit=30,
-            #                      val_shift_limit=20, always_apply=False, p=0.5),
-            # 填充图像
+            # # 随机伽马变换
+            A.RandomGamma(gamma_limit=(80, 120), eps=1e-07, always_apply=False, p=0.5),
+            # # 对图像进行光学畸变
+            A.OpticalDistortion(distort_limit=0.05, shift_limit=0.05, interpolation=1, border_mode=4, value=None,
+                                mask_value=None, always_apply=False, p=0.5),
+            # # 对图像进行网格失真
+            A.GridDistortion(num_steps=5, distort_limit=0.3, interpolation=1, border_mode=4, value=None,
+                             mask_value=None,
+                             always_apply=False, p=0.5),
+            # # 随机对图像进行弹性变换
+            A.ElasticTransform(alpha=1, sigma=50, alpha_affine=50,
+                               interpolation=1, border_mode=4, value=None,
+                               mask_value=None, always_apply=False,
+                               approximate=False, p=0.5),
+            # # 随机色调、饱和度、值变化
+            A.HueSaturationValue(hue_shift_limit=20, sat_shift_limit=30,
+                                 val_shift_limit=20, always_apply=False, p=0.5),
+            # # 填充图像
             # A.PadIfNeeded(min_height=2000, min_width=2000, border_mode=4,
             #               value=None, mask_value=None, always_apply=False,
             #               p=1.0),
-            # 随机亮度变化
-            # A.RandomBrightness(limit=0.2, always_apply=False, p=0.5),
-            # 随机对比度变化
-            # A.RandomContrast(limit=0.2, always_apply=False, p=0.5)
-            # 运动模糊
-            # A.MotionBlur(blur_limit=7, always_apply=False, p=1),
-            # 在图像中生成正方形区域
-
-            # A.Cutout(num_holes=black_block, max_h_size=black_block,
-            #          max_w_size=black_block,
-            #          fill_value=0, always_apply=False, p=0.5),
-            # 在图像上生成矩形区域
+            # # 运动模糊
+            A.MotionBlur(blur_limit=7, always_apply=False, p=0.5),
+            # # 在图像中生成正方形区域
+            #
+            A.Cutout(num_holes=black_block, max_h_size=black_block,
+                     max_w_size=black_block,
+                     fill_value=0, always_apply=False, p=0.5),
+            # # 在图像上生成矩形区域
             # A.CoarseDropout(max_holes=8, max_height=8, max_width=8,
             #                 min_holes=None, min_height=None, min_width=None,
             #                 fill_value=0, always_apply=False, p=0.5),
-            # 随机更改输入图像的亮度和对比度
-            # A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2,
-            #                            brightness_by_max=None, always_apply=False,
-            #                            p=0.5),
-            # 施加摄像头传感器噪音
-            # A.ISONoise(color_shift=(0.01, 0.05), intensity=(0.1, 0.5),
-            #            always_apply=False, p=0.5)
+            # # 随机更改输入图像的亮度和对比度
+            A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2,
+                                       brightness_by_max=None, always_apply=False,
+                                       p=0.5),
+            # # 施加摄像头传感器噪音
+            # # A.ISONoise(color_shift=(0.01, 0.05), intensity=(0.1, 0.5),
+            # #            always_apply=False, p=0.5),
+            # # 将图像乘以随机数或数字数组
+            A.MultiplicativeNoise(multiplier=(0.9, 1.1), per_channel=False,
+                                  elementwise=True, always_apply=False, p=0.5),
+            # # 将像素设置为0的概率
+            A.PixelDropout(dropout_prob=0.01, per_channel=False, drop_value=0,
+                           mask_drop_value=None, always_apply=False, p=0.5),
+            # # 模拟图像的雾
+            # # A.RandomFog(fog_coef_lower=0.3, fog_coef_upper=1, alpha_coef=0.08,
+            # #             always_apply=False, p=0.5),
+            # # 通过使用 2D sinc 滤波器卷积图像来创建振铃或过冲伪影
+            A.RingingOvershoot(blur_limit=(7, 15), cutoff=(0.7853981633974483, 1.5707963267948966),
+                               always_apply=False, p=0.5),
+            # # 锐化输入图像并将结果与原始图像叠加
+            A.Sharpen(alpha=(0.2, 0.5), lightness=(0.5, 1.0), always_apply=False, p=0.5),
+            #
+            A.OneOf([
+                # 水平翻转、旋转、垂直翻转
+                A.HorizontalFlip(p=0.5),
+                A.RandomRotate90(p=0.5),
+                A.VerticalFlip(p=0.5)
+            ], p=1),
+            A.OneOf([
+                # 模糊、失真、噪声
 
-            # A.OneOf([
-            #     # 水平翻转、旋转、垂直翻转
-            #     A.HorizontalFlip(p=1),
-            #     A.RandomRotate90(p=1),
-            #     A.VerticalFlip(p=1)
-            # ], p=1),
-            # A.OneOf([
-            #     # 模糊、失真、噪声
-
-            #     A.GaussianBlur(p=1),
-            #     A.OpticalDistortion(p=1),
-            #     A.GaussNoise(p=1)
-            # ], p=1),
-            # A.OneOf([
-            # RGB平移
-            # A.RGBShift(r_shift_limit=50, g_shift_limit=50, b_shift_limit=50, p=0.5),
-            # 随机排列通道
-            # A.ChannelShuffle(p=0.3),  # 随机排列通道
-            # 随机改变图像的亮度、对比度、饱和度、色调
-            # A.ColorJitter(p=0.3),
-            # 随机丢弃通道
-            # A.ChannelDropout(p=0.3),
-            # ], p=1),
-            # A.Downscale(p=0.1),  # 随机缩小和放大来降低图像质量
-            # A.Emboss(p=0.2),  # 压印输入图像并将结果与原始图像叠加
+                A.GaussianBlur(p=0.5),
+                A.OpticalDistortion(p=0.5),
+                A.RandomBrightnessContrast(p=0.5),
+                A.GaussNoise(p=0.5)
+            ], p=1),
+            # # A.OneOf([
+            #     # RGB平移
+            #     # A.RGBShift(r_shift_limit=50, g_shift_limit=50, b_shift_limit=50, p=0.5),
+            #     # 随机排列通道
+            #     # A.ChannelShuffle(p=0.3),  # 随机排列通道
+            #     # 随机改变图像的亮度、对比度、饱和度、色调
+            #     # A.ColorJitter(p=0.3),
+            #     # 随机丢弃通道
+            #     # A.ChannelDropout(p=0.3),
+            # # ], p=1),
+            A.ColorJitter(p=0.3),
+            # A.Downscale(p=0.5),  # 随机缩小和放大来降低图像质量
+            A.Emboss(p=0.2),  # 压印输入图像并将结果与原始图像叠加
         ],
             A.BboxParams(format='pascal_voc', min_area=0., min_visibility=0., label_fields=['category_id'])
         )
@@ -173,7 +184,8 @@ class VOCAug(object):
 
             # 读取图片
             # image = cv2.imread(os.path.join(self.pre_image_path, image_name))
-            image = np.array(Image.open(os.path.join(self.pre_image_path, image_name)))
+            image = cv2.cvtColor(np.asarray(Image.open(os.path.join(self.pre_image_path, image_name))),
+                                 cv2.COLOR_RGB2BGR)
         return bboxes, cls_id_list, image, image_name
 
     def aug_image(self, AUGLOOP):
@@ -186,17 +198,21 @@ class VOCAug(object):
                 continue
 
             bboxes, cls_id_list, image, image_name = self.get_xml_data(xml)
-
-            anno_dict = {'image': image, 'bboxes': bboxes, 'category_id': cls_id_list}
-            # 获得增强后的数据 {"image", "bboxes", "category_id"}
             shutil.copy(os.path.join(self.pre_xml_path, xml),
                         os.path.join(self.aug_xml_save_path, xml))
             shutil.copy(os.path.join(self.pre_image_path, image_name),
                         os.path.join(self.aug_image_save_path, image_name))
+            next_img = False
+            for class_name in cls_id_list:
+                if class_name == 0:
+                    next_img = True
+            if next_img:continue
+            anno_dict = {'image': image, 'bboxes': bboxes, 'category_id': cls_id_list}
+            # 获得增强后的数据 {"image", "bboxes", "category_id"}
+
             record_aug = []
             for epoch in range(AUGLOOP):
                 augmented = self.aug(**anno_dict)
-
                 # 保存增强后的数据
                 flag = self.save_aug_data(augmented, image_name, epoch, record_aug)
             print(image_name, '增强了', len(record_aug), '倍')
@@ -248,8 +264,12 @@ class VOCAug(object):
 
         # 修改每一个标注框
         for index, obj in enumerate(root.iter('object')):
-            obj.find('name').text = self.labels[aug_category_id[index]]
-            xmin, ymin, xmax, ymax = aug_bboxes[index]
+            # obj.find('name').text = self.labels[aug_category_id[index]]
+            try:
+                xmin, ymin, xmax, ymax = aug_bboxes[index]
+            except Exception as e:
+                print('xmin, ymin, xmax, ymax = aug_bboxes[index]', e)
+                return False
             xml_box = obj.find('bndbox')
             xml_box.find('xmin').text = str(int(xmin))
             xml_box.find('ymin').text = str(int(ymin))
@@ -286,19 +306,22 @@ class VOCAug(object):
 
 if __name__ == '__main__':
     # 原始的xml路径和图片路径
-    PRE_IMAGE_PATH = '/home/zhang/datasets/aug_test/single2/images'
-    PRE_XML_PATH = '/home/zhang/datasets/aug_test/single2/XML'
+    PRE_IMAGE_PATH = '/home/zhang/datasets/floor_cut/source/train'
+    PRE_XML_PATH = '/home/zhang/datasets/floor_cut/source/train'
 
     # 增强后保存的xml路径和图片路径
-    AUG_SAVE_IMAGE_PATH = '/home/zhang/datasets/aug_test/single2/after/images/'
-    AUG_SAVE_XML_PATH = '/home/zhang/datasets/aug_test/single2/after/XML/'
+    AUG_SAVE_IMAGE_PATH = '/home/zhang/datasets/floor_cut_blance/source/train'
+    AUG_SAVE_XML_PATH = '/home/zhang/datasets/floor_cut_blance/source/train'
     if not os.path.exists(AUG_SAVE_IMAGE_PATH):
         os.makedirs(AUG_SAVE_IMAGE_PATH, exist_ok=True)
     if not os.path.exists(AUG_SAVE_XML_PATH):
         os.makedirs(AUG_SAVE_XML_PATH, exist_ok=True)
     # 标签列表
     LABELS = ['white-impurities', 'black-spot', 'edge-damage', 'bubble-gum']
-    AUGLOOP = 10
+    # LABELS = ['broken_bottle_cap', 'bottle_cap_deformation', 'broken_edge',
+    #           'bottle_cap_spinning', 'cap_breakpoint', 'code_normal',
+    #           'inkjet_exception']
+    AUGLOOP = 13
     aug = VOCAug(
         pre_image_path=PRE_IMAGE_PATH,
         pre_xml_path=PRE_XML_PATH,
@@ -306,7 +329,7 @@ if __name__ == '__main__':
         aug_xml_save_path=AUG_SAVE_XML_PATH,
         start_aug_id=None,
         labels=LABELS,
-        is_show=True,
+        is_show=False,
     )
 
     aug.aug_image(AUGLOOP)

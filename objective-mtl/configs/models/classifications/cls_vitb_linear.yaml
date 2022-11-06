@@ -1,0 +1,42 @@
+MODEL:
+  TYPE: "cls"
+  NAME: "ImageClassifier"
+  PRETRAINED_MODEL_PATH: "meta/pretrained/vit_base_mae_imagenet_ep400_washed.pth"
+  BACKBONE:
+    type: "VisionTransformer"
+    patch_size: 16
+    embed_dim: 768
+    depth: 12
+    num_heads: 12
+    mlp_ratio: 4
+    qkv_bias: True
+    drop_path_rate: 0.1
+    norm_layer: "partial_norm"
+    num_classes: 0
+    use_abs_pos_emb: False
+    use_rel_pos_bias: True
+    use_mean_pooling: True
+    use_cls_tocken: True
+  CLS_HEAD:
+    type: "LinearClsHead"
+    num_classes: 1000
+    in_channels: 768
+  LOSS:
+    type: 'LabelSmoothLoss'
+    label_smooth_val: 0.1
+    mode: 'original'
+    loss_weight: 1.0
+  EXTEND:
+    with_rdrop: False
+    topk: [1, 5]
+  TRAIN_CFG:
+    augmentor:
+    - {type: 'BatchMixup',
+       alpha: 0.8,
+       num_classes: 1000,
+       prob: 0.5}
+    - {type: 'BatchCutMix',
+       alpha: 1.0,
+       num_classes: 1000,
+       prob: 0.5}
+ 

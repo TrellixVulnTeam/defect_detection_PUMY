@@ -1,0 +1,39 @@
+MODEL:
+  TYPE: "emb"
+  NAME: "MaeEmbedder"
+  PRETRAINED_MODEL_PATH: ""
+  BACKBONE:
+    type: "PretrainVisionTransformerEncoder"
+    img_size: 224
+    patch_size: 16 
+    in_chans: 3 
+    num_classes: 0 
+    embed_dim: 768
+    depth: 12
+    num_heads: 12
+    mlp_ratio: 4
+    qkv_bias: True 
+    drop_rate: 0. 
+    attn_drop_rate: 0.
+    drop_path_rate: 0.
+    norm_layer: "partial_norm" 
+    init_values: 0.
+    use_learnable_pos_emb: False
+  HEAD:
+    type: "PretrainVisionTransformerDecoder"
+    patch_size: 16
+    num_patches: 196
+    num_classes: 768
+    embed_dim: 512
+    depth: 8
+    num_heads: 8
+    mlp_ratio: 4
+    qkv_bias: True
+    drop_rate: 0.
+    attn_drop_rate: 0.
+    drop_path_rate: 0.
+    norm_layer: "partial_norm"  
+    init_values: 0.
+  LOSS:
+    type: 'MSELoss'
+    loss_weight: 1.0

@@ -1,0 +1,106 @@
+MODEL:
+  TYPE: "det"
+  NAME: "DeformableDETR"
+  PRETRAINED_MODEL_PATH: ""
+  BACKBONE:
+    type: "SwinTransformerV2"
+    embed_dim: 128
+    depths: [2, 2, 18, 2]
+    num_heads: [4, 8, 16, 32]
+    window_size: 14
+    drop_path_rate: 0.5
+    use_checkpoint: True
+    out_indices: [0, 1, 2, 3]
+  NECK:
+  - {type: 'FPN',
+     in_channels: [128, 256, 512, 1024],
+     out_channels: 256,
+     start_level: 1,
+     add_extra_convs: 'on_output',
+     num_outs: 4}
+  - {type: 'MultiscaleTransformerNeck',
+     in_channels: [256, 256, 256, 256],
+     num_query: 300,
+     transformer: {
+       type: 'SparseDeformableDETRTransformer',
+       encoder: {
+         type: 'SparseDeformableDETRTransformerEncoder',
+         num_layers: 6,
+         transformerlayers: {
+           type: 'BaseTransformerLayer',
+           attn_cfgs: [
+             {
+               type: 'MSDeformAttn',
+               embed_dims: 256
+             }
+           ],
+           feedforward_channels: 1024,
+           ffn_dropout: 0.1,
+           operation_order: ['cross_attn', 'norm', 'ffn', 'norm'],
+         }
+       },
+       decoder: {
+         type: 'DeformableDETRTransformerDecoder',
+         return_intermediate: True,
+         num_layers: 6,
+         transformerlayers: {
+           type: 'DETRTransformerDecoderLayer',
+           attn_cfgs: [
+             {
+               type: 'MultiheadAttention',
+               embed_dims: 256,
+               num_heads: 8,
+               dropout: 0.1
+             },
+             {
+               type: 'MSDeformAttn',
+               embed_dims: 256
+             }
+           ],
+           feedforward_channels: 1024,
+           ffn_dropout: 0.1,
+           operation_order: ['self_attn', 'norm', 'cross_attn', 'norm', 'ffn', 'norm']
+         },
+         hidden_dim: 256
+       },
+       num_feature_levels: 4,
+       num_classes: 1,
+       rho: 0.3,
+       temperature: 10000,
+       num_pos_feats: 128,
+       topk: 300
+     },
+     positional_encoding: {
+       type: 'SinePositionalEncoding',
+       num_feats: 128,
+       temperature: 10000,
+       normalize: True,
+       offset: -0.5
+     }
+    } 
+  BBOX_HEAD:
+    type: 'DefromableDETRHead'
+    num_classes: 80
+    embed_dims: 256
+    num_pred: 6
+    num_query: 300
+    loss_cls: {
+      type: 'FocalLoss',
+      use_sigmoid: True,
+      gamma: 2.0,
+      alpha: 0.25,
+      loss_weight: 2.0
+    }
+    loss_bbox: {type: 'L1Loss', loss_weight: 5.0}
+    loss_iou: {type: 'GIoULoss', loss_weight: 2.0}
+  TRAIN_CFG:
+    assigner: {
+      type: 'HungarianAssigner',
+      cls_cost: {type: 'FocalLossCost', weight: 2.},
+      reg_cost: {type: 'BBoxL1Cost', weight: 5.0, box_format: 'xywh'},
+      iou_cost: {type: 'IoUCost', iou_mode: 'giou', weight: 2.0}}
+    allowed_border: -1
+    pos_weight: -1
+    debug: False
+  TEST_CFG:
+    max_per_img: 100

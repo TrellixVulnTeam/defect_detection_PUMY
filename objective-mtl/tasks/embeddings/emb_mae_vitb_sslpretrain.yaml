@@ -1,0 +1,38 @@
+MODEL:
+  BASE: "models/embeddings/emb_mae_vitb.yaml"
+  PRETRAINED_MODEL_PATH: ""
+DATA:
+  BASE: "datasets/embeddings/emb_sslpretrain_mae.yaml"
+  ROOT_PATH: "data/objcls-datasets/ImageNet/imagenet1k"
+  TRAIN_DATA:
+    TYPE: "Concat"
+    DATA_INFO: [[ 'tfrecords/train*.tfrecord']]
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  VAL_DATA:
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  TEST_DATA:
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+SCHEDULE:
+  BASE: "schedulers/schedule_adamw.yaml"
+  OPTIMIZER:
+    type: "AdamW"
+    lr: 0.0001
+    betas: [0.9, 0.999]
+    weight_decay: 0.05
+    PARAMWISE_CFG:
+      custom_keys: [{}]
+  OPTIMIZER_CONFIG:
+    fp16: True
+  LR_POLICY:
+    policy: "CosineAnnealing"
+    # min_lr: 0.
+    min_lr_ratio: 0.001
+    warmup: "linear"
+    warmup_iters: 2000
+    warmup_ratio: 0.008
+RUNTIME:
+  BASE: "runtimes/runtime_base.yaml"
+  WORKFLOW: [['train', 1]]

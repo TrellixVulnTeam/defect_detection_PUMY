@@ -3,9 +3,7 @@ import torch
 from torch import nn
 from torch.nn import init
 
-# 这是南大5月28日在arXiv上上传的一篇文章。本文解决的主要是SA的两个痛点问题：（1）Self-Attention的计算复杂度和n呈平方关系；（2）每个head只有q,k,v的部分信息，如果q,k,v的维度太小，那么就会导致获取不到连续的信息，从而导致性能损失。这篇文章给出的思路也非常简单，在SA中，在FC之前，用了一个卷积来降低了空间的维度，从而得到空间维度上更小的K和V。
-# 作者：小番茄666丶 https://www.bilibili.com/read/cv11665879?spm_id_from=333.999.0.0 出处：bilibili
-# An Efficient Transformer for Visual Recognition
+
 
 class EMSA(nn.Module):
 

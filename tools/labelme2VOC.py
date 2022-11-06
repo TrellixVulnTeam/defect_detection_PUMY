@@ -28,13 +28,13 @@ def main():
     parser.add_argument('--labels', type=str, default='/home/zhang/datasets/floor_cut640_aug/labels.txt', help='labels file', required=True)
     args = parser.parse_args()
 
-    if not osp.exists(args.output_dir):
-        print('Output directory already exists:', args.output_dir)
-        sys.exit(1)
-    os.makedirs(args.output_dir)
-    os.makedirs(osp.join(args.output_dir, 'JPEGImages'))
-    os.makedirs(osp.join(args.output_dir, 'Annotations'))
-    os.makedirs(osp.join(args.output_dir, 'AnnotationsVisualization'))
+    # if not osp.exists(args.output_dir):
+    #     print('Output directory already exists:', args.output_dir)
+    #     sys.exit(1)
+    os.makedirs(args.output_dir, exist_ok=True)
+    os.makedirs(osp.join(args.output_dir, 'JPEGImages'), exist_ok=True)
+    os.makedirs(osp.join(args.output_dir, 'Annotations'), exist_ok=True)
+    os.makedirs(osp.join(args.output_dir, 'AnnotationsVisualization'), exist_ok=True)
     print('Creating dataset:', args.output_dir)
 
     class_names = []

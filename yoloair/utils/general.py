@@ -673,6 +673,7 @@ def clip_coords(boxes, shape):
         boxes[:, [0, 2]] = boxes[:, [0, 2]].clip(0, shape[1])  # x1, x2
         boxes[:, [1, 3]] = boxes[:, [1, 3]].clip(0, shape[0])  # y1, y2
 
+
 def soft_nms(prediction, conf_thres=0.25, iou_thres=0.45, multi_label=False):
     """Runs Non-Maximum Suppression (NMS) on inference results
 
@@ -716,11 +717,11 @@ def soft_nms(prediction, conf_thres=0.25, iou_thres=0.45, multi_label=False):
         x = x[x[:, 4].argsort(descending=True)]  # sort by confidence
         # Batched NMS
         det_max = []
-        cls = x[:, -1]   # classes
+        cls = x[:, -1]  # classes
         for c in cls.unique():
             dc = x[cls == c]
             n = len(dc)
-            #print(n)
+            # print(n)
             if n == 1:
                 det_max.append(dc)
                 continue
@@ -738,12 +739,13 @@ def soft_nms(prediction, conf_thres=0.25, iou_thres=0.45, multi_label=False):
                     dc = dc[dc[:, 4] > conf_thres]
         if len(det_max):
             det_max = torch.cat(det_max)
-            #output[xi] = det_max[(-det_max[:, 4]).argsort()]
+            # output[xi] = det_max[(-det_max[:, 4]).argsort()]
             output[xi] = det_max[(-det_max[:, 4]).argsort()]
         if (time.time() - t) > time_limit:
             print(f'WARNING: NMS time limit {time_limit}s exceeded')
             break  # time limit exceeded
     return output
+
 
 def non_max_suppression(prediction, conf_thres=0.25, iou_thres=0.45, classes=None, agnostic=False, multi_label=False,
                         labels=(), max_det=300):
@@ -839,19 +841,20 @@ def non_max_suppression(prediction, conf_thres=0.25, iou_thres=0.45, classes=Non
 
     return output
 
+
 def NMS(boxes, scores, iou_thres, class_nms='CIoU'):
     # class_nms=class_nms
-    GIoU=CIoU=DIoU=EIoU=SIoU=False
+    GIoU = CIoU = DIoU = EIoU = SIoU = False
     if class_nms == 'CIoU':
-        CIoU=True
+        CIoU = True
     elif class_nms == 'DIoU':
-        DIoU=True
+        DIoU = True
     elif class_nms == 'GIoU':
-        GIoU=True
+        GIoU = True
     elif class_nms == 'EIoU':
-        EIoU=True
-    else :
-        SIoU=True
+        EIoU = True
+    else:
+        SIoU = True
     B = torch.argsort(scores, dim=-1, descending=True)
     keep = []
     while B.numel() > 0:
@@ -862,6 +865,7 @@ def NMS(boxes, scores, iou_thres, class_nms='CIoU'):
         inds = torch.nonzero(iou <= iou_thres).reshape(-1)
         B = B[inds + 1]
     return torch.tensor(keep)
+
 
 def strip_optimizer(f='best.pt', s=''):  # from utils.general import *; strip_optimizer()
     # Strip optimizer from 'f' to finalize training, optionally save as 's'
@@ -943,12 +947,14 @@ def box_iou_v5(box1, box2, x1y1x2y2=True):
             b_x1, b_x2 = box[0] - box[2] / 2, box[0] + box[2] / 2
             b_y1, b_y2 = box[1] - box[3] / 2, box[1] + box[3] / 2
             return (b_x2 - b_x1) * (b_y2 - b_y1)
+
     area1 = box_area(box1.T, x1y1x2y2)
     area2 = box_area(box2.T, x1y1x2y2)
 
     # inter(N,M) = (rb(N,M,2) - lt(N,M,2)).clamp(0).prod(2)
     inter = (torch.min(box1[:, None, 2:], box2[:, 2:]) - torch.max(box1[:, None, :2], box2[:, :2])).clamp(0).prod(2)
     return inter / (area1[:, None] + area2 - inter)  # iou = inter / (area1 + area2 - inter)
+
 
 def Wasserstein(box1, box2, x1y1x2y2=True):
     box2 = box2.T
@@ -963,10 +969,11 @@ def Wasserstein(box1, box2, x1y1x2y2=True):
     cx_L2Norm = torch.pow((b1_cx - b2_cx), 2)
     cy_L2Norm = torch.pow((b1_cy - b2_cy), 2)
     p1 = cx_L2Norm + cy_L2Norm
-    w_FroNorm = torch.pow((b1_w - b2_w)/2, 2)
-    h_FroNorm = torch.pow((b1_h - b2_h)/2, 2)
+    w_FroNorm = torch.pow((b1_w - b2_w) / 2, 2)
+    h_FroNorm = torch.pow((b1_h - b2_h) / 2, 2)
     p2 = w_FroNorm + h_FroNorm
     return p1 + p2
+
 
 def apply_classifier(x, model, img, im0):
     # Apply a second stage classifier to YOLO outputs

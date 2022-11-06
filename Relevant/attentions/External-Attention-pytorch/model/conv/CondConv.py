@@ -76,6 +76,6 @@ class CondConv(nn.Module):
 
 if __name__ == '__main__':
     input=torch.randn(2,32,64,64)
-    m=CondConv(in_planes=32,out_planes=64,kernel_size=3,stride=2,padding=1,bias=False)
+    m=CondConv(in_planes=32,out_planes=64,kernel_size=3,stride=1,padding=1,bias=False)
     out=m(input)
     print(out.shape)

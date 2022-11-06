@@ -1,0 +1,71 @@
+MODEL:
+  BASE: "models/embeddings/emb_distill_swinlv2.yaml"
+  PRETRAINED_MODEL_PATH: "meta/pretrained/swin_large_dino_ep10_washed.pth"
+  EXTEND_MODEL_PATH: "meta/pretrained/swinv2_huge_imagenet21k_ep60.pth"
+  BACKBONE:
+    type: "SwinTransformerV2"
+    embed_dim: 192
+    depths: [2, 2, 18, 2]
+    num_heads: [6, 12, 24, 48]
+    window_size: 14
+    drop_path_rate: 0.5
+    use_checkpoint: True
+    out_indices: [0, 1, 2, 3]
+  TEACHER_BACKBONE:
+    type: "SwinTransformerV2"
+    embed_dim: 352
+    depths: [2, 2, 18, 2]
+    num_heads: [11, 22, 44, 88]
+    window_size: 14
+    drop_path_rate: 0.0
+    out_indices: [0, 1, 2, 3]
+  EMB_HEAD:
+    type: 'MultiLevelMlpHead'
+    in_channels: [192, 384, 768, 1536]
+    hid_channels: [352, 704, 1408, 2816]
+    out_channels: [352, 704, 1408, 2816]
+  EXTEND_HEAD:
+    type: 'MultiLevelPoolHead'
+DATA:
+  BASE: "datasets/embeddings/emb_sslpretrain.yaml"
+  ROOT_PATH: "data/objdet-datasets"
+  TRAIN_DATA:
+    TYPE: "Concat"
+    DATA_INFO: [['MultiObjDet/tfrecords/*.tfrecord'],
+                ['COCO/tfrecords/*.tfrecord'],
+                ['Object365/tfrecords/*.tfrecord']]
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  VAL_DATA:
+    DATA_INFO: [['MultiObjDet/tfrecords/val.tfrecord']]
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4
+  TEST_DATA:
+    DATA_INFO: [['MultiObjDet/tfrecords/val.tfrecord']]
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4
+SCHEDULE:
+  BASE: "schedulers/schedule_adamw.yaml"
+  OPTIMIZER:
+    type: "AdamW"
+    lr: 0.0004
+    betas: [0.9, 0.999]
+    weight_decay: 0.05
+    PARAMWISE_CFG:
+      custom_keys: [{}]
+  OPTIMIZER_CONFIG:
+    fp16: True
+  LR_POLICY:
+    policy: "CosineAnnealing"
+    min_lr_ratio: 0.001
+    warmup: "linear"
+    warmup_iters: 1000
+    warmup_ratio: 0.001
+  RUNNER:
+    type: "EpochBasedRunner"
+    max_epochs: 10
+RUNTIME:
+  BASE: "runtimes/runtime_base.yaml"
+  WORKFLOW: [['train', 1]]
+  STATIC_GRAPH: True
+  # FIND_UNUSED_PARAMETERS: True

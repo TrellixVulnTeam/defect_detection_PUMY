@@ -1,0 +1,25 @@
+RUNTIME:
+  WORK_DIR: ""
+  LOAD_CHECKPOINT_PATH: ""
+  RESUME_MODEL_PATH: ""
+  CHECKPOINT_CONFIG:
+    interval: 1
+    by_epoch: True
+    max_keep_ckpts: 10
+  LOG_CONFIG:
+    interval: 50
+    hooks: {
+      TextLoggerHook: {ignore_last: False},
+      TensorboardLoggerHook: {}
+    }
+  LOG_LEVEL: "INFO"
+  DIST_PARAMS: ["backend", "nccl"]
+  SEED: 42
+  SHUFFLE: True
+  PIN_MEMORY: True
+  FIND_UNUSED_PARAMETERS: False
+  STATIC_GRAPH: False
+  WORKFLOW: [['train', 1]]
+  EVALUATION: [{
+    metric: 'accuracy',   # cls: 'accuracy', 'precision', 'recall', 'f1_score' det: 'map', 'Recall'
+    metric_options: {'topk': [1]}}]

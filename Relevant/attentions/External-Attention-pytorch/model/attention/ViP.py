@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-# Vision Permutator: A Permutable MLP-Like Architecture for Visual Recognition
+
 
 class MLP(nn.Module):
     def __init__(self,in_features,hidden_features,out_features,act_layer=nn.GELU,drop=0.1):

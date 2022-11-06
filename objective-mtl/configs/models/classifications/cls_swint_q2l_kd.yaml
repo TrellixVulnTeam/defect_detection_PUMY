@@ -1,0 +1,43 @@
+MODEL:
+  TYPE: "cls"
+  NAME: "ImageQ2LKDClassifier"
+  PRETRAINED_MODEL_PATH: "meta/pretrained/swin_tiny_patch4_window7_224.pth"
+  TEACHER_MODEL_PATH: "meta/pretrained/swin_large_moco_100m_ep3_washed.pth"
+  BACKBONE:
+    type: "SwinTransformer"
+    embed_dim: 96
+    depths: [2, 2, 6, 2]
+    num_heads: [3, 6, 12, 24]
+    out_indices: [3]
+  TEACHER_BACKBONE:
+    type: "SwinTransformer"
+    embed_dim: 192
+    depths: [2, 2, 18, 2]
+    num_heads: [6, 12, 24, 48]
+    out_indices: [3]
+    with_fc: True
+    out_dim: 128
+  EXTEND_BACKBONE:
+    type: "PositionEmbedding"
+    img_size: 384
+    downsample_ratio: 32
+    hidden_dim: 1536
+  EXTEND_NECK:
+    type: "GlobalAveragePooling"
+  EMB_HEAD:
+    type: "FCMlpHead"
+    num_classes: 128
+    in_channels: 768
+    use_mlp: True
+  CLS_HEAD:
+    type: "Q2LTransformerClsHead"
+    num_classes: 63
+    in_channels: 768
+  LOSS:
+    type: 'AsymmetricLoss'
+    gamma_pos: 0
+  EXTEND_LOSS:
+    type: 'KLLoss'
+    temperature: 4.0
+    reduction: "sum"
+    loss_weight: 10.0

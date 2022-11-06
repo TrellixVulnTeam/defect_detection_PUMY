@@ -1,0 +1,39 @@
+MODEL:
+  TYPE: 'seg'
+  NAME: 'EncoderDecoder'
+  PRETRAINED_MODEL_PATH: ""
+  BACKBONE:
+    type: 'ResNetV1c'
+    depth: 50
+    num_stages: 4
+    out_indices: [0, 1, 2, 3]
+    dilations: [1, 1, 1, 1]
+    strides: [1, 2, 2, 2]
+    norm_cfg: {
+      type: 'BN', 
+      requires_grad: True}
+    norm_eval: False
+    contract_dilation: True
+  NECK:
+    type: 'FPN'
+    in_channels: [256, 512, 1024, 2048]
+    out_channels: 256
+    num_outs: 4
+  DECODE_HEAD:
+    type: 'SegFPNHead'
+    in_channels: [256, 256, 256, 256]
+    in_index: [0, 1, 2, 3]
+    feature_strides: [4, 8, 16, 32]
+    channels: 128
+    dropout_ratio: 0.1
+    num_classes: 19
+    norm_cfg: {
+      type: 'BN', 
+      requires_grad: True}
+    align_corners: False
+  LOSS: 
+    type: 'CrossEntropyLoss'
+    use_sigmoid: False
+    loss_weight: 1.0
+  TEST_CFG:
+    mode: 'whole'

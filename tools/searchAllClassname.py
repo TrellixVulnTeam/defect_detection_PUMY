@@ -28,7 +28,7 @@ def instance_to_json(instance, json_file_path):
 # txt_file=open('results.txt',mode='w+')
 # results_path = '/home/ubuntu/Code/tools/new/'
 # os.makedirs(results_path)
-path = '/home/zhang/datasets/floor_aug_balance/640/'
+path = '/home/zhang/datasets/floor_cut_blance/source/train/'
 classes = {}
 for root, sub_folder, files in os.walk(path):
     for json_file in files:
@@ -51,18 +51,3 @@ for root, sub_folder, files in os.walk(path):
                 classes[instance['shapes'][i]['label']] += 1
 print(classes)
 print(len(classes))
-        # if 'label' in instance['shapes']:
-        #     if type(instance['shapes']['label']) == str:
-        #         print(json_file_path)
-                # print(type(instance['imageData']))
-                # print(os.path.join(curDir, json_file))
-                # path1 = os.path.join(curDir, json_file)
-                # shutil.copy(path1, results_path)
-                # path_jpg = path1[:-4] + 'jpg'
-                # shutil.copy(path_jpg, results_path)
-                # instance['imageData'] = None
-                # instance_to_json(instance, json_file_path)
-
-                # txt_file.write(path1+'\n')
-# txt_file.close()
-# 检测json里面的imageData有没有值

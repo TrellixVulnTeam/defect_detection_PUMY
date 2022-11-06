@@ -1,19 +1,24 @@
 
 <img src="./FightingCVimg/LOGO.gif" height="200" width="400"/>
 
+简体中文 | [English](./README_EN.md)
 
-# FightingCV Codebase For [***Attention***](#attention-series),[***Backbone***](#backbone-series), [***MLP***](#mlp-series), [***Re-parameter***](#re-parameter-series), [**Convolution**](#convolution-series)
+# FightingCV 代码库， 包含 [***Attention***](#attention-series),[***Backbone***](#backbone-series), [***MLP***](#mlp-series), [***Re-parameter***](#re-parameter-series), [**Convolution**](#convolution-series)
 
 ![](https://img.shields.io/badge/fightingcv-v0.0.1-brightgreen)
 ![](https://img.shields.io/badge/python->=v3.0-blue)
 ![](https://img.shields.io/badge/pytorch->=v1.4-red)
 
+<!--
 -------
 *If this project is helpful to you, welcome to give a ***star***.* 
 
 *Don't forget to ***follow*** me to learn about project updates.*
 
--------
+-->
+
+
+
 
 Hello，大家好，我是小马🚀🚀🚀
 
@@ -27,36 +32,131 @@ Hello，大家好，我是小马🚀🚀🚀
 能力有限，**不喜轻喷**！！！
 
 ***For All：***
-本项目就是要实现一个既能**让深度学习小白也能搞懂**，又能**服务科研和工业社区**的代码库。作为[【论文解析项目】](https://github.com/xmu-xiaoma666/FightingCV-Paper-Reading)的补充，本项目的宗旨是从代码角度，实现🚀**让世界上没有难读的论文**🚀。
+本项目就是要实现一个既能**让深度学习小白也能搞懂**，又能**服务科研和工业社区**的代码库。作为[**FightingCV公众号**](https://mp.weixin.qq.com/s/m9RiivbbDPdjABsTd6q8FA)和 **[FightingCV-Paper-Reading](https://github.com/xmu-xiaoma666/FightingCV-Paper-Reading)** 的补充，本项目的宗旨是从代码角度，实现🚀**让世界上没有难读的论文**🚀。
 
 （同时也非常欢迎各位科研工作者将自己的工作的核心代码整理到本项目中，推动科研社区的发展，会在readme中注明代码的作者~）
 
 
 
-## 公众号 & 微信交流群
+
+
+
+## 技术交流 <img title="" src="https://user-images.githubusercontent.com/48054808/157800467-2a9946ad-30d1-49a9-b9db-ba33413d9c90.png" alt="" width="20">
 
 欢迎大家关注公众号：**FightingCV**
 
-公众号**每天**都会进行**论文、算法和代码的干货分享**哦~
 
 
-已建立**机器学习/深度学习算法/计算机视觉/多模态交流群**微信交流群！
+| FightingCV公众号 | 小助手微信 （备注【**公司/学校+方向+ID**】）|
+:-------------------------:|:-------------------------:
+<img src='./FightingCVimg/FightingCV.jpg' width='200px'>  |  <img src='./FightingCVimg/xiaozhushou.jpg' width='200px'> 
 
+- 公众号**每天**都会进行**论文、算法和代码的干货分享**哦~
+
+- **交流群每天分享一些最新的论文和解析**，欢迎大家一起**学习交流**哈~~~
 （加不进去可以加微信：**775629340**，记得备注【**公司/学校+方向+ID**】）
 
-**每天在群里分享一些近期的论文和解析**，欢迎大家一起**学习交流**哈~~~
+<!-- ![](./FightingCVimg/wechat.jpg) -->
 
-
-![](./FightingCVimg/wechat.jpg)
-
-强烈推荐大家关注[**知乎**](https://www.zhihu.com/people/jason-14-58-38/posts)账号和[**FightingCV公众号**](https://mp.weixin.qq.com/s/sgNw6XFBPcD20Ef3ddfE1w)，可以快速了解到最新优质的干货资源。
+- 强烈推荐大家关注[**知乎**](https://www.zhihu.com/people/jason-14-58-38/posts)账号和[**FightingCV公众号**](https://mp.weixin.qq.com/s/m9RiivbbDPdjABsTd6q8FA)，可以快速了解到最新优质的干货资源。
 
 
 
 
-***
+## 项目推荐
 
-# Contents
+-------
+
+
+🔥🔥🔥 重磅！！！作为项目补充，更多论文层面的解析，可以关注新开源的项目 **[FightingCV-Paper-Reading](https://github.com/xmu-xiaoma666/FightingCV-Paper-Reading)** ，里面汇集和整理了各大顶会顶刊的论文解析
+
+
+
+🔥🔥🔥重磅！！！ 最近为大家整理了网上的各种AI相关的视频教程和必读论文 **[FightingCV-Course
+](https://github.com/xmu-xiaoma666/FightingCV-Course)**
+
+
+🔥🔥🔥 重磅！！！最近全新开源了一个 **[YOLOAir](https://github.com/iscyy/yoloair)** 目标检测代码库 ，里面集成了多种YOLO模型，包括YOLOv5, YOLOv7,YOLOR, YOLOX,YOLOv4, YOLOv3以及其他YOLO模型，还包括多种现有Attention机制。
+
+![acff451cb342be80bff0963e0a03138](https://user-images.githubusercontent.com/33897496/187075538-746de6eb-308e-4e42-b9f9-939904c9a7f9.jpg)
+
+
+
+🔥🔥🔥 **ECCV2022论文汇总：[ECCV2022-Paper-List](https://github.com/xmu-xiaoma666/ECCV2022-Paper-List/blob/master/README.md)**
+
+
+<!-- ![image](https://user-images.githubusercontent.com/33897496/184842902-9acff374-b3e7-401a-80fd-9d484e40c637.png) -->
+
+-------
+
+## 新增
+
+- 支持通过 pip 方式使用该代码库
+
+-------
+
+## 使用
+
+### 安装
+
+ 直接通过 pip 安装
+
+  ```shell
+  pip install fightingcv-attention
+  ```
+
+
+或克隆该仓库
+
+  ```shell
+  git clone https://github.com/xmu-xiaoma666/External-Attention-pytorch.git
+
+  cd External-Attention-pytorch
+  ```
+
+### 演示
+
+#### 使用 pip 方式
+```python
+import torch
+from torch import nn
+from torch.nn import functional as F
+
+# 使用 pip 方式
+
+from fightingcv_attention.attention.MobileViTv2Attention import *
+
+if __name__ == '__main__':
+    input=torch.randn(50,49,512)
+    sa = MobileViTv2Attention(d_model=512)
+    output=sa(input)
+    print(output.shape)
+```
+
+ - pip包 内置模块使用参考: [fightingcv-attention 说明文档](./README_pip.md)
+
+#### 使用 git 方式
+```python
+import torch
+from torch import nn
+from torch.nn import functional as F
+
+# 与 pip方式 区别在于 将 `fightingcv_attention` 替换 `model`
+
+from model.attention.MobileViTv2Attention import *
+
+if __name__ == '__main__':
+    input=torch.randn(50,49,512)
+    sa = MobileViTv2Attention(d_model=512)
+    output=sa(input)
+    print(output.shape)
+```
+
+-------
+
+
+
+# 目录
 
 - [Attention Series](#attention-series)
     - [1. External Attention Usage](#1-external-attention-usage)
@@ -118,7 +218,20 @@ Hello，大家好，我是小马🚀🚀🚀
     - [29. ParNet Attention Usage](#29-ParNet-Attention-Usage)
 
     - [30. UFO Attention Usage](#30-UFO-Attention-Usage)
+
+    - [31. ACmix Attention Usage](#31-Acmix-Attention-Usage)
   
+    - [32. MobileViTv2 Attention Usage](#32-MobileViTv2-Attention-Usage)
+
+    - [33. DAT Attention Usage](#33-DAT-Attention-Usage)
+
+    - [34. CrossFormer Attention Usage](#34-CrossFormer-Attention-Usage)
+
+    - [35. MOATransformer Attention Usage](#35-MOATransformer-Attention-Usage)
+
+    - [36. CrissCrossAttention Attention Usage](#36-CrissCrossAttention-Attention-Usage)
+
+    - [37. Axial_attention Attention Usage](#37-Axial_attention-Attention-Usage)
 
 - [Backbone Series](#Backbone-series)
 
@@ -129,6 +242,46 @@ Hello，大家好，我是小马🚀🚀🚀
     - [3. MobileViT Usage](#3-MobileViT-Usage)
 
     - [4. ConvMixer Usage](#4-ConvMixer-Usage)
+
+    - [5. ShuffleTransformer Usage](#5-ShuffleTransformer-Usage)
+
+    - [6. ConTNet Usage](#6-ConTNet-Usage)
+
+    - [7. HATNet Usage](#7-HATNet-Usage)
+
+    - [8. CoaT Usage](#8-CoaT-Usage)
+
+    - [9. PVT Usage](#9-PVT-Usage)
+
+    - [10. CPVT Usage](#10-CPVT-Usage)
+
+    - [11. PIT Usage](#11-PIT-Usage)
+
+    - [12. CrossViT Usage](#12-CrossViT-Usage)
+
+    - [13. TnT Usage](#13-TnT-Usage)
+
+    - [14. DViT Usage](#14-DViT-Usage)
+
+    - [15. CeiT Usage](#15-CeiT-Usage)
+
+    - [16. ConViT Usage](#16-ConViT-Usage)
+
+    - [17. CaiT Usage](#17-CaiT-Usage)
+
+    - [18. PatchConvnet Usage](#18-PatchConvnet-Usage)
+
+    - [19. DeiT Usage](#19-DeiT-Usage)
+
+    - [20. LeViT Usage](#20-LeViT-Usage)
+
+    - [21. VOLO Usage](#21-VOLO-Usage)
+    
+    - [22. Container Usage](#22-Container-Usage)
+
+    - [23. CMT Usage](#23-CMT-Usage)
+
+    - [24. EfficientFormer Usage](#24-EfficientFormer-Usage)
 
 
 - [MLP Series](#mlp-series)
@@ -142,6 +295,8 @@ Hello，大家好，我是小马🚀🚀🚀
     - [4. gMLP Usage](#4-gMLP-Usage)
 
     - [5. sMLP Usage](#5-sMLP-Usage)
+
+    - [6. vip-mlp Usage](#6-vip-mlp-Usage)
 
 - [Re-Parameter(ReP) Series](#Re-Parameter-series)
 
@@ -164,6 +319,7 @@ Hello，大家好，我是小马🚀🚀🚀
     - [5. CondConv Usage](#5-CondConv-Usage)
 
 ***
+
 
 
 # Attention Series
@@ -233,13 +389,25 @@ Hello，大家好，我是小马🚀🚀🚀
 
 - Pytorch implementation of [Coordinate Attention for Efficient Mobile Network Design ---CVPR 2021](https://arxiv.org/abs/2103.02907)
 
-- Pytorch implementation of [MobileViT: Light-weight, General-purpose, and Mobile-friendly Vision Transformer---ArXiv 2021.10.05](https://arxiv.org/abs/2103.02907)
+- Pytorch implementation of [MobileViT: Light-weight, General-purpose, and Mobile-friendly Vision Transformer---ArXiv 2021.10.05](https://arxiv.org/abs/2110.02178)
 
 - Pytorch implementation of [Non-deep Networks---ArXiv 2021.10.20](https://arxiv.org/abs/2110.07641)
 
 - Pytorch implementation of [UFO-ViT: High Performance Linear Vision Transformer without Softmax---ArXiv 2021.09.29](https://arxiv.org/abs/2109.14382)
 
+- Pytorch implementation of [Separable Self-attention for Mobile Vision Transformers---ArXiv 2022.06.06](https://arxiv.org/abs/2206.02680)
+
+- Pytorch implementation of [On the Integration of Self-Attention and Convolution---ArXiv 2022.03.14](https://arxiv.org/pdf/2111.14556.pdf)
+
+- Pytorch implementation of [CROSSFORMER: A VERSATILE VISION TRANSFORMER HINGING ON CROSS-SCALE ATTENTION---ICLR 2022](https://arxiv.org/pdf/2108.00154.pdf)
+
+- Pytorch implementation of [Aggregating Global Features into Local Vision Transformer](https://arxiv.org/abs/2201.12903)
+
+- Pytorch implementation of [CCNet: Criss-Cross Attention for Semantic Segmentation](https://arxiv.org/abs/1811.11721)
+
+- Pytorch implementation of [Axial Attention in Multidimensional Transformers](https://arxiv.org/abs/1912.12180)
 ***
+
 
 ### 1. External Attention Usage
 #### 1.1. Paper
@@ -1041,6 +1209,217 @@ if __name__ == '__main__':
     
 ```
 
+-
+
+### 31. ACmix Attention Usage
+
+#### 31.1. Paper
+
+[On the Integration of Self-Attention and Convolution](https://arxiv.org/pdf/2111.14556.pdf)
+
+#### 31.2. Usage Code
+
+```python
+from model.attention.ACmix import ACmix
+import torch
+
+if __name__ == '__main__':
+    input=torch.randn(50,256,7,7)
+    acmix = ACmix(in_planes=256, out_planes=256)
+    output=acmix(input)
+    print(output.shape)
+    
+```
+
+### 32. MobileViTv2 Attention Usage
+
+#### 32.1. Paper
+
+[Separable Self-attention for Mobile Vision Transformers---ArXiv 2022.06.06](https://arxiv.org/abs/2206.02680)
+
+
+#### 32.2. Overview
+
+![](./model/img/MobileViTv2.png)
+
+#### 32.3. Usage Code
+
+```python
+from model.attention.MobileViTv2Attention import MobileViTv2Attention
+import torch
+from torch import nn
+from torch.nn import functional as F
+
+if __name__ == '__main__':
+    input=torch.randn(50,49,512)
+    sa = MobileViTv2Attention(d_model=512)
+    output=sa(input)
+    print(output.shape)
+    
+```
+
+### 33. DAT Attention Usage
+
+#### 33.1. Paper
+
+[Vision Transformer with Deformable Attention---CVPR2022](https://arxiv.org/abs/2201.00520)
+
+#### 33.2. Usage Code
+
+```python
+from model.attention.DAT import DAT
+import torch
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = DAT(
+        img_size=224,
+        patch_size=4,
+        num_classes=1000,
+        expansion=4,
+        dim_stem=96,
+        dims=[96, 192, 384, 768],
+        depths=[2, 2, 6, 2],
+        stage_spec=[['L', 'S'], ['L', 'S'], ['L', 'D', 'L', 'D', 'L', 'D'], ['L', 'D']],
+        heads=[3, 6, 12, 24],
+        window_sizes=[7, 7, 7, 7] ,
+        groups=[-1, -1, 3, 6],
+        use_pes=[False, False, True, True],
+        dwc_pes=[False, False, False, False],
+        strides=[-1, -1, 1, 1],
+        sr_ratios=[-1, -1, -1, -1],
+        offset_range_factor=[-1, -1, 2, 2],
+        no_offs=[False, False, False, False],
+        fixed_pes=[False, False, False, False],
+        use_dwc_mlps=[False, False, False, False],
+        use_conv_patches=False,
+        drop_rate=0.0,
+        attn_drop_rate=0.0,
+        drop_path_rate=0.2,
+    )
+    output=model(input)
+    print(output[0].shape)
+    
+```
+
+### 34. CrossFormer Attention Usage
+
+#### 34.1. Paper
+
+[CROSSFORMER: A VERSATILE VISION TRANSFORMER HINGING ON CROSS-SCALE ATTENTION---ICLR 2022](https://arxiv.org/pdf/2108.00154.pdf)
+
+#### 34.2. Usage Code
+
+```python
+from model.attention.Crossformer import CrossFormer
+import torch
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = CrossFormer(img_size=224,
+        patch_size=[4, 8, 16, 32],
+        in_chans= 3,
+        num_classes=1000,
+        embed_dim=48,
+        depths=[2, 2, 6, 2],
+        num_heads=[3, 6, 12, 24],
+        group_size=[7, 7, 7, 7],
+        mlp_ratio=4.,
+        qkv_bias=True,
+        qk_scale=None,
+        drop_rate=0.0,
+        drop_path_rate=0.1,
+        ape=False,
+        patch_norm=True,
+        use_checkpoint=False,
+        merge_size=[[2, 4], [2,4], [2, 4]]
+    )
+    output=model(input)
+    print(output.shape)
+    
+```
+
+### 35. MOATransformer Attention Usage
+
+#### 35.1. Paper
+
+[Aggregating Global Features into Local Vision Transformer](https://arxiv.org/abs/2201.12903)
+
+#### 35.2. Usage Code
+
+```python
+from model.attention.MOATransformer import MOATransformer
+import torch
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = MOATransformer(
+        img_size=224,
+        patch_size=4,
+        in_chans=3,
+        num_classes=1000,
+        embed_dim=96,
+        depths=[2, 2, 6],
+        num_heads=[3, 6, 12],
+        window_size=14,
+        mlp_ratio=4.,
+        qkv_bias=True,
+        qk_scale=None,
+        drop_rate=0.0,
+        drop_path_rate=0.1,
+        ape=False,
+        patch_norm=True,
+        use_checkpoint=False
+    )
+    output=model(input)
+    print(output.shape)
+    
+```
+
+### 36. CrissCrossAttention Attention Usage
+
+#### 36.1. Paper
+
+[CCNet: Criss-Cross Attention for Semantic Segmentation](https://arxiv.org/abs/1811.11721)
+
+#### 36.2. Usage Code
+
+```python
+from model.attention.CrissCrossAttention import CrissCrossAttention
+import torch
+
+if __name__ == '__main__':
+    input=torch.randn(3, 64, 7, 7)
+    model = CrissCrossAttention(64)
+    outputs = model(input)
+    print(outputs.shape)
+    
+```
+
+### 37. Axial_attention Attention Usage
+
+#### 37.1. Paper
+
+[Axial Attention in Multidimensional Transformers](https://arxiv.org/abs/1912.12180)
+
+#### 37.2. Usage Code
+
+```python
+from model.attention.Axial_attention import AxialImageTransformer
+import torch
+
+if __name__ == '__main__':
+    input=torch.randn(3, 128, 7, 7)
+    model = AxialImageTransformer(
+        dim = 128,
+        depth = 12,
+        reversible = True
+    )
+    outputs = model(input)
+    print(outputs.shape)
+    
+```
+
 ***
 
 
@@ -1053,6 +1432,47 @@ if __name__ == '__main__':
 - Pytorch implementation of [MobileViT: Light-weight, General-purpose, and Mobile-friendly Vision Transformer---ArXiv 2020.10.05](https://arxiv.org/abs/2103.02907)
 
 - Pytorch implementation of [Patches Are All You Need?---ICLR2022 (Under Review)](https://openreview.net/forum?id=TVHS5Y4dNvM)
+
+- Pytorch implementation of [Shuffle Transformer: Rethinking Spatial Shuffle for Vision Transformer---ArXiv 2021.06.07](https://arxiv.org/abs/2106.03650)
+
+- Pytorch implementation of [ConTNet: Why not use convolution and transformer at the same time?---ArXiv 2021.04.27](https://arxiv.org/abs/2104.13497)
+
+- Pytorch implementation of [Vision Transformers with Hierarchical Attention---ArXiv 2022.06.15](https://arxiv.org/abs/2106.03180)
+
+- Pytorch implementation of [Co-Scale Conv-Attentional Image Transformers---ArXiv 2021.08.26](https://arxiv.org/abs/2104.06399)
+
+- Pytorch implementation of [Conditional Positional Encodings for Vision Transformers](https://arxiv.org/abs/2102.10882)
+
+- Pytorch implementation of [Rethinking Spatial Dimensions of Vision Transformers---ICCV 2021](https://arxiv.org/abs/2103.16302)
+
+- Pytorch implementation of [CrossViT: Cross-Attention Multi-Scale Vision Transformer for Image Classification---ICCV 2021](https://arxiv.org/abs/2103.14899)
+
+- Pytorch implementation of [Transformer in Transformer---NeurIPS 2021](https://arxiv.org/abs/2103.00112)
+
+- Pytorch implementation of [DeepViT: Towards Deeper Vision Transformer](https://arxiv.org/abs/2103.11886)
+
+- Pytorch implementation of [Incorporating Convolution Designs into Visual Transformers](https://arxiv.org/abs/2103.11816)
+***
+
+- Pytorch implementation of [ConViT: Improving Vision Transformers with Soft Convolutional Inductive Biases](https://arxiv.org/abs/2103.10697)
+
+- Pytorch implementation of [Augmenting Convolutional networks with attention-based aggregation](https://arxiv.org/abs/2112.13692)
+
+- Pytorch implementation of [Going deeper with Image Transformers---ICCV 2021 (Oral)](https://arxiv.org/abs/2103.17239)
+
+- Pytorch implementation of [Training data-efficient image transformers & distillation through attention---ICML 2021](https://arxiv.org/abs/2012.12877)
+
+- Pytorch implementation of [LeViT: a Vision Transformer in ConvNet’s Clothing for Faster Inference](https://arxiv.org/abs/2104.01136)
+
+- Pytorch implementation of [VOLO: Vision Outlooker for Visual Recognition](https://arxiv.org/abs/2106.13112)
+
+- Pytorch implementation of [Container: Context Aggregation Network---NeuIPS 2021](https://arxiv.org/abs/2106.01401)
+
+- Pytorch implementation of [CMT: Convolutional Neural Networks Meet Vision Transformers---CVPR 2022](https://arxiv.org/abs/2107.06263)
+
+- Pytorch implementation of [Vision Transformer with Deformable Attention---CVPR 2022](https://arxiv.org/abs/2201.00520)
+
+- Pytorch implementation of [EfficientFormer: Vision Transformers at MobileNet Speed](https://arxiv.org/abs/2206.01191)
 
 
 ### 1. ResNet Usage
@@ -1170,6 +1590,495 @@ if __name__ == '__main__':
 
 ```
 
+### 5. ShuffleTransformer Usage
+#### 5.1. Paper
+[Shuffle Transformer: Rethinking Spatial Shuffle for Vision Transformer](https://arxiv.org/pdf/2106.03650.pdf)
+
+#### 5.2. Usage Code
+```python
+
+from model.backbone.ShuffleTransformer import ShuffleTransformer
+import torch
+from torch import nn
+from torch.nn import functional as F
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    sft = ShuffleTransformer()
+    output=sft(input)
+    print(output.shape)
+
+
+```
+
+### 6. ConTNet Usage
+#### 6.1. Paper
+[ConTNet: Why not use convolution and transformer at the same time?](https://arxiv.org/abs/2104.13497)
+
+#### 6.2. Usage Code
+```python
+
+from model.backbone.ConTNet import ConTNet
+import torch
+from torch import nn
+from torch.nn import functional as F
+
+if __name__ == "__main__":
+    model = build_model(use_avgdown=True, relative=True, qkv_bias=True, pre_norm=True)
+    input = torch.randn(1, 3, 224, 224)
+    out = model(input)
+    print(out.shape)
+
+
+```
+
+### 7 HATNet Usage
+#### 7.1. Paper
+[Vision Transformers with Hierarchical Attention](https://arxiv.org/abs/2106.03180)
+
+#### 7.2. Usage Code
+```python
+
+from model.backbone.HATNet import HATNet
+import torch
+from torch import nn
+from torch.nn import functional as F
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    hat = HATNet(dims=[48, 96, 240, 384], head_dim=48, expansions=[8, 8, 4, 4],
+        grid_sizes=[8, 7, 7, 1], ds_ratios=[8, 4, 2, 1], depths=[2, 2, 6, 3])
+    output=hat(input)
+    print(output.shape)
+
+
+```
+
+### 8 CoaT Usage
+#### 8.1. Paper
+[Co-Scale Conv-Attentional Image Transformers](https://arxiv.org/abs/2104.06399)
+
+#### 8.2. Usage Code
+```python
+
+from model.backbone.CoaT import CoaT
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = CoaT(patch_size=4, embed_dims=[152, 152, 152, 152], serial_depths=[2, 2, 2, 2], parallel_depth=6, num_heads=8, mlp_ratios=[4, 4, 4, 4])
+    output=model(input)
+    print(output.shape) # torch.Size([1, 1000])
+
+```
+
+### 9 PVT Usage
+#### 9.1. Paper
+[PVT v2: Improved Baselines with Pyramid Vision Transformer](https://arxiv.org/pdf/2106.13797.pdf)
+
+#### 9.2. Usage Code
+```python
+
+from model.backbone.PVT import PyramidVisionTransformer
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = PyramidVisionTransformer(
+        patch_size=4, embed_dims=[64, 128, 320, 512], num_heads=[1, 2, 5, 8], mlp_ratios=[8, 8, 4, 4], qkv_bias=True,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6), depths=[2, 2, 2, 2], sr_ratios=[8, 4, 2, 1])
+    output=model(input)
+    print(output.shape)
+
+```
+
+
+### 10 CPVT Usage
+#### 10.1. Paper
+[Conditional Positional Encodings for Vision Transformers](https://arxiv.org/abs/2102.10882)
+
+#### 10.2. Usage Code
+```python
+
+from model.backbone.CPVT import CPVTV2
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = CPVTV2(
+        patch_size=4, embed_dims=[64, 128, 320, 512], num_heads=[1, 2, 5, 8], mlp_ratios=[8, 8, 4, 4], qkv_bias=True,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6), depths=[3, 4, 6, 3], sr_ratios=[8, 4, 2, 1])
+    output=model(input)
+    print(output.shape)
+
+```
+
+### 11 PIT Usage
+#### 11.1. Paper
+[Rethinking Spatial Dimensions of Vision Transformers](https://arxiv.org/abs/2103.16302)
+
+#### 11.2. Usage Code
+```python
+
+from model.backbone.PIT import PoolingTransformer
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = PoolingTransformer(
+        image_size=224,
+        patch_size=14,
+        stride=7,
+        base_dims=[64, 64, 64],
+        depth=[3, 6, 4],
+        heads=[4, 8, 16],
+        mlp_ratio=4
+    )
+    output=model(input)
+    print(output.shape)
+
+```
+
+### 12 CrossViT Usage
+#### 12.1. Paper
+[CrossViT: Cross-Attention Multi-Scale Vision Transformer for Image Classification](https://arxiv.org/abs/2103.14899)
+
+#### 12.2. Usage Code
+```python
+
+from model.backbone.CrossViT import VisionTransformer
+import torch
+from torch import nn
+
+if __name__ == "__main__":
+    input=torch.randn(1,3,224,224)
+    model = VisionTransformer(
+        img_size=[240, 224],
+        patch_size=[12, 16], 
+        embed_dim=[192, 384], 
+        depth=[[1, 4, 0], [1, 4, 0], [1, 4, 0]],
+        num_heads=[6, 6], 
+        mlp_ratio=[4, 4, 1], 
+        qkv_bias=True,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6)
+    )
+    output=model(input)
+    print(output.shape)
+
+```
+
+### 13 TnT Usage
+#### 13.1. Paper
+[Transformer in Transformer](https://arxiv.org/abs/2103.00112)
+
+#### 13.2. Usage Code
+```python
+
+from model.backbone.TnT import TNT
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = TNT(
+        img_size=224, 
+        patch_size=16, 
+        outer_dim=384, 
+        inner_dim=24, 
+        depth=12,
+        outer_num_heads=6, 
+        inner_num_heads=4, 
+        qkv_bias=False,
+        inner_stride=4)
+    output=model(input)
+    print(output.shape)
+
+```
+
+### 14 DViT Usage
+#### 14.1. Paper
+[DeepViT: Towards Deeper Vision Transformer](https://arxiv.org/abs/2103.11886)
+
+#### 14.2. Usage Code
+```python
+
+from model.backbone.DViT import DeepVisionTransformer
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = DeepVisionTransformer(
+        patch_size=16, embed_dim=384, 
+        depth=[False] * 16, 
+        apply_transform=[False] * 0 + [True] * 32, 
+        num_heads=12, 
+        mlp_ratio=3, 
+        qkv_bias=True,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6),
+        )
+    output=model(input)
+    print(output.shape)
+
+```
+
+### 15 CeiT Usage
+#### 15.1. Paper
+[Incorporating Convolution Designs into Visual Transformers](https://arxiv.org/abs/2103.11816)
+
+#### 15.2. Usage Code
+```python
+
+from model.backbone.CeiT import CeIT
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = CeIT(
+        hybrid_backbone=Image2Tokens(),
+        patch_size=4, 
+        embed_dim=192, 
+        depth=12, 
+        num_heads=3, 
+        mlp_ratio=4, 
+        qkv_bias=True,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6)
+        )
+    output=model(input)
+    print(output.shape)
+
+```
+
+### 16 ConViT Usage
+#### 16.1. Paper
+[ConViT: Improving Vision Transformers with Soft Convolutional Inductive Biases](https://arxiv.org/abs/2103.10697)
+
+#### 16.2. Usage Code
+```python
+
+from model.backbone.ConViT import VisionTransformer
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = VisionTransformer(
+        num_heads=16,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6)
+        )
+    output=model(input)
+    print(output.shape)
+
+```
+
+### 17 CaiT Usage
+#### 17.1. Paper
+[Going deeper with Image Transformers](https://arxiv.org/abs/2103.17239)
+
+#### 17.2. Usage Code
+```python
+
+from model.backbone.CaiT import CaiT
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = CaiT(
+        img_size= 224,
+        patch_size=16, 
+        embed_dim=192, 
+        depth=24, 
+        num_heads=4, 
+        mlp_ratio=4, 
+        qkv_bias=True,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6),
+        init_scale=1e-5,
+        depth_token_only=2
+        )
+    output=model(input)
+    print(output.shape)
+
+```
+
+### 18 PatchConvnet Usage
+#### 18.1. Paper
+[Augmenting Convolutional networks with attention-based aggregation](https://arxiv.org/abs/2112.13692)
+
+#### 18.2. Usage Code
+```python
+
+from model.backbone.PatchConvnet import PatchConvnet
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = PatchConvnet(
+        patch_size=16,
+        embed_dim=384,
+        depth=60,
+        num_heads=1,
+        qkv_bias=True,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6),
+        Patch_layer=ConvStem,
+        Attention_block=Conv_blocks_se,
+        depth_token_only=1,
+        mlp_ratio_clstk=3.0,
+    )
+    output=model(input)
+    print(output.shape)
+
+```
+
+### 19 DeiT Usage
+#### 19.1. Paper
+[Training data-efficient image transformers & distillation through attention](https://arxiv.org/abs/2012.12877)
+
+#### 19.2. Usage Code
+```python
+
+from model.backbone.DeiT import DistilledVisionTransformer
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = DistilledVisionTransformer(
+        patch_size=16, 
+        embed_dim=384, 
+        depth=12, 
+        num_heads=6, 
+        mlp_ratio=4, 
+        qkv_bias=True,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6)
+        )
+    output=model(input)
+    print(output[0].shape)
+
+```
+
+### 20 LeViT Usage
+#### 20.1. Paper
+[LeViT: a Vision Transformer in ConvNet’s Clothing for Faster Inference](https://arxiv.org/abs/2104.01136)
+
+#### 20.2. Usage Code
+```python
+
+from model.backbone.LeViT import *
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    for name in specification:
+        input=torch.randn(1,3,224,224)
+        model = globals()[name](fuse=True, pretrained=False)
+        model.eval()
+        output = model(input)
+        print(output.shape)
+
+```
+
+### 21 VOLO Usage
+#### 21.1. Paper
+[VOLO: Vision Outlooker for Visual Recognition](https://arxiv.org/abs/2106.13112)
+
+#### 21.2. Usage Code
+```python
+
+from model.backbone.VOLO import VOLO
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = VOLO([4, 4, 8, 2],
+                 embed_dims=[192, 384, 384, 384],
+                 num_heads=[6, 12, 12, 12],
+                 mlp_ratios=[3, 3, 3, 3],
+                 downsamples=[True, False, False, False],
+                 outlook_attention=[True, False, False, False ],
+                 post_layers=['ca', 'ca'],
+                 )
+    output=model(input)
+    print(output[0].shape)
+
+```
+
+### 22 Container Usage
+#### 22.1. Paper
+[Container: Context Aggregation Network](https://arxiv.org/abs/2106.01401)
+
+#### 22.2. Usage Code
+```python
+
+from model.backbone.Container import VisionTransformer
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = VisionTransformer(
+        img_size=[224, 56, 28, 14], 
+        patch_size=[4, 2, 2, 2], 
+        embed_dim=[64, 128, 320, 512], 
+        depth=[3, 4, 8, 3], 
+        num_heads=16, 
+        mlp_ratio=[8, 8, 4, 4], 
+        qkv_bias=True,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6))
+    output=model(input)
+    print(output.shape)
+
+```
+
+### 23 CMT Usage
+#### 23.1. Paper
+[CMT: Convolutional Neural Networks Meet Vision Transformers](https://arxiv.org/abs/2107.06263)
+
+#### 23.2. Usage Code
+```python
+
+from model.backbone.CMT import CMT_Tiny
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = CMT_Tiny()
+    output=model(input)
+    print(output[0].shape)
+
+```
+
+### 24 EfficientFormer Usage
+#### 24.1. Paper
+[EfficientFormer: Vision Transformers at MobileNet Speed](https://arxiv.org/abs/2206.01191)
+
+#### 24.2. Usage Code
+```python
+
+from model.backbone.EfficientFormer import EfficientFormer
+import torch
+from torch import nn
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = EfficientFormer(
+        layers=EfficientFormer_depth['l1'],
+        embed_dims=EfficientFormer_width['l1'],
+        downsamples=[True, True, True, True],
+        vit_num=1,
+    )
+    output=model(input)
+    print(output[0].shape)
+
+```
 
 
 
@@ -1313,6 +2222,32 @@ if __name__ == '__main__':
     smlp=sMLPBlock(h=224,w=224)
     out=smlp(input)
     print(out.shape)
+```
+
+### 6. vip-mlp Usage
+#### 6.1. Paper
+["Vision Permutator: A Permutable MLP-Like Architecture for Visual Recognition"](https://arxiv.org/abs/2106.12368)
+
+#### 6.2. Usage Code
+```python
+from model.mlp.vip-mlp import VisionPermutator
+import torch
+from torch import nn
+from torch.nn import functional as F
+
+if __name__ == '__main__':
+    input=torch.randn(1,3,224,224)
+    model = VisionPermutator(
+        layers=[4, 3, 8, 3], 
+        embed_dims=[384, 384, 384, 384], 
+        patch_size=14, 
+        transitions=[False, False, False, False],
+        segment_dim=[16, 16, 16, 16], 
+        mlp_ratios=[3, 3, 3, 3], 
+        mlp_fn=WeightedPermuteMLP
+    )
+    output=model(input)
+    print(output.shape)
 ```
 
 
@@ -1650,6 +2585,10 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
+
+
+
+
 if __name__ == '__main__':
     input=torch.randn(2,32,64,64)
     m=CondConv(in_planes=32,out_planes=64,kernel_size=3,stride=1,padding=1,bias=False)
@@ -1657,5 +2596,3 @@ if __name__ == '__main__':
     print(out.shape)
 
 ```
-
-***

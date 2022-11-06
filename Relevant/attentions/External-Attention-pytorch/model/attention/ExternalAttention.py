@@ -3,8 +3,7 @@ import torch
 from torch import nn
 from torch.nn import init
 
-# 这是五月份在arXiv上的一篇文章，主要解决的Self-Attention(SA)的两个痛点问题：（1）O(n^2)的计算复杂度；(2)SA是在同一个样本上根据不同位置计算Attention，忽略了不同样本之间的联系。因此，本文采用了两个串联的MLP结构作为memory units，使得计算复杂度降低到了O(n)；此外，这两个memory units是基于全部的训练数据学习的，
-# 因此也隐式的考虑了不同样本之间的联系。 作者：小番茄666丶 https://www.bilibili.com/read/cv11665879?spm_id_from=333.999.0.0 出处：bilibili
+
 
 class ExternalAttention(nn.Module):
 

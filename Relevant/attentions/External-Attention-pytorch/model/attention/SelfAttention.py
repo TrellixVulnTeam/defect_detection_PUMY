@@ -3,12 +3,7 @@ import torch
 from torch import nn
 from torch.nn import init
 
-# 这是Google在NeurIPS2017发表的一篇文章，在CV、NLP、多模态等各个领域都有很大的影响力，目前引用量已经2
-# .2
-# w +。Transformer中提出的Self - Attention是Attention的一种，用于计算特征中不同位置之间的权重，从而达到更新特征的效果。首先将input
-# feature通过FC映射成Q、K、V三个特征，然后将Q和K进行点乘的得到attention
-# map，在将attention
-# map与V做点乘得到加权后的特征。最后通过FC进行特征的映射，得到一个新的特征。（关于Transformer和Self - Attention目前网上有许多非常好的讲解，这里就不做详细的介绍了）
+
 
 class ScaledDotProductAttention(nn.Module):
     '''

@@ -1,0 +1,95 @@
+MODEL:
+  BASE: "models/detections/det_cascadercnn_swint_fpn.yaml"
+  ROI_HEAD:
+    bbox_head:
+    - {type: 'ConvFCBBoxHead',
+       num_shared_convs: 4,
+       num_shared_fcs: 1,
+       in_channels: 256,
+       conv_out_channels: 256,
+       fc_out_channels: 1024,
+       roi_feat_size: 7,
+       num_classes: 65,
+       bbox_coder: {
+         type: 'DeltaXYWHBBoxCoder',
+         target_means: [0., 0., 0., 0.],
+         target_stds: [0.1, 0.1, 0.2, 0.2]},
+       reg_class_agnostic: False,
+       reg_decoded_bbox: True,
+       loss_cls: {
+         type: 'CrossEntropyLoss', 
+         use_sigmoid: False, 
+         loss_weight: 1.0},
+       loss_bbox: {
+         type: 'GIoULoss',
+         loss_weight: 10.0}} 
+    - {type: 'ConvFCBBoxHead',
+       num_shared_convs: 4,
+       num_shared_fcs: 1,
+       in_channels: 256,
+       conv_out_channels: 256,
+       fc_out_channels: 1024,
+       roi_feat_size: 7,
+       num_classes: 65,
+       bbox_coder: {
+         type: 'DeltaXYWHBBoxCoder',
+         target_means: [0., 0., 0., 0.],
+         target_stds: [0.05, 0.05, 0.1, 0.1]},
+       reg_class_agnostic: False,
+       reg_decoded_bbox: True,
+       loss_cls: {
+         type: 'CrossEntropyLoss', 
+         use_sigmoid: False, 
+         loss_weight: 1.0},
+       loss_bbox: {
+         type: 'GIoULoss',
+         loss_weight: 10.0}} 
+    - {type: 'ConvFCBBoxHead',
+       num_shared_convs: 4,
+       num_shared_fcs: 1,
+       in_channels: 256,
+       conv_out_channels: 256,
+       fc_out_channels: 1024,
+       roi_feat_size: 7,
+       num_classes: 65,
+       bbox_coder: {
+         type: 'DeltaXYWHBBoxCoder',
+         target_means: [0., 0., 0., 0.],
+         target_stds: [0.033, 0.033, 0.067, 0.067]},
+       reg_class_agnostic: False,
+       reg_decoded_bbox: True,
+       loss_cls: {
+         type: 'CrossEntropyLoss', 
+         use_sigmoid: False, 
+         loss_weight: 1.0},
+       loss_bbox: {
+         type: 'GIoULoss',
+         loss_weight: 10.0}} 
+DATA:
+  BASE: "datasets/detections/det_multiobj.yaml"
+  TRAIN_TRANSFORMS:
+    JointResize: {
+      img_scale: [[416, 416]],
+      keep_ratio: True}
+  TRAIN_DATA:
+    TYPE: "Concat"
+    DATA_INFO: [['tfrecords/train_*.tfrecord']]
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4
+  VAL_DATA:
+    DATA_INFO: [['tfrecords/val.tfrecord']]
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4
+  TEST_DATA:
+    DATA_INFO: [['tfrecords/val.tfrecord']]
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 1
+    WORKERS_PER_DEVICE: 1
+SCHEDULE:
+  BASE: "schedulers/schedule_adamw.yaml"
+RUNTIME:
+  BASE: "runtimes/runtime_base.yaml"
+  LOG_CONFIG:
+    interval: 10

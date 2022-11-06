@@ -1,0 +1,21 @@
+MODEL:
+  BASE: "models/classifications/cls_resnet50_linear.yaml"
+  CLS_HEAD:
+    num_classes: 10
+  EXTEND:
+    topk: [1, 5]
+DATA:
+  BASE: "datasets/classifications/cls_cifar10.yaml"
+  TRAIN_DATA:
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  VAL_DATA:
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  TEST_DATA:
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+SCHEDULE:
+  BASE: "schedulers/schedule_adamw.yaml"
+RUNTIME:
+  BASE: "runtimes/runtime_base.yaml"

@@ -71,7 +71,7 @@ class UFOAttention(nn.Module):
 
 
 if __name__ == '__main__':
-    input=torch.randn(224,224,512)
+    input=torch.randn(50,49,512)
     ufo = UFOAttention(d_model=512, d_k=512, d_v=512, h=8)
     output=ufo(input,input,input)
     print(output.shape)

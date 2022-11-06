@@ -3,8 +3,7 @@ import torch
 from torch import nn
 from torch.nn import init
 
-# 这是北大团队2019年在arXiv上发布的一篇文章，主要解决的是Self-Attention（SA）只有全局捕获能力的缺点。如下图所示，当句子长度变长时，
-# SA的全局捕获能力变弱，导致最终模型性能变差。因此，作者在文中引入了多个不同感受野的一维卷积来捕获多尺度的局部Attention，以此来弥补SA在建模长句子能力的不足。
+
 
 class Depth_Pointwise_Conv1d(nn.Module):
     def __init__(self,in_ch,out_ch,k):

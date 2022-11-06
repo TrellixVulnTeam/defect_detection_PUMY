@@ -1,0 +1,67 @@
+DATA:
+  NAME: "CIFAR10"
+  ROOT_PATH: "/workspace/data/Cifar10"
+  TRAIN_TRANSFORMS:
+    ImgRandomCrop: {
+      size: 32,
+      padding: 4
+      }
+    ImgRandomFlip: {
+      flip_prob: 0.5,
+      direction: 'horizontal'
+      }
+    Normalize: {
+      mean: [123.675, 116.28, 103.53], 
+      std: [58.395, 57.12, 57.375], 
+      to_rgb: False
+      }
+    DefaultFormatBundle: {}
+    ClsCollect: {
+      keys: ['img', 'gt_label']
+      }
+  TEST_TRANSFORMS:
+    # For evaluation in test set.
+    Normalize: {
+      mean: [123.675, 116.28, 103.53], 
+      std: [58.395, 57.12, 57.375], 
+      to_rgb: False
+      }
+    ImageToTensor: {
+      keys: ['img']
+      }
+    ClsCollect: {
+      keys: ['img']
+      }
+  TRAIN_DATA:
+    TYPE: "Normal" # "Concat" "Repeat" "Balanced"
+    FLAG: 0
+    DATA_INFO: [["cifar-10-batches-py/batches.meta"]]
+    DATA_PREFIX: ["cifar-10-batches-py"]
+    CLASS_NAMES: 'Cifar'
+    IS_TFRECORD: False
+    VAL_MODE: False
+    TEST_MODE: False
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  VAL_DATA:
+    TYPE: "Normal" # "Concat" "Repeat" "Balanced"
+    FLAG: 0
+    DATA_INFO: [["cifar-10-python/batches.meta"]]
+    DATA_PREFIX: ["cifar-10-batches-py"]
+    CLASS_NAMES: 'Cifar'
+    IS_TFRECORD: False
+    VAL_MODE: True
+    TEST_MODE: False
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  TEST_DATA:
+    TYPE: "Normal" # "Concat" "Repeat" "Balanced"
+    FLAG: 0
+    DATA_INFO: [["cifar-10-python/batches.meta"]]
+    DATA_PREFIX: ["cifar-10-batches-py"]
+    CLASS_NAMES: 'Cifar'
+    IS_TFRECORD: False
+    VAL_MODE: False
+    TEST_MODE: True
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8

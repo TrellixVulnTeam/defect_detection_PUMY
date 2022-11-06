@@ -251,7 +251,9 @@ class PreProcess:
                 file_name = os.path.basename(json_item['imagePath'])
                 cv2.imwrite(os.path.join(output_dir, file_name), img_list[idx],
                             [int(cv2.IMWRITE_JPEG_QUALITY), 100])
-                save_json_file = open(os.path.join(output_dir, file_name.replace('.jpg', '.json')), 'w', encoding='utf-8')
+                save_json_file = open(
+                    os.path.join(output_dir,
+                                 file_name.replace(os.path.splitext(file_name)[-1], '.json')), 'w', encoding='utf-8')
                 json.dump(json_list[idx], save_json_file, indent=4)
         except Exception as e:
             raise e

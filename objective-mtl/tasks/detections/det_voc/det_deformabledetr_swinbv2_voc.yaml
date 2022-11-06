@@ -1,0 +1,55 @@
+MODEL:
+  BASE: "models/detections/det_deformabledetr_swinbv2.yaml"
+  PRETRAINED_MODEL_PATH: "meta/pretrained/swinv2_base_simmim_imagenet1k.pth"
+  BACKBONE:
+    type: "SwinTransformerV2"
+    window_size: 14
+    drop_path_rate: 0.5
+    use_checkpoint: True
+  BBOX_HEAD:
+    type: 'DeformableDETRHead'
+    num_classes: 20
+DATA:
+  BASE: "datasets/detections/det_voc.yaml"
+  TRAIN_TRANSFORMS:
+    JointResize: {
+      img_scale: [[640, 640]],
+      keep_ratio: True}
+  TRAIN_DATA:
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 2
+    WORKERS_PER_DEVICE: 2
+  VAL_DATA:
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  TEST_DATA:
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 1
+    WORKERS_PER_DEVICE: 1
+SCHEDULE:
+  BASE: "schedulers/schedule_adamw_grad.yaml"
+  OPTIMIZER:
+    type: "AdamW"
+    lr: 0.0001
+    weight_decay: 0.0001
+    PARAMWISE_CFG:
+      custom_keys: [{'backbone': { lr_mult: 0.1, decay_mult: 1.0}}]
+  OPTIMIZER_CONFIG:
+    grad_clip: {
+      max_norm: 0.1,
+      norm_type: 2}
+    fp16: False
+  LR_POLICY:
+    policy: "CosineAnnealing"
+    min_lr_ratio: 0.001
+    warmup: "linear"
+    warmup_iters: 1000
+    warmup_ratio: 0.001
+  RUNNER:
+    type: "EpochBasedRunner"
+    max_epochs: 50
+RUNTIME:
+  BASE: "runtimes/runtime_base.yaml"
+  STATIC_GRAPH: True
+  FIND_UNUSED_PARAMETERS: True

@@ -1,5 +1,5 @@
 class_list=(
-#    "white-impurities" \
+#    "white-imzzpurities" \
 #    "edge-damage" \
 #    "bubble-gum" \
     "black-spot" \

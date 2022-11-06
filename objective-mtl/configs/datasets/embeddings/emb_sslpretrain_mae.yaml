@@ -1,0 +1,86 @@
+DATA:
+  NAME: "SslPretrainMaeDataset"
+  ROOT_PATH: "data/objcls-datasets/ImageNet/imagenet1k"
+  TRAIN_TRANSFORMS:
+    ImgRandomResizedCrop: {
+      size: 224,
+      scale: [0.4, 1.0]}
+    RandomApply: {
+      policies: [{
+        type: 'PhotoMetricDistortion',
+        brightness_delta: 64,
+        contrast_range: [0.4, 1.4],
+        saturation_range: [0.4, 1.4],
+        hue_delta: 16}],
+      p: 0.6}
+    RandomGrayscale: {
+      gray_prob: 0.1}
+    RandomApplyTwice: {
+      policies: [{
+        type: 'GaussianBlur',
+        sigma: [.1, 2.]}],
+      p: 0.2}
+    ImgRandomFlip: {
+      flip_prob: 0.5,
+      direction: 'horizontal'}
+    Normalize: {
+      mean: [123.675, 116.28, 103.53],
+      std: [58.395, 57.12, 57.375],
+      to_rgb: False}
+    RandomMaskingGenerator: {
+      input_size: 14,
+      mask_ratio: 0.75}
+    MaskedPatching: {
+      patch_size: 16,
+      normlize_target: True}
+    DefaultFormatBundle: {}
+    ClsCollect: {keys: ['img', 'patch_labels', 'patch_mask']}
+  TEST_TRANSFORMS:
+    ImgResize: {
+      size: [256, -1]
+      }
+    ImgCenterCrop: {
+      size: [224, 224]
+      }
+    Normalize: {
+      mean: [123.675, 116.28, 103.53],
+      std: [58.395, 57.12, 57.375],
+      to_rgb: False}
+    RandomMaskingGenerator: {
+      input_size: 14,
+      mask_ratio: 0.75}
+    MaskedPatching: {
+      patch_size: 16,
+      normlize_target: True}
+    ToTensor: {keys: ['img', 'patch_labels', 'patch_mask']}
+    ClsCollect: {keys: ['img', 'patch_labels', 'patch_mask']}
+  TRAIN_DATA:
+    TYPE: "Concat"
+    FLAG: 1
+    DATA_INFO: [['tfrecords/train*.tfrecord']]
+    DATA_PREFIX: ["images"]
+    IS_TFRECORD: True
+    VAL_MODE: False
+    TEST_MODE: False
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  VAL_DATA:
+    TYPE: "Normal"
+    FLAG: 1
+    DATA_INFO: [['tfrecords/val*.tfrecord']]
+    DATA_PREFIX: ["images"]
+    IS_TFRECORD: True
+    VAL_MODE: True
+    TEST_MODE: False
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  TEST_DATA:
+    TYPE: "Normal"
+    FLAG: 1
+    DATA_INFO: [['tfrecords/val*.tfrecord']]
+    DATA_PREFIX: ["images"]
+    IS_TFRECORD: True
+    VAL_MODE: False
+    TEST_MODE: True
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8

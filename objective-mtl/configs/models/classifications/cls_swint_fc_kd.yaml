@@ -1,0 +1,34 @@
+MODEL:
+  TYPE: "cls"
+  NAME: "ImageKDClassifier"
+  PRETRAINED_MODEL_PATH: "meta/pretrained/swin_tiny_patch4_window7_224.pth"
+  EXTEND_MODEL_PATH: "meta/pretrained/swin_large_dino_ep10_washed.pth"
+  BACKBONE:
+    type: "SwinTransformer"
+    embed_dim: 96
+    depths: [2, 2, 6, 2]
+    num_heads: [3, 6, 12, 24]
+    out_indices: [3]
+    with_fc: True
+    out_dim: 128
+  EXTEND_BACKBONE:
+    type: "SwinTransformer"
+    embed_dim: 192
+    depths: [2, 2, 18, 2]
+    num_heads: [6, 12, 24, 48]
+    out_indices: [3]
+    with_fc: True
+    out_dim: 128
+  CLS_HEAD:
+    type: "LinearClsHead"
+    num_classes: 1000
+    in_channels: 128
+  LOSS:
+    type: 'CrossEntropyLoss'
+    loss_weight: 1.0
+  EXTEND_LOSS:
+    type: 'KLLoss'
+    temperature: 1.0
+    loss_weight: 10.0
+  EXTEND:    
+    topk: [1, 3]

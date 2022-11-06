@@ -55,9 +55,3 @@ class CoordAtt(nn.Module):
         out = identity * a_w * a_h
 
         return out
-
-if __name__ == '__main__':
-    input=torch.randn(50,128,7,7)
-    cot = CoordAtt(128,128)
-    output=cot(input)
-    print(output.shape)

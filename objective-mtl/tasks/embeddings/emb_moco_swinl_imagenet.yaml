@@ -1,0 +1,50 @@
+MODEL:
+  BASE: "models/embeddings/emb_moco_swint.yaml"
+  PRETRAINED_MODEL_PATH: "meta/pretrained/swin_large_dino_ep10_washed.pth"
+  BACKBONE:
+    type: "SwinTransformer"
+    embed_dim: 192
+    depths: [2, 2, 18, 2]
+    num_heads: [6, 12, 24, 48]
+    out_indices: [3]
+    with_fc: True
+    out_dim: 128
+DATA:
+  BASE: "datasets/classifications/cls_imagenet.yaml"
+  ROOT_PATH: "data/objcls-datasets/ImageNet/imagenet1k"
+  TRAIN_DATA:
+    TYPE: "Concat" # "Concat" "Repeat" "Balanced"
+    DATA_INFO: [['tfrecords/train*.tfrecord']] # "annotations/train.txt"
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  VAL_DATA:
+    TYPE: "Normal"
+    DATA_INFO: [['tfrecords/val.tfrecord']] # "split_valid_tfrecord_0.0-944.20210505150928"
+    SAMPLES_PER_DEVICE: 16
+    WORKERS_PER_DEVICE: 8
+  TEST_DATA:
+    TYPE: "Normal"
+    DATA_INFO: [['tfrecords/val.tfrecord']] # "annotations/val.txt"
+    SAMPLES_PER_DEVICE: 16
+    WORKERS_PER_DEVICE: 8
+SCHEDULE:
+  BASE: "schedulers/schedule_adamw.yaml"
+  OPTIMIZER:
+    type: "AdamW"
+    lr: 0.0001
+    betas: [0.9, 0.999]
+    weight_decay: 0.05
+    PARAMWISE_CFG:
+      custom_keys: [{}]
+  OPTIMIZER_CONFIG:
+    fp16: True
+  LR_POLICY:
+    policy: "CosineAnnealing"
+    # min_lr: 0.
+    min_lr_ratio: 0.001
+    warmup: "linear"
+    warmup_iters: 1000
+    warmup_ratio: 0.001
+RUNTIME:
+  BASE: "runtimes/runtime_base.yaml"
+  WORKFLOW: [['train', 1]]

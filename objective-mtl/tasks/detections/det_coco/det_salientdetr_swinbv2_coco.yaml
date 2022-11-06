@@ -1,0 +1,60 @@
+MODEL:
+  BASE: "models/detections/det_salientdetr_swinbv2.yaml"
+  PRETRAINED_MODEL_PATH: "meta/pretrained/swinv2_base_simmim_imagenet1k.pth"
+  BACKBONE:
+    type: "SwinTransformerV2"
+    window_size: 14
+    drop_path_rate: 0.3
+    use_checkpoint: True
+  BBOX_HEAD:
+    type: 'SalientDETRHead'
+    num_classes: 80
+DATA:
+  BASE: "datasets/detections/det_coco.yaml"
+  TRAIN_TRANSFORMS:
+    LoadAnnotations: {with_bbox: True, with_mask: False}
+    JointResize: {
+      img_scale: [[256, 256]],
+      keep_ratio: True}
+    Collect: {keys: ['img', 'gt_bboxes', 'gt_labels']}
+  TRAIN_DATA:
+    DATA_INFO: [['tfrecords/train.tfrecord']]
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 2
+    WORKERS_PER_DEVICE: 2
+  VAL_DATA:
+    DATA_INFO: [['tfrecords/val.tfrecord']]
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  TEST_DATA:
+    DATA_INFO: [['tfrecords/val.tfrecord']]
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+SCHEDULE:
+  BASE: "schedulers/schedule_adamw_grad.yaml"
+  OPTIMIZER:
+    type: "AdamW"
+    lr: 0.0001
+    weight_decay: 0.0001
+    PARAMWISE_CFG:
+      custom_keys: [{'backbone': { lr_mult: 0.1, decay_mult: 1.0}}]
+  OPTIMIZER_CONFIG:
+    grad_clip: {
+      max_norm: 0.1,
+      norm_type: 2}
+    fp16: False
+  LR_POLICY:
+    policy: "CosineAnnealing"
+    min_lr_ratio: 0.001
+    warmup: "linear"
+    warmup_iters: 200
+    warmup_ratio: 0.008
+  RUNNER:
+    type: "EpochBasedRunner"
+    max_epochs: 50
+RUNTIME:
+  BASE: "runtimes/runtime_base.yaml"
+  STATIC_GRAPH: True
+  FIND_UNUSED_PARAMETERS: True

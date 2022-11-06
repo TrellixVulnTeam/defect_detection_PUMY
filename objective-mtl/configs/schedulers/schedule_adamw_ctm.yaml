@@ -1,0 +1,25 @@
+SCHEDULE:
+  OPTIMIZER:
+    type: "AdamW"
+    lr: 0.001
+    eps: 0.00000001
+    betas: [0.9, 0.999]
+    weight_decay: 0.05
+    PARAMWISE_CFG:
+      norm_decay_mult: 0
+      bias_decay_mult: 0
+      custom_keys: [{}]
+  OPTIMIZER_CONFIG:
+    grad_clip: {max_norm: 5}
+    fp16: True
+  LR_POLICY:
+    policy: "CosineAnnealing"
+    by_epoch: False
+    min_lr_ratio: 0.00125
+    warmup: "linear"
+    warmup_iters: 20
+    warmup_ratio: 0.0002
+    warmup_by_epoch: True
+  RUNNER:
+    type: "EpochBasedRunner"
+    max_epochs: 100

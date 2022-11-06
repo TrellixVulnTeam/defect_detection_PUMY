@@ -56,7 +56,7 @@ class TripletAttention(nn.Module):
         return x_out
 
 if __name__ == '__main__':
-    input=torch.randn(50,512,20,20)
+    input=torch.randn(50,512,7,7)
     triplet = TripletAttention()
     output=triplet(input)
     print(output.shape)

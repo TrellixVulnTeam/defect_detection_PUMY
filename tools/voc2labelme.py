@@ -10,7 +10,7 @@ def parse_args():
     """
         参数配置
     """
-    path = '/home/zhang/datasets/bottle_cut/image/test'
+    path = '/home/zhang/datasets/floor_cut_blance/source/train'
     parser = argparse.ArgumentParser(description='xml2json')
     parser.add_argument('--raw_label_dir', default=path,
                         help='the path of raw label')
@@ -56,7 +56,7 @@ def main():
         _, label = os.path.split(label_abs)
         label_name = label.rstrip('.xml')
         # img_path = os.path.join(args.pic_dir, label_name + '.bmp')
-        img_path = label_name + '.jpg'
+        img_path = label_name + '.bmp'
         # print(label_name)
         points, width, height = read_xml_gtbox_and_label(label_abs)
         json_str = {}

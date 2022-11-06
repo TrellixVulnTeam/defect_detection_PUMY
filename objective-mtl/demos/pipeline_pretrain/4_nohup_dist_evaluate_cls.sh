@@ -1,0 +1,1 @@
+nohup bash ./4_gpu_evaluate_run.sh 0 10 20 > nohup_res_0.txt 2>&1 &

@@ -1,0 +1,24 @@
+SCHEDULE:
+  OPTIMIZER:
+    type: "SGD"
+    lr: 0.01
+    momentum: 0.937
+    weight_decay: 0.0005
+    nesterov: True
+    PARAMWISE_CFG: {
+      bias_decay_mult: 0., 
+      norm_decay_mult: 0.}
+  OPTIMIZER_CONFIG:
+    grad_clip: {
+      max_norm: 35,
+      norm_type: 2}
+  LR_POLICY:
+    policy: 'step'
+    warmup: 'linear'
+    by_epoch: False
+    warmup_iters: 1000
+    warmup_ratio: 0.001
+    step: [220, 260]
+  RUNNER:
+    type: "EpochBasedRunner"
+    max_epochs: 100

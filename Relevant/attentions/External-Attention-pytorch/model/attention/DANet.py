@@ -2,14 +2,8 @@ import numpy as np
 import torch
 from torch import nn
 from torch.nn import init
-import sys
-sys.path.append('/home/zhang/defect_detection/Relevant/attentions/External-Attention-pytorch')
 from model.attention.SelfAttention import ScaledDotProductAttention
 from model.attention.SimplifiedSelfAttention import SimplifiedScaledDotProductAttention
-
-# 这是CVPR2019的文章，思想上非常简单，就是将self-attention用到场景分割的任务中，不同的是self-attention是关注每个position之间的注意力，而本文将self-attention做了一个拓展，还做了一个通道注意力的分支，操作上和self-attention一样，不同的通道attention中把生成Q，K，V的三个Linear去掉了。最后将两个attention之后的特征进行element-wise sum。
-# 作者：小番茄666丶 https://www.bilibili.com/read/cv11665879?spm_id_from=333.999.0.0 出处：bilibili
-
 
 class PositionAttentionModule(nn.Module):
 

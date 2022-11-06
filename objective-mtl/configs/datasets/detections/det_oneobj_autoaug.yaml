@@ -1,0 +1,88 @@
+DATA:
+  NAME: "OneObjectDataset"
+  ROOT_PATH: "data/objdet-datasets"
+  TRAIN_TRANSFORMS:
+    LoadAnnotations: {with_bbox: True}
+    PhotoMetricDistortion: {}
+    JointRandomFlip: {flip_ratio: 0.5}
+    AutoAugment:
+      policies: 
+      - - {type: 'JointResize',
+           img_scale: [[480, 1333], [512, 1333], [544, 1333], [576, 1333],
+                      [608, 1333], [640, 1333], [672, 1333], [704, 1333],
+                      [736, 1333], [768, 1333], [800, 1333]],
+           multiscale_mode: 'value',
+           keep_ratio: True}
+      - - {type: 'JointResize',
+           img_scale: [[400, 1333], [500, 1333], [600, 1333]],
+           multiscale_mode: 'value',
+           keep_ratio: True}
+        - {type: 'JointRandomCrop',
+           crop_type: 'absolute_range',
+           crop_size: [384, 600],
+           allow_negative_crop: True}
+        - {type: 'JointResize',
+           img_scale: [[480, 1333], [512, 1333], [544, 1333],
+                       [576, 1333], [608, 1333], [640, 1333],
+                       [672, 1333], [704, 1333], [736, 1333],
+                       [768, 1333], [800, 1333]],
+           multiscale_mode: 'value',
+           override: True,
+           keep_ratio: True}
+    Normalize: {
+      mean: [123.675, 116.28, 103.53],
+      std: [58.395, 57.12, 57.375],
+      to_rgb: False}
+    Pad: {size_divisor: 32}
+    DefaultFormatBundle: {}
+    Collect: {keys: ['img', 'gt_bboxes', 'gt_labels']}
+  TEST_TRANSFORMS:
+    MultiScaleFlipAug: {
+      img_scale: [1333, 800],
+      flip: False,
+      transforms: {
+        JointResize: {keep_ratio: True},
+        JointRandomFlip: {},
+        Normalize: {
+          mean: [123.675, 116.28, 103.53],
+          std: [58.395, 57.12, 57.375],
+          to_rgb: False},
+        Pad: {size_divisor: 32},
+        ImageToTensor: {keys: ['img']},
+        Collect: {keys: ['img']}
+        }
+      }  
+  TRAIN_DATA:
+    TYPE: "Concat"
+    FLAG: 1
+    DATA_INFO: [['MultiObjDet/tfrecords/*.tfrecord'],
+                ['COCO/tfrecords/*.tfrecord'],
+                ['AnimalDet/tfrecords/*.tfrecord']]
+    DATA_PREFIX: ["images/"]
+    ANNO_PREFIX: ["annotations/"]
+    CLASS_NAMES: "meta/oneobj-list.txt"
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4
+  VAL_DATA:
+    TYPE: "Concat"
+    FLAG: 1
+    DATA_INFO: [['MultiObjDet/tfrecords/val.tfrecord']]
+    DATA_PREFIX: ["images/"]
+    ANNO_PREFIX: ["annotations/"]
+    CLASS_NAMES: "meta/oneobj-list.txt"
+    IS_TFRECORD: True
+    TEST_MODE: False
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4
+  TEST_DATA:
+    TYPE: "Concat"
+    FLAG: 1
+    DATA_INFO: [['MultiObjDet/tfrecords/val.tfrecord']]
+    DATA_PREFIX: ["images/"]
+    ANNO_PREFIX: ["annotations/"]
+    CLASS_NAMES: "meta/oneobj-list.txt"
+    IS_TFRECORD: True
+    TEST_MODE: True
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4

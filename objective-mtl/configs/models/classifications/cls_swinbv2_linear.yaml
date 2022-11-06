@@ -1,0 +1,35 @@
+MODEL:
+  TYPE: "cls"
+  NAME: "ImageClassifier"
+  PRETRAINED_MODEL_PATH: ""
+  BACKBONE:
+    type: "SwinTransformerV2"
+    embed_dim: 96
+    depths: [2, 2, 6, 2]
+    num_heads: [3, 6, 12, 24]
+    out_indices: [3]
+  NECK:
+    type: "GlobalAveragePooling"
+  CLS_HEAD:
+    type: "LinearClsHead"
+    num_classes: 1000
+    in_channels: 1024
+  LOSS:
+    type: 'LabelSmoothLoss'
+    label_smooth_val: 0.1
+    mode: 'original'
+    loss_weight: 1.0
+  EXTEND:
+    with_rdrop: False
+    topk: [1, 5]
+  TRAIN_CFG:
+    augmentor:
+    - {type: 'BatchMixup',
+       alpha: 0.8,
+       num_classes: 1000,
+       prob: 0.5}
+    - {type: 'BatchCutMix',
+       alpha: 1.0,
+       num_classes: 1000,
+       prob: 0.5}
+  

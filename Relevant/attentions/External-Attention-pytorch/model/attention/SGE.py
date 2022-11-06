@@ -3,18 +3,7 @@ import torch
 from torch import nn
 from torch.nn import init
 
-# 这篇文章是SKNet[7]作者在19年的时候在arXiv上挂出的文章，是一个轻量级Attention的工作，从下面的核心代码中，可以看出，引入的参数真的非常少，self.weight和self.bias都是和groups呈一个数量级的（几乎就是常数级别）。
-#
-# 这篇文章的核心点是用局部信息和全局信息的相似性来指导语义特征的增强，总体的操作可以分为以下几步：
-#
-# 1）将特征分组，每组feature在空间上与其global pooling后的feature做点积（相似性）得到初始的attention mask
-#
-# 2）对该attention mask进行减均值除标准差的normalize，并同时每个group学习两个缩放偏移参数使得normalize操作可被还原
-#
-# 3）最后经过sigmoid得到最终的attention mask并对原始feature group中的每个位置的feature进行scale
-#
-# 实验部分，作者也是在分类任务（ImageNet）和检测任务（COCO）上做了实验，能够在比SK[7]、CBAM[8]、BAM[9]等网络参数和计算量更小的情况下，获得更好的性能，证明了本文方法的高效性。
-# 每个bottleneck最后一个BN层之后，同时group设为64
+
 
 class SpatialGroupEnhance(nn.Module):
 

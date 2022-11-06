@@ -1,0 +1,35 @@
+MODEL:
+  BASE: "models/detections/det_yolov4_tiny.yaml"
+  BBOX_HEAD:
+    num_classes: 20
+DATA:
+  BASE: "datasets/detections/det_voc.yaml"
+  TRAIN_TRANSFORMS:
+    JointResize: {
+      img_scale: [[416, 416]],
+      keep_ratio: True}
+  TEST_TRANSFORMS:
+    MultiScaleFlipAug: 
+      img_scale: [416, 416]
+  TRAIN_DATA:
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4
+  VAL_DATA:
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  TEST_DATA:
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 1
+    WORKERS_PER_DEVICE: 1
+SCHEDULE:
+  BASE: "schedulers/schedule_yolo.yaml"
+  OPTIMIZER:
+    lr: 0.001
+  LR_POLICY:
+    warmup_iters: 5000
+    warmup_ratio: 0.001
+    step: [66, 92]
+RUNTIME:
+  BASE: "runtimes/runtime_base.yaml"

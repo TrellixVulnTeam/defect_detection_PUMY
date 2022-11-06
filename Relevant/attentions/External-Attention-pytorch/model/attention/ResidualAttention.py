@@ -7,10 +7,10 @@ from torch.nn import init
 
 class ResidualAttention(nn.Module):
 
-    def __init__(self, in_channels_=512 , out_channels_=1000,la=0.2):
+    def __init__(self, channel=512 , num_class=1000,la=0.2):
         super().__init__()
         self.la=la
-        self.fc=nn.Conv2d(in_channels=in_channels_,out_channels=out_channels_,kernel_size=1,stride=1,bias=False)
+        self.fc=nn.Conv2d(in_channels=channel,out_channels=num_class,kernel_size=1,stride=1,bias=False)
 
     def forward(self, x):
         b,c,h,w=x.shape

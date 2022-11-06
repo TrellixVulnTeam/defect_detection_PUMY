@@ -1,0 +1,38 @@
+MODEL:
+  TYPE: "det"
+  NAME: "YOLOX"
+  PRETRAINED_MODEL_PATH: ""
+  BACKBONE:
+    type: 'YOLOPAFPN_Ji'
+    depth: 0.33
+    width: 0.50
+    #num_scales: 3
+    in_channels: [256, 512, 1024]
+    depthwise: False
+    act: "silu"
+  BBOX_HEAD:
+    type: 'YOLOXHead'
+    num_classes: 1
+    width: 0.5
+    strides: [8, 16, 32]
+    in_channels: [256, 512, 1024]
+    act: "silu"
+    depthwise: False
+    loss_cls: {
+      type: 'BCEWithLogitsLoss', 
+      reduction: "none"}
+    loss_bbox: {
+      type: 'L1Loss', 
+      reduction: "none"}
+    loss_iou: {
+      type: 'IoULoss',
+      reduction: "none"}
+  TEST_CFG:
+    nms_pre: 5000
+    min_bbox_size: 0
+    score_thr: 0.001
+    conf_thr: 0.2
+    nms: {
+      type: 'common_nms', 
+      iou_threshold: 0.65}
+    max_per_img: 300

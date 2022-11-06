@@ -1,0 +1,18 @@
+MODEL:
+  TYPE: "cls"
+  NAME: "ImageClassifier"
+  PRETRAINED_MODEL_PATH: ""
+  BACKBONE:
+    type: "MobileNetV2"
+    widen_factor: 1.0
+  NECK:
+    type: "GlobalAveragePooling"
+  CLS_HEAD:
+    type: "LinearClsHead"
+    num_classes: 10
+    in_channels: 1280
+  LOSS:
+    type: 'CrossEntropyLoss'
+    loss_weight: 1.0
+  EXTEND:
+    topk: [1, 5]

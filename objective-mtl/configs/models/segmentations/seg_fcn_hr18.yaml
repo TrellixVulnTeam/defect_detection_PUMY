@@ -1,0 +1,62 @@
+MODEL:
+  TYPE: 'seg'
+  NAME: 'EncoderDecoder'
+  PRETRAINED_MODEL_PATH: "meta/pretrained/hrnetv2_w18-00eb2006.pth"
+  BACKBONE:
+    type: 'HRNet'
+    norm_cfg: {
+      type: 'BN', 
+      requires_grad: True}
+    norm_eval: False
+    extra: {
+      stage1: {
+        num_modules: 1,
+        num_branches: 1,
+        block: 'BOTTLENECK',
+        num_blocks: [4],
+        num_channels: [64]},
+      stage2: {
+        num_modules: 1,
+        num_branches: 2,
+        block: 'BASIC',
+        num_blocks: [4, 4],
+        num_channels: [18, 36]},
+      stage3: {
+        num_modules: 4,
+        num_branches: 3,
+        block: 'BASIC',
+        num_blocks: [4, 4, 4],
+        num_channels: [18, 36, 72]},
+      stage4: {
+        num_modules: 3,
+        num_branches: 4,
+        block: 'BASIC',
+        num_blocks: [4, 4, 4, 4],
+        num_channels: [18, 36, 72, 144]}}
+  DECODE_HEAD:
+    type: 'SegFCNHead'
+    in_channels: [18, 36, 72, 144]
+    in_index: [0, 1, 2, 3]
+    channels: 270
+    input_transform: 'resize_concat'
+    kernel_size: 1
+    num_convs: 1
+    concat_input: False
+    dropout_ratio: -1
+    num_classes: 19
+    norm_cfg: {
+      type: 'BN', 
+      requires_grad: True}
+    align_corners: False
+  LOSS:
+    type: 'CrossEntropyLoss'
+    use_sigmoid: False
+    loss_weight: 1.0
+    class_weight: [
+      2.5959933, 6.7415504, 3.5354059, 9.8663225, 9.690899, 9.369352,
+      10.289121, 9.953208, 4.3097677, 9.490387, 7.674431, 9.396905,
+      10.347791, 6.3927646, 10.226669, 10.241062, 10.280587,
+      10.396974, 10.055647]
+  TEST_CFG:
+    mode: 'whole'
+ 

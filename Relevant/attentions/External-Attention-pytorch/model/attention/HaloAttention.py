@@ -75,8 +75,8 @@ class RelPosEmb(nn.Module):
 class HaloAttention(nn.Module):
     def __init__(
         self,
+        *,
         dim,
-        dim_,
         block_size,
         halo_size,
         dim_head = 64,

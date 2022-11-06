@@ -1,0 +1,62 @@
+DATA:
+  NAME: "CocoDataset"
+  ROOT_PATH: "data/objdet-datasets/COCO"
+  TRAIN_TRANSFORMS:
+    LoadAnnotations: {with_bbox: True, with_mask: True}
+    JointResize: {
+      img_scale: [[1333, 800]], 
+      keep_ratio: True}
+    JointRandomFlip: {flip_ratio: 0.5}
+    Normalize: {
+      mean: [123.675, 116.28, 103.53],
+      std: [58.395, 57.12, 57.375],
+      to_rgb: False}
+    Pad: {size_divisor: 32}
+    DefaultFormatBundle: {}
+    Collect: {keys: ['img', 'gt_bboxes', 'gt_labels', 'gt_masks']}
+  TEST_TRANSFORMS:
+    MultiScaleFlipAug: {
+      img_scale: [1333, 800],
+      flip: False,
+      transforms: {
+        JointResize: {keep_ratio: True},
+        JointRandomFlip: {flip_ratio: 0.5},
+        Normalize: {
+          mean: [123.675, 116.28, 103.53],
+          std: [58.395, 57.12, 57.375],
+          to_rgb: False},
+        Pad: {size_divisor: 32},
+        ImageToTensor: {keys: ['img']},
+        Collect: {keys: ['img']}
+        }
+      }
+  TRAIN_DATA:
+    TYPE: "Concat" # "Normal" "Concat" "Repeat" "Balanced"
+    FLAG: 1
+    DATA_INFO: [['tfrecords/train.tfrecord']]
+    DATA_PREFIX: ["train2017/"]
+    CLASS_NAMES: "CocoDataset"
+    IS_TFRECORD: True
+    TEST_MODE: False
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4
+  VAL_DATA:
+    TYPE: "Normal"
+    FLAG: 1
+    DATA_INFO: [["tfrecords/val.tfrecord"]]
+    DATA_PREFIX: ["val2017/"]
+    CLASS_NAMES: "CocoDataset"
+    IS_TFRECORD: True
+    TEST_MODE: False
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4
+  TEST_DATA:
+    TYPE: "Normal"
+    FLAG: 1
+    DATA_INFO: [["tfrecords/val.tfrecord"]]
+    DATA_PREFIX: ["val2017/"]
+    CLASS_NAMES: "CocoDataset"
+    IS_TFRECORD: True
+    TEST_MODE: True
+    SAMPLES_PER_DEVICE: 4
+    WORKERS_PER_DEVICE: 4

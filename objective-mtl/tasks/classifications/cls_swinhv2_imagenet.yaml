@@ -1,0 +1,57 @@
+MODEL:
+  BASE: "models/classifications/cls_swinh_linear.yaml"
+  PRETRAINED_MODEL_PATH: "meta/pretrained/swin_huge_imagenet21k_ep60.pth"
+DATA:
+  BASE: "datasets/classifications/cls_imagenet_randaug.yaml"
+  TRAIN_TRANSFORMS:
+    ImgRandomResizedCrop: {
+      size: 224,
+      scale: [0.08, 1.0],
+      ratio: [0.75, 1.333],
+      interpolation: 'bicubic',
+      backend: 'pillow'
+      }
+  TRAIN_DATA:
+    TYPE: "Concat"
+    DATA_INFO: [['tfrecords/train*.tfrecord']]
+    SAMPLES_PER_DEVICE: 2
+    WORKERS_PER_DEVICE: 2
+  VAL_DATA:
+    TYPE: "Normal"
+    DATA_INFO: [['tfrecords/val*.tfrecord']]
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  TEST_DATA:
+    TYPE: "Normal"
+    DATA_INFO: [['tfrecords/val*.tfrecord']]
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+SCHEDULE:
+  BASE: "schedulers/schedule_adamw_ctm.yaml"
+  OPTIMIZER:
+    type: "AdamW"
+    lr: 0.00004
+    betas: [0.9, 0.999]
+    weight_decay: 0.05
+    PARAMWISE_CFG:
+      custom_keys: [{
+        ".rpb": {decay_mult: 0},
+        ".scale": {decay_mult: 0}
+      }]
+  OPTIMIZER_CONFIG:
+    grad_clip: {max_norm: 5}
+    fp16: False
+  LR_POLICY:
+    policy: "CosineAnnealing"
+    by_epoch: False
+    min_lr_ratio: 0.01
+    warmup: "linear"
+    warmup_iters: 2
+    warmup_ratio: 0.001
+    warmup_by_epoch: True
+  RUNNER:
+    type: "EpochBasedRunner"
+    max_epochs: 10
+RUNTIME:
+  BASE: "runtimes/runtime_eval.yaml"
+  WORKFLOW: [['train', 1]]

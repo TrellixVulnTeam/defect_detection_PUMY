@@ -1,0 +1,46 @@
+MODEL:
+  BASE: "models/detections/det_atsspartfix_swinbv2_dyhead.yaml"
+  PRETRAINED_BACKBONE_PATH: "meta/pretrained/swinv2_base_dyhead_pretrained_backbone.pth"
+  PRETRAINED_NECK_PATH: ["meta/pretrained/fpn_dyhead_pretrained_neck.pth", "meta/pretrained/dyhead_dyhead_pretrained_neck.pth"]
+  BACKBONE:
+    use_checkpoint: True
+  BBOX_HEAD:
+    type: 'ATSSHead'
+    num_classes: 80
+  EXTEND:
+    fixed_backbone: True
+    fixed_neck: False  
+DATA:
+  BASE: "datasets/detections/det_coco.yaml"
+  TRAIN_TRANSFORMS:
+    LoadAnnotations: {with_bbox: True, with_mask: False}
+    JointResize: {
+      img_scale: [[640, 640]],
+      keep_ratio: True}
+    Collect: {keys: ['img', 'gt_bboxes', 'gt_labels']}
+  TRAIN_DATA:
+    DATA_INFO: [['tfrecords/train.tfrecord']]
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 2
+    WORKERS_PER_DEVICE: 2
+  VAL_DATA:
+    DATA_INFO: [['tfrecords/val.tfrecord']]
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  TEST_DATA:
+    DATA_INFO: [['tfrecords/val.tfrecord']]
+    IS_TFRECORD: True
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+SCHEDULE:
+  BASE: "schedulers/schedule_1x.yaml"
+  OPTIMIZER:
+    type: "SGD"
+    lr: 0.01
+    momentum: 0.9
+    weight_decay: 0.0001
+RUNTIME:
+  BASE: "runtimes/runtime_base.yaml"
+  STATIC_GRAPH: True
+  FIND_UNUSED_PARAMETERS: True

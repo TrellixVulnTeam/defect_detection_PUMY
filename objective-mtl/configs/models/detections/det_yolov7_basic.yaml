@@ -1,0 +1,51 @@
+MODEL:
+  TYPE: "det"
+  NAME: "YOLOV7"
+  PRETRAINED_MODEL_PATH: ""
+  BACKBONE:
+    type: "YOLOV7BKNet"
+    in_channels: 3
+    basic_channels: 32
+    bottle_channels: 64
+    num_convs: 6
+    concat_list: [-1, -3, -5, -6]
+    out_indices: [1, 2, 3]
+  BBOX_HEAD:
+    type: 'YOLOV7Head'
+    num_classes: 80
+    in_channels: [512, 1024, 1024]
+    strides: [8, 16, 32]
+    spp_basic_channels: 128
+    bottle_channels: 128
+    num_convs: 6
+    concat_list: [-1, -2, -3, -4, -5, -6]
+    use_basic: False
+    loss_det: {
+      type: 'YoloOTALoss',
+      label_smoothing: 0.0,
+      cls_pw: 1.0,
+      obj_pw: 1.0,
+      gamma: 0.0,
+      box_factor: 0.05,
+      cls_factor: 0.3,
+      obj_factor: 0.7,
+      autobalance: False}
+  TRAIN_CFG:
+    anchors:
+    - [12,16, 19,36, 40,28]  # P3/8
+    - [36,75, 76,55, 72,146]  # P4/16
+    - [142,110, 192,243, 459,401]  # P5/32
+    assigner: {
+      type: 'GridAssigner', 
+      pos_iou_thr: 0.5, 
+      neg_iou_thr: 0.5, 
+      min_pos_iou: 0}
+  TEST_CFG:
+    nms_pre: 2000
+    min_bbox_size: 0
+    score_thr: 0.05
+    conf_thr: 0.001
+    nms: {
+      type: 'common_nms', 
+      iou_threshold: 0.45}
+    max_per_img: 100

@@ -1,5 +1,5 @@
-work_dir: "/home/zhang/datasets/floor_cut/source/train"
-output_dir: "/home/zhang/datasets/floor_cut/black_spot"
+work_dir: "/home/zhang/datasets/floor_cut/source/ALL"
+output_dir: "/home/zhang/datasets/floor_224"
 output_size:
     # width: 768
     # height: 768
@@ -17,7 +17,7 @@ workflow:
     filter:
         key: shape_label
 #        label_filter: ['white-impurities','black-spot','edge-damage','bubble-gum']
-        label_filter: ['black-spot']
+        label_filter: ['white-impurities','black-spot','edge-damage','bubble-gum']
 #        label_filter: ['broken_bottle_cap', 'code_normal', 'cap_breakpoint',
 #                       'bottle_cap_deformation', 'bottle_cap_spinning', 'broken_edge',
 #                       'inkjet_exception']

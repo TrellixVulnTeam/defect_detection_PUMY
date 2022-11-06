@@ -1,0 +1,39 @@
+MODEL:
+  BASE: "models/classifications/cls_swinbv2_linear.yaml"
+  BACKBONE:
+    type: "SwinTransformerV2"
+    embed_dim: 96
+    depths: [2, 2, 6, 2]
+    num_heads: [3, 6, 12, 24]
+    out_indices: [3]
+  CLS_HEAD:
+    type: "LinearClsHead"
+    num_classes: 10
+    in_channels: 768
+  EXTEND:
+    topk: [1, 5]
+  TRAIN_CFG:
+    augmentor:
+    - {type: 'BatchMixup',
+       alpha: 0.8,
+       num_classes: 10,
+       prob: 0.5}
+    - {type: 'BatchCutMix',
+       alpha: 1.0,
+       num_classes: 10,
+       prob: 0.5}
+DATA:
+  BASE: "datasets/classifications/cls_cifar10.yaml"
+  TRAIN_DATA:
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  VAL_DATA:
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+  TEST_DATA:
+    SAMPLES_PER_DEVICE: 8
+    WORKERS_PER_DEVICE: 8
+SCHEDULE:
+  BASE: "schedulers/schedule_adamw.yaml"
+RUNTIME:
+  BASE: "runtimes/runtime_base.yaml"
